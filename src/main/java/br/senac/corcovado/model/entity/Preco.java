@@ -1,42 +1,51 @@
 package br.senac.corcovado.model.entity;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author wesley
  */
-public class Preco extends DataBasic{
-    private Produto produto;
-    private BigDecimal preco;
-    private Nivel nivel;
+public class Preco extends DataBasicModel{
+    private Long produto_id;
+    private Double preco;
+    private Long nivel_id;
 
     public Preco() {
     }
 
-    public Produto getProduto() {
-        return produto;
+    public Preco(Long produto_id, Double preco, Long nivel_id) {
+        this.produto_id = produto_id;
+        this.preco = preco;
+        this.nivel_id = nivel_id;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public Preco(Long produto_id, Double preco, Long nivel_id, Long id, boolean active) {
+        super(id, active);
+        this.produto_id = produto_id;
+        this.preco = preco;
+        this.nivel_id = nivel_id;
     }
 
-    public BigDecimal getPreco() {
+    public Long getProduto_id() {
+        return produto_id;
+    }
+
+    public void setProduto_id(Long produto_id) {
+        this.produto_id = produto_id;
+    }
+
+    public Double getPreco() {
         return preco;
     }
 
-    public void setPreco(BigDecimal preco) {
+    public void setPreco(Double preco) {
         this.preco = preco;
     }
 
-    public Nivel getNivel() {
-        return nivel;
+    public Long getNivel_id() {
+        return nivel_id;
     }
 
-    public void setNivel(Nivel nivel) {
-        this.nivel = nivel;
+    public void setNivel_id(Long nivel_id) {
+        this.nivel_id = nivel_id;
     }
-    
-    
 }

@@ -4,15 +4,34 @@ package br.senac.corcovado.model.entity;
  *
  * @author wesley
  */
-public class Pessoa extends DataBasic{
+public class Pessoa extends DataBasicModel{
     private String nome;
     private String documento;
     private String login;
     private String senha;
-    private Nivel nivel;
-    private Cargo cargo;
+    private Long nivel_id;
+    private Long cargo_id;
 
     public Pessoa() {
+    }
+
+    public Pessoa(String nome, String documento, String login, String senha, Long nivel_id, Long cargo_id) {
+        this.nome = nome;
+        this.documento = documento;
+        this.login = login;
+        this.senha = senha;
+        this.nivel_id = nivel_id;
+        this.cargo_id = cargo_id;
+    }
+
+    public Pessoa(String nome, String documento, String login, String senha, Long nivel_id, Long cargo_id, Long id, boolean active) {
+        super(id, active);
+        this.nome = nome;
+        this.documento = documento;
+        this.login = login;
+        this.senha = senha;
+        this.nivel_id = nivel_id;
+        this.cargo_id = cargo_id;
     }
 
     public String getNome() {
@@ -47,19 +66,19 @@ public class Pessoa extends DataBasic{
         this.senha = senha;
     }
 
-    public Nivel getNivel() {
-        return nivel;
+    public Long getNivel_id() {
+        return nivel_id;
     }
 
-    public void setNivel(Nivel nivel) {
-        this.nivel = nivel;
+    public void setNivel_id(Long nivel_id) {
+        this.nivel_id = nivel_id;
     }
 
-    public Cargo getCargo() {
-        return cargo;
+    public Long getCargo_id() {
+        return cargo_id;
     }
 
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
+    public void setCargo_id(Long cargo_id) {
+        this.cargo_id = cargo_id;
     }
 }

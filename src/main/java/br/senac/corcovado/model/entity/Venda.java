@@ -1,17 +1,15 @@
 package br.senac.corcovado.model.entity;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author wesley
  */
-public class Venda extends DataBasic{
-    private Pessoa cliente;
-    private Endereco endereco;
-    private Desconto desconto;
-    private BigDecimal total;
-    private Status status;
+public class Venda extends DataBasicModel{
+    private Long cliente_id;
+    private Long endereco_id;
+    private Long desconto_id;    
+    private Long status_id;
+    private Double total;
     private String pagamento;
     private String comprovante;
     private String prazo_entrega;
@@ -20,44 +18,69 @@ public class Venda extends DataBasic{
     public Venda() {
     }
 
-    public Pessoa getCliente() {
-        return cliente;
+    public Venda(Long cliente_id, Long endereco_id, Long desconto_id, Long status_id, Double total, String pagamento, String comprovante, String prazo_entrega, String codigo_rastreamento) {
+        this.cliente_id = cliente_id;
+        this.endereco_id = endereco_id;
+        this.desconto_id = desconto_id;
+        this.status_id = status_id;
+        this.total = total;
+        this.pagamento = pagamento;
+        this.comprovante = comprovante;
+        this.prazo_entrega = prazo_entrega;
+        this.codigo_rastreamento = codigo_rastreamento;
     }
 
-    public void setCliente(Pessoa cliente) {
-        this.cliente = cliente;
+    public Venda(Long cliente_id, Long endereco_id, Long desconto_id, Long status_id, Double total, String pagamento, String comprovante, String prazo_entrega, String codigo_rastreamento, Long id, boolean active) {
+        super(id, active);
+        this.cliente_id = cliente_id;
+        this.endereco_id = endereco_id;
+        this.desconto_id = desconto_id;
+        this.status_id = status_id;
+        this.total = total;
+        this.pagamento = pagamento;
+        this.comprovante = comprovante;
+        this.prazo_entrega = prazo_entrega;
+        this.codigo_rastreamento = codigo_rastreamento;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public Long getCliente_id() {
+        return cliente_id;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setCliente_id(Long cliente_id) {
+        this.cliente_id = cliente_id;
     }
 
-    public Desconto getDesconto() {
-        return desconto;
+    public Long getEndereco_id() {
+        return endereco_id;
     }
 
-    public void setDesconto(Desconto desconto) {
-        this.desconto = desconto;
+    public void setEndereco_id(Long endereco_id) {
+        this.endereco_id = endereco_id;
     }
 
-    public BigDecimal getTotal() {
+    public Long getDesconto_id() {
+        return desconto_id;
+    }
+
+    public void setDesconto_id(Long desconto_id) {
+        this.desconto_id = desconto_id;
+    }
+
+    public Long getStatus_id() {
+        return status_id;
+    }
+
+    public void setStatus_id(Long status_id) {
+        this.status_id = status_id;
+    }
+
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(Double total) {
         this.total = total;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public String getPagamento() {

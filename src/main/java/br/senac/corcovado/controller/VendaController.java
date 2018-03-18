@@ -1,0 +1,80 @@
+package br.senac.corcovado.controller;
+
+import br.senac.corcovado.model.dao.VendaDao;
+import br.senac.corcovado.model.entity.Venda;
+import br.senac.corcovado.model.validator.Validador;
+import br.senac.corcovado.model.validator.VendaValidador;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+/**
+ *
+ * @author wesley
+ */
+@Controller
+public class VendaController {
+
+    @GetMapping("/")
+    public static String inserir(Venda venda) {
+        try {
+            VendaValidador.validar(venda);
+
+            VendaDao.inserir(venda);
+
+            return "home/index";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "home/index";
+        }
+    }
+
+    @GetMapping("/")
+    public static String atualizar(Venda venda) {
+        try {
+            VendaValidador.validar(venda);
+
+            VendaDao.atualizar(venda);
+
+            return "home/index";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "home/index";
+        }
+    }
+
+    @GetMapping("/")
+    public static ModelAndView obter(long id) {
+        try {
+            Venda venda = VendaDao.obter(id);
+
+            ModelAndView mv = new ModelAndView("home/index");
+            mv.addObject("venda", venda);
+            return mv;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            ModelAndView mv = new ModelAndView("home/index");            
+            return mv;
+        }
+    }
+
+    @GetMapping("/")
+    public static ModelAndView listar() {
+        List<Venda> vendas = VendaDao.listar();
+
+        ModelAndView mv = new ModelAndView("home/index");
+        mv.addObject("vendas", vendas);
+        return mv;
+    }
+
+    @GetMapping("/")
+    public static String excluir(long id) {
+        VendaDao.excluir(id);
+
+        return "home/index";
+    }
+}

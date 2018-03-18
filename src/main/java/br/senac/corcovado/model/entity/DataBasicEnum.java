@@ -4,22 +4,26 @@ package br.senac.corcovado.model.entity;
  *
  * @author wesley
  */
-public class Departamento extends DataBasicModel{
+public class DataBasicEnum {
+    private Long id;
     private String nome;
     private String descricao;
 
-    public Departamento() {
+    public DataBasicEnum() {
     }
 
-    public Departamento(String nome, String descricao) {
+    public DataBasicEnum(Long id, String nome, String descricao) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
     }
 
-    public Departamento(String nome, String descricao, Long id, boolean active) {
-        super(id, active);
-        this.nome = nome;
-        this.descricao = descricao;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -36,5 +40,5 @@ public class Departamento extends DataBasicModel{
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
+    }  
 }

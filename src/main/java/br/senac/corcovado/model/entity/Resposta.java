@@ -4,20 +4,33 @@ package br.senac.corcovado.model.entity;
  *
  * @author wesley
  */
-public class Resposta extends DataBasic{
-    private SAC sac;
+public class Resposta extends DataBasicModel{
+    private Long sac_id;
     private String mensagem;
-    private Pessoa cliente;
+    private Long cliente_id;
 
     public Resposta() {
     }
 
-    public SAC getSac() {
-        return sac;
+    public Resposta(Long sac_id, String mensagem, Long cliente_id) {
+        this.sac_id = sac_id;
+        this.mensagem = mensagem;
+        this.cliente_id = cliente_id;
     }
 
-    public void setSac(SAC sac) {
-        this.sac = sac;
+    public Resposta(Long sac_id, String mensagem, Long cliente_id, Long id, boolean active) {
+        super(id, active);
+        this.sac_id = sac_id;
+        this.mensagem = mensagem;
+        this.cliente_id = cliente_id;
+    }
+
+    public Long getSac_id() {
+        return sac_id;
+    }
+
+    public void setSac_id(Long sac_id) {
+        this.sac_id = sac_id;
     }
 
     public String getMensagem() {
@@ -28,11 +41,11 @@ public class Resposta extends DataBasic{
         this.mensagem = mensagem;
     }
 
-    public Pessoa getCliente() {
-        return cliente;
+    public Long getCliente_id() {
+        return cliente_id;
     }
 
-    public void setCliente(Pessoa cliente) {
-        this.cliente = cliente;
+    public void setCliente_id(Long cliente_id) {
+        this.cliente_id = cliente_id;
     }
 }

@@ -4,7 +4,7 @@ package br.senac.corcovado.model.entity;
  *
  * @author wesley
  */
-public class Endereco extends DataBasic{
+public class Endereco extends DataBasicModel{
     
     private String rua;
     private int numero;
@@ -14,9 +14,34 @@ public class Endereco extends DataBasic{
     private String cep;
     private String complemento;
     private String principal;
-    private Pessoa cliente;
+    private Long cliente_id;
     
     public Endereco() {
+    }
+
+    public Endereco(String rua, int numero, String bairro, String cidade, String estado, String cep, String complemento, String principal, Long cliente_id) {
+        this.rua = rua;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.complemento = complemento;
+        this.principal = principal;
+        this.cliente_id = cliente_id;
+    }
+
+    public Endereco(String rua, int numero, String bairro, String cidade, String estado, String cep, String complemento, String principal, Long cliente_id, Long id, boolean active) {
+        super(id, active);
+        this.rua = rua;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.complemento = complemento;
+        this.principal = principal;
+        this.cliente_id = cliente_id;
     }
 
     public String getRua() {
@@ -83,11 +108,11 @@ public class Endereco extends DataBasic{
         this.principal = principal;
     }
 
-    public Pessoa getCliente() {
-        return cliente;
+    public Long getCliente_id() {
+        return cliente_id;
     }
 
-    public void setCliente(Pessoa cliente) {
-        this.cliente = cliente;
+    public void setCliente_id(Long cliente_id) {
+        this.cliente_id = cliente_id;
     }
 }
