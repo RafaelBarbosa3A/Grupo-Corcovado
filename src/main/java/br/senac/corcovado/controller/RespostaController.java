@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.RespostaDao;
 import br.senac.corcovado.model.entity.Resposta;
 import br.senac.corcovado.model.validator.RespostaValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/respostas")
 public class RespostaController {
 
-    @GetMapping("/")
-    public static String inserir(Resposta resposta) {
+    @GetMapping("/create")
+    public static ModelAndView create(Resposta resposta) {
         try {
             RespostaValidador.validar(resposta);
 
-            RespostaDao.inserir(resposta);
+            RespostaDao.create(resposta);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Resposta resposta) {
+    @GetMapping("/update")
+    public static ModelAndView update(Resposta resposta) {
         try {
             RespostaValidador.validar(resposta);
 
-            RespostaDao.atualizar(resposta);
+            RespostaDao.update(resposta);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Resposta resposta;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            resposta = RespostaDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("resposta", resposta);
-            return mv;
+            return new ModelAndView("home/index", "resposta", RespostaDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Resposta> respostas = RespostaDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("respostas", respostas);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "respostas", RespostaDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        RespostaDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            RespostaDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.ReposicaoDao;
 import br.senac.corcovado.model.entity.Reposicao;
 import br.senac.corcovado.model.validator.ReposicaoValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/reposicoes")
 public class ReposicaoController {
 
-    @GetMapping("/")
-    public static String inserir(Reposicao reposicao) {
+    @GetMapping("/create")
+    public static ModelAndView create(Reposicao reposicao) {
         try {
             ReposicaoValidador.validar(reposicao);
 
-            ReposicaoDao.inserir(reposicao);
+            ReposicaoDao.create(reposicao);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Reposicao reposicao) {
+    @GetMapping("/update")
+    public static ModelAndView update(Reposicao reposicao) {
         try {
             ReposicaoValidador.validar(reposicao);
 
-            ReposicaoDao.atualizar(reposicao);
+            ReposicaoDao.update(reposicao);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Reposicao reposicao;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            reposicao = ReposicaoDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("reposicao", reposicao);
-            return mv;
+            return new ModelAndView("home/index", "reposicao", ReposicaoDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Reposicao> reposicao = ReposicaoDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("reposicao", reposicao);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "reposicoes", ReposicaoDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        ReposicaoDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            ReposicaoDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

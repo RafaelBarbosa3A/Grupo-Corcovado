@@ -5,7 +5,7 @@ package br.senac.corcovado.model.entity;
  * @author wesley
  */
 public class SAC extends DataBasicModel{
-    private Long cliente;
+    private Long cliente_id;
     private String contato;
     private String mensagem;
     private String status_mensagem;
@@ -14,7 +14,7 @@ public class SAC extends DataBasicModel{
     }
 
     public SAC(Long cliente, String contato, String mensagem, String status_mensagem) {
-        this.cliente = cliente;
+        this.cliente_id = cliente;
         this.contato = contato;
         this.mensagem = mensagem;
         this.status_mensagem = status_mensagem;
@@ -22,18 +22,18 @@ public class SAC extends DataBasicModel{
 
     public SAC(Long cliente, String contato, String mensagem, String status_mensagem, Long id, boolean active) {
         super(id, active);
-        this.cliente = cliente;
+        this.cliente_id = cliente;
         this.contato = contato;
         this.mensagem = mensagem;
         this.status_mensagem = status_mensagem;
     }
 
-    public Long getCliente() {
-        return cliente;
+    public Long getCliente_id() {
+        return cliente_id;
     }
 
-    public void setCliente(Long cliente) {
-        this.cliente = cliente;
+    public void setCliente_id(Long cliente) {
+        this.cliente_id = cliente;
     }
 
     public String getContato() {

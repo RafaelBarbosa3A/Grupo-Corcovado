@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.DescontoDao;
 import br.senac.corcovado.model.entity.Desconto;
 import br.senac.corcovado.model.validator.DescontoValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/descontos")
 public class DescontoController {
 
-    @GetMapping("/")
-    public static String inserir(Desconto desconto) {
+    @GetMapping("/create")
+    public static ModelAndView create(Desconto desconto) {
         try {
             DescontoValidador.validar(desconto);
 
-            DescontoDao.inserir(desconto);
+            DescontoDao.create(desconto);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Desconto desconto) {
+    @GetMapping("/update")
+    public static ModelAndView update(Desconto desconto) {
         try {
             DescontoValidador.validar(desconto);
 
-            DescontoDao.atualizar(desconto);
+            DescontoDao.update(desconto);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Desconto desconto;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            desconto = DescontoDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("desconto", desconto);
-            return mv;
+            return new ModelAndView("home/index", "desconto", DescontoDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Desconto> descontos = DescontoDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("descontos", descontos);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "descontos", DescontoDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        DescontoDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            DescontoDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

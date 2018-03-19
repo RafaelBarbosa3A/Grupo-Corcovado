@@ -11,7 +11,7 @@ public class SACValidador {
     public static void validar(SAC sac) {
         if (sac == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (sac.getCliente() == null) {
+        } else if (sac.getCliente_id() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (sac.getContato().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");

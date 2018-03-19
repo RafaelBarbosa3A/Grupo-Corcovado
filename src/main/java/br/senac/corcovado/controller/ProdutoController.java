@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.ProdutoDao;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.validator.ProdutoValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/produtos")
 public class ProdutoController {
 
-    @GetMapping("/")
-    public static String inserir(Produto produto) {
+    @GetMapping("/create")
+    public static ModelAndView create(Produto produto) {
         try {
             ProdutoValidador.validar(produto);
 
-            ProdutoDao.inserir(produto);
+            ProdutoDao.create(produto);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Produto produto) {
+    @GetMapping("/update")
+    public static ModelAndView update(Produto produto) {
         try {
             ProdutoValidador.validar(produto);
 
-            ProdutoDao.atualizar(produto);
+            ProdutoDao.update(produto);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Produto produto;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            produto = ProdutoDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("produto", produto);
-            return mv;
+            return new ModelAndView("home/index", "produto", ProdutoDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
+        }
+    }
+    
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "produtos", ProdutoDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Produto> produtos = ProdutoDao.listar();
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            ProdutoDao.destroy(id);
 
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("produtos", produtos);
-        return mv;
-    }
-
-    @GetMapping("/")
-    public static String excluir(long id) {
-        ProdutoDao.excluir(id);
-
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

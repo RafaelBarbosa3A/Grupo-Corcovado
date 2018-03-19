@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.EnderecoDao;
 import br.senac.corcovado.model.entity.Endereco;
 import br.senac.corcovado.model.validator.EnderecoValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/enderecos")
 public class EnderecoController {
 
-    @GetMapping("/")
-    public static String inserir(Endereco endereco) {
+    @GetMapping("/create")
+    public static ModelAndView create(Endereco endereco) {
         try {
             EnderecoValidador.validar(endereco);
 
-            EnderecoDao.inserir(endereco);
+            EnderecoDao.create(endereco);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Endereco endereco) {
+    @GetMapping("/update")
+    public static ModelAndView update(Endereco endereco) {
         try {
             EnderecoValidador.validar(endereco);
 
-            EnderecoDao.atualizar(endereco);
+            EnderecoDao.update(endereco);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Endereco endereco;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            endereco = EnderecoDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("endereco", endereco);
-            return mv;
+            return new ModelAndView("home/index", "endereco", EnderecoDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Endereco> enderecos = EnderecoDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("enderecos", enderecos);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "enderecos", EnderecoDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        EnderecoDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            EnderecoDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

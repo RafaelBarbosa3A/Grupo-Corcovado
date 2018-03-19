@@ -11,15 +11,15 @@ public class VendaValidador {
     public static void validar(Venda venda) {
         if (venda == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getCliente() == null) {
+        } else if (venda.getCliente_id() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getEndereco() == null) {
+        } else if (venda.getEndereco_id() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getDesconto() == null) {
+        } else if (venda.getDesconto_id() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (venda.getTotal() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getStatus().toString().isEmpty()) {
+        } else if (venda.getStatus_id().toString().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (venda.getPagamento().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");

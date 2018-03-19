@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.PessoaDao;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.validator.PessoaValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,66 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/pessoas")
 public class PessoaController {
 
-    @GetMapping("/")
-    public static String inserir(Pessoa pessoa) {
+    @GetMapping("/create")
+    public static ModelAndView create(Pessoa pessoa) {
         try {
             PessoaValidador.validar(pessoa);
 
-            PessoaDao.inserir(pessoa);
+            PessoaDao.create(pessoa);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Pessoa pessoa) {
+    @GetMapping("/update")
+    public static ModelAndView update(Pessoa pessoa) {
         try {
             PessoaValidador.validar(pessoa);
 
-            PessoaDao.atualizar(pessoa);
+            PessoaDao.update(pessoa);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Pessoa pessoa;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            pessoa = PessoaDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("pessoa", pessoa);
-            return mv;
+            return new ModelAndView("home/index", "preco", PessoaDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Pessoa> pessoas = PessoaDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("pessoas", pessoas);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "precos", PessoaDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id
-    ) {
-        PessoaDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            PessoaDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

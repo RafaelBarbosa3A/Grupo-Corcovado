@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,8 +17,8 @@ import java.util.List;
  */
 public class ProdutoDao {
 
-    public static void inserir(Produto produto) throws SQLException {
-        String sql = "INSERT INTO PRODUTO (nome, descricao, fabricante, codigo, estoque, reservado, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static void create(Produto produto) throws SQLException {
+        String sql = "INSERT INTO PRODUTO (nome, descricao, fabricante, codigo, estoque, reservado, categoria_id, created_at, updated_at, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Connection connection = null;
 
@@ -31,7 +34,10 @@ public class ProdutoDao {
             statement.setString(4, produto.getCodigo());
             statement.setInt(5, produto.getEstoque());
             statement.setInt(6, produto.getReservado());
-            statement.setLong(7, produto.getCategoria().getId());
+            statement.setLong(7, produto.getCategoria_id());
+            statement.setTimestamp(8, new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            statement.setTimestamp(9, new Timestamp(Calendar.getInstance().getTimeInMillis()));
+            statement.setBoolean(10, true);
 
             statement.execute();
         } finally {
@@ -44,12 +50,12 @@ public class ProdutoDao {
         }
     }
 
-    public static void atualizar(Produto produto) {
+    public static void update(Produto produto) {
 
     }
 
-    public static Produto obter(long id) throws SQLException {
-        String sql = "SELECT * FROM PRODUTO WHERE (id=?)";
+    public static Produto search(long id) throws SQLException {
+        String sql = "SELECT * FROM PRODUTO WHERE (id=? AND active=?)";
 
         Connection connection = null;
 
@@ -62,6 +68,7 @@ public class ProdutoDao {
             statement = connection.prepareStatement(sql);
 
             statement.setLong(1, id);
+            statement.setBoolean(2, true);
 
             result = statement.executeQuery();
             if (result.next()) {
@@ -73,7 +80,10 @@ public class ProdutoDao {
                 produto.setCodigo(result.getString("codigo"));
                 produto.setEstoque(result.getInt("estoque"));
                 produto.setReservado(result.getInt("reservado"));
-                produto.setCategoria(CategoriaDao.obter(result.getLong("categoria_id")));
+                produto.setCategoria_id(result.getLong("categoria_id"));
+                produto.setCreated_at(result.getTimestamp("created_at").getTime());
+                produto.setUpdated_at(result.getTimestamp("updated_at").getTime());
+                produto.setActive(result.getBoolean("active"));
 
                 return produto;
             }
@@ -92,11 +102,57 @@ public class ProdutoDao {
         return null;
     }
 
-    public static List<Produto> listar() {
-        return null;
+    public static List<Produto> list() throws SQLException {
+        String sql = "SELECT * FROM PRODUTO WHERE (active=?)";
+        
+        List<Produto> produtos = null;
+
+        Connection connection = null;
+
+        PreparedStatement statement = null;
+
+        ResultSet result = null;
+        try {
+            connection = ConnectionUtils.getConnection();
+
+            statement = connection.prepareStatement(sql);
+            
+            statement.setBoolean(1, true);
+
+            result = statement.executeQuery();
+            if (result.next()) {
+                if(produtos == null) produtos = new LinkedList<>();
+                Produto produto = new Produto();
+                produto.setId(result.getLong("id"));
+                produto.setNome(result.getString("nome"));
+                produto.setDescricao(result.getString("descricao"));
+                produto.setFabricante(result.getString("fabricante"));
+                produto.setCodigo(result.getString("codigo"));
+                produto.setEstoque(result.getInt("estoque"));
+                produto.setReservado(result.getInt("reservado"));
+                produto.setCategoria_id(result.getLong("categoria_id"));
+                produto.setCreated_at(result.getTimestamp("created_at").getTime());
+                produto.setUpdated_at(result.getTimestamp("updated_at").getTime());
+                produto.setActive(result.getBoolean("active"));
+
+                produtos.add(produto);
+            }
+        } finally {
+            if (result != null && !result.isClosed()) {
+                result.close();
+            }
+            if (statement != null && !statement.isClosed()) {
+                statement.close();
+            }
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        }
+
+        return produtos;
     }
 
-    public static void excluir(long id) {
+    public static void destroy(long id) {
 
     }
 }

@@ -4,9 +4,9 @@ import br.senac.corcovado.model.dao.AvisoDao;
 import br.senac.corcovado.model.entity.Aviso;
 import br.senac.corcovado.model.validator.AvisoValidador;
 import java.sql.SQLException;
-import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -14,64 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/avisos")
 public class AvisoController {
-
-    @GetMapping("/")
-    public static String inserir(Aviso aviso) {
+    
+    @GetMapping("/create")
+    public static ModelAndView create(Aviso aviso) {
         try {
             AvisoValidador.validar(aviso);
 
-            AvisoDao.inserir(aviso);
+            AvisoDao.create(aviso);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
-
-    @GetMapping("/")
-    public static String atualizar(Aviso aviso) {
+    
+    @GetMapping("/update")
+    public static ModelAndView update(Aviso aviso) {
         try {
             AvisoValidador.validar(aviso);
 
-            AvisoDao.atualizar(aviso);
+            AvisoDao.uptade(aviso);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
-
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
+    
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            Aviso aviso = AvisoDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("aviso", aviso);
-            return mv;
+            return new ModelAndView("home/index", "aviso", AvisoDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
+        }
+    }
+    
+    @GetMapping("/list")
+    public static ModelAndView list() {        
+        try {
+            return new ModelAndView("home/index", "avisos", AvisoDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Aviso> avisos = AvisoDao.listar();
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            AvisoDao.destroy(id);
 
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("avisos", avisos);
-        return mv;
-    }
-
-    @GetMapping("/")
-    public static String excluir(long id) {
-        AvisoDao.excluir(id);
-
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

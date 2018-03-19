@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.DepartamentoDao;
 import br.senac.corcovado.model.entity.Departamento;
 import br.senac.corcovado.model.validator.DepartamentoValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/departamentos")
 public class DepartamentoController {
 
-    @GetMapping("/")
-    public static String inserir(Departamento departamento) {
+    @GetMapping("/create")
+    public static ModelAndView create(Departamento departamento) {
         try {
             DepartamentoValidador.validar(departamento);
 
-            DepartamentoDao.inserir(departamento);
+            DepartamentoDao.create(departamento);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Departamento departamento) {
+    @GetMapping("/update")
+    public static ModelAndView update(Departamento departamento) {
         try {
             DepartamentoValidador.validar(departamento);
 
-            DepartamentoDao.atualizar(departamento);
+            DepartamentoDao.update(departamento);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Departamento departamento;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            departamento = DepartamentoDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("departamento", departamento);
-            return mv;
+            return new ModelAndView("home/index", "departamento", DepartamentoDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Departamento> departamentos = DepartamentoDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("departamentos", departamentos);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "departamentos", DepartamentoDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        DepartamentoDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            DepartamentoDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }       
     }
 }

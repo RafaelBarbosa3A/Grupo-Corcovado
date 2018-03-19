@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.dao.CategoriaDao;
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.entity.Categoria;
 import br.senac.corcovado.model.validator.CategoriaValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/categorias")
 public class CategoriaController {
 
-    @GetMapping("/")
-    public static String inserir(Categoria categoria) {
+    @GetMapping("/create")
+    public static ModelAndView create(Categoria categoria) {
         try {
             CategoriaValidador.validar(categoria);
 
-            CategoriaDao.inserir(categoria);
+            CategoriaDao.create(categoria);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Categoria categoria) {
+    @GetMapping("/update")
+    public static ModelAndView update(Categoria categoria) {
         try {
             CategoriaValidador.validar(categoria);
 
-            CategoriaDao.atualizar(categoria);
+            CategoriaDao.update(categoria);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Categoria categoria;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            categoria = CategoriaDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("categoria", categoria);
-            return mv;
+            return new ModelAndView("home/index", "categoria", CategoriaDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Categoria> categorias = CategoriaDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("categorias", categorias);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "categorias", CategoriaDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        CategoriaDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            CategoriaDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

@@ -5,47 +5,47 @@ package br.senac.corcovado.model.entity;
  * @author wesley
  */
 public class Produto_Reposicao extends DataBasicModel{
-    private Long reposicao;
-    private Integer produto;
-    private Long quantidade;
+    private Long reposicao_id;
+    private Long produto_id;
+    private Integer quantidade;
 
     public Produto_Reposicao() {
     }
 
-    public Produto_Reposicao(Long reposicao, Integer produto, Long quantidade) {
-        this.reposicao = reposicao;
-        this.produto = produto;
+    public Produto_Reposicao(Long reposicao_id, Long produto_id, Integer quantidade) {
+        this.reposicao_id = reposicao_id;
+        this.produto_id = produto_id;
         this.quantidade = quantidade;
     }
 
-    public Produto_Reposicao(Long reposicao, Integer produto, Long quantidade, Long id, boolean active) {
+    public Produto_Reposicao(Long reposicao_id, Long produto_id, Integer quantidade, Long id, boolean active) {
         super(id, active);
-        this.reposicao = reposicao;
-        this.produto = produto;
+        this.reposicao_id = reposicao_id;
+        this.produto_id = produto_id;
         this.quantidade = quantidade;
     }
 
-    public Long getReposicao() {
-        return reposicao;
+    public Long getReposicao_id() {
+        return reposicao_id;
     }
 
-    public void setReposicao(Long reposicao) {
-        this.reposicao = reposicao;
+    public void setReposicao_id(Long reposicao_id) {
+        this.reposicao_id = reposicao_id;
     }
 
-    public Integer getProduto() {
-        return produto;
+    public Long getProduto_id() {
+        return produto_id;
     }
 
-    public void setProduto(Integer produto) {
-        this.produto = produto;
+    public void setProduto_id(Long produto_id) {
+        this.produto_id = produto_id;
     }
 
-    public Long getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Long quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 }

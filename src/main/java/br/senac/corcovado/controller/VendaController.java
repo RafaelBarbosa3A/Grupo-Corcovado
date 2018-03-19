@@ -2,14 +2,11 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.dao.VendaDao;
 import br.senac.corcovado.model.entity.Venda;
-import br.senac.corcovado.model.validator.Validador;
 import br.senac.corcovado.model.validator.VendaValidador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -17,64 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/vendas")
 public class VendaController {
 
-    @GetMapping("/")
-    public static String inserir(Venda venda) {
+    @GetMapping("/create")
+    public static ModelAndView create(Venda venda) {
         try {
             VendaValidador.validar(venda);
 
-            VendaDao.inserir(venda);
+            VendaDao.create(venda);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Venda venda) {
+    @GetMapping("/update")
+    public static ModelAndView update(Venda venda) {
         try {
             VendaValidador.validar(venda);
 
-            VendaDao.atualizar(venda);
+            VendaDao.update(venda);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            Venda venda = VendaDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("venda", venda);
-            return mv;
+            return new ModelAndView("home/index", "venda", VendaDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Venda> vendas = VendaDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("vendas", vendas);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "vendas", VendaDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        VendaDao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            VendaDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }

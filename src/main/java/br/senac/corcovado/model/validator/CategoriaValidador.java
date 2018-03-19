@@ -15,7 +15,7 @@ public class CategoriaValidador {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (categoria.getDescricao().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (categoria.getDepartamento() == null) {
+        } else if (categoria.getDepartamento_id() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         }
     }

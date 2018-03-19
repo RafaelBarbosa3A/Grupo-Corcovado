@@ -1,16 +1,12 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.Dao;
 import br.senac.corcovado.model.dao.ProdutoReposicaoDao;
 import br.senac.corcovado.model.entity.Produto_Reposicao;
 import br.senac.corcovado.model.validator.ProdutoReposicaoValidador;
-import br.senac.corcovado.model.validator.Validador;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -18,65 +14,66 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
+@RequestMapping("/produtos_reposicao")
 public class ProdutoReposicaoController {
 
-    @GetMapping("/")
-    public static String inserir(Produto_Reposicao pr) {
+    @GetMapping("/create")
+    public static ModelAndView create(Produto_Reposicao pr) {
         try {
             ProdutoReposicaoValidador.validar(pr);
 
-            ProdutoReposicaoDao.inserir(pr);
+            ProdutoReposicaoDao.create(pr);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static String atualizar(Produto_Reposicao pr) {
+    @GetMapping("/uptade")
+    public static ModelAndView update(Produto_Reposicao pr) {
         try {
             ProdutoReposicaoValidador.validar(pr);
 
-            ProdutoReposicaoDao.atualizar(pr);
+            ProdutoReposicaoDao.update(pr);
 
-            return "home/index";
+            return new ModelAndView("home/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return "home/index";
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView obter(long id) {
-        Produto_Reposicao pr;
+    @GetMapping("/search")
+    public static ModelAndView search(long id) {
         try {
-            pr = ProdutoReposicaoDao.obter(id);
-
-            ModelAndView mv = new ModelAndView("home/index");
-            mv.addObject("pr", pr);
-            return mv;
+            return new ModelAndView("home/index", "prodReposicao", ProdutoReposicaoDao.search(id));
         } catch (SQLException ex) {
             ex.printStackTrace();
-            ModelAndView mv = new ModelAndView("home/index");            
-            return mv;
+            return new ModelAndView("home/index");
         }
     }
 
-    @GetMapping("/")
-    public static ModelAndView listar() {
-        List<Produto_Reposicao> prs = ProdutoReposicaoDao.listar();
-
-        ModelAndView mv = new ModelAndView("home/index");
-        mv.addObject("prs", prs);
-        return mv;
+    @GetMapping("/list")
+    public static ModelAndView list() {
+        try {
+            return new ModelAndView("home/index", "prodsReposicao", ProdutoReposicaoDao.list());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 
-    @GetMapping("/")
-    public static String excluir(long id) {
-        Dao.excluir(id);
+    @GetMapping("/destroy")
+    public static ModelAndView destroy(long id) {
+        try {
+            ProdutoReposicaoDao.destroy(id);
 
-        return "home/index";
+            return new ModelAndView("home/index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ModelAndView("home/index");
+        }
     }
 }
