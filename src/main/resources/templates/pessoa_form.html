@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Cadastrar cliente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">Corcovado</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExample04">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departamentos</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown04">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-user-circle"></i> Perfil</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-md-0">
+          <input class="form-control" type="text" placeholder="Search">
+        </form>
+      </div>
+    </nav>
+	
+	<!--############################ cabeçalho ##################################-->
+
+<div id="content-wrap" class="ng-scope">
+    <!-- uiView: categories-menu --><div ui-view="categories-menu" class="ng-scope"></div>
+    <!-- uiView: content --><div ui-view="content" id="content" ng-class="{'menu-open':!isMobile &amp;&amp; showCategoriesMenu &amp;&amp; categoriesOpen,'basket-open':!isMobile &amp;&amp; showBasket &amp;&amp; (!basketIsEmpty &amp;&amp; basketOpen),'basket-close':!isMobile &amp;&amp; showBasket &amp;&amp; (!basketIsEmpty &amp;&amp; !basketOpen)}" class="ng-scope"><div id="register-page" class="ng-scope">
+    <!-- ngIf: isAmigos && !isMobile -->
+    <!-- ngIf: isAmigos && isMobile -->
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="header-group hidden-xs">
+
+                    <div class="panel-body">
+
+                        <form ng-submit="registerForm.$valid &amp;&amp; regCtrl.save()" name="registerForm" novalidate="" class="ng-pristine ng-invalid ng-invalid-required ng-valid-pattern ng-valid-cep ng-valid-date ng-valid-minlength ng-valid-maxlength ng-valid-br-phone-number ng-valid-compare-to ng-valid-cpf ng-valid-cnpj ng-valid-email">
+						<br/>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.cpfcnpj.$invalid &amp;&amp; (registerForm.cpfcnpj.$dirty || registerForm.$submitted)}">
+                                <label for="cpfcnpj">Seu CPF/CNPJ</label>
+                                <input id="cpfcnpj" type="text" name="cpfcnpj" pattern="\d*" ng-change="regCtrl.checkCNPJ()" class="form-control form-control-black ng-pristine ng-untouched ng-scope ng-empty ng-valid-cpf ng-valid-cnpj ng-invalid ng-invalid-required ng-valid-pattern" placeholder="Apenas números" gpa-validate="cpfcnpj" ng-model="regCtrl.registerData.cpfcnpj" ui-br-cpfcnpj-mask="" required="">
+                                <div ng-messages="(registerForm.cpfcnpj.$dirty || registerForm.$submitted) &amp;&amp; registerForm.cpfcnpj.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: cpf -->
+                                    <!-- ngMessage: cnpj -->
+                                    <!-- ngMessage: validate_cpfcnpj -->
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.fullName.$invalid &amp;&amp; (registerForm.fullName.$dirty || registerForm.$submitted)}">
+                                <label for="fullName">Nome completo</label>
+                                <input id="fullName" type="text" name="fullName" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern" ng-pattern="/^[A-ZÀÁÂÄÃÅÈÉÊËÌÍÏÒÓÔÖÕÙÚÜ.'-]+\s[A-ZÀÁÂÄÃÅÈÉÊËÌÍÏÒÓÔÖÕÙÚÜ.'-\s]+$/i" ng-model="regCtrl.registerData.fullName" required="" placeholder="Ex: João da Silva">
+                                <div ng-messages="(registerForm.fullName.$dirty || registerForm.$submitted) &amp;&amp; registerForm.fullName.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: pattern -->
+                                </div>
+                            </div>
+
+                            
+                            <!-- ngIf: regCtrl.showCNPJArea -->
+                            <div class="form-group" ng-class="{'has-error': registerForm.birthDate.$invalid &amp;&amp; (registerForm.birthDate.$dirty || registerForm.$submitted)}">
+                                <label for="birthDate">Data de nascimento</label>
+                                <input pattern="[0-9]*" ui-date-mask="" type="text" name="birthDate" id="birthDate" minlength="8" maxlength="10" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-valid-date ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength" placeholder="DD / MM / AAAA" ng-model="regCtrl.registerData.birthDate" ng-change="regCtrl.validateDate(registerForm.birthDate)" required="">
+                                <!-- ngIf: registerForm.birthDate.$invalid && registerForm.birthDate.$touched -->
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.cellphone.$invalid &amp;&amp; (registerForm.cellphone.$dirty || registerForm.$submitted)}">
+                                <label for="cellphone">Celular</label>
+                                <input maxlength="15" pattern="\d*" ng-pattern="/^\(?\d{2}\)?\s?\d{4,5}\-?\d{4}$/" ui-br-phone-number-mask="" placeholder="DDD Número" type="text" name="cellphone" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-valid-br-phone-number ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" ng-model="regCtrl.registerData.cellphone" required="">
+                                <div ng-messages="(registerForm.cellphone.$dirty || registerForm.$submitted) &amp;&amp; registerForm.cellphone.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: brPhoneNumber -->
+                                    <!-- ngMessage: pattern -->
+                                    <!-- ngMessage: maxlength -->
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.email.$invalid &amp;&amp; (registerForm.email.$dirty || registerForm.$submitted)}">
+                                <label for="registerEmail">E-mail</label>
+                                <input id="registerEmail" type="email" name="email" class="form-control form-control-black ng-pristine ng-untouched ng-scope ng-empty ng-valid-email ng-invalid ng-invalid-required" gpa-validate="email" ng-model="regCtrl.registerData.email" required="" placeholder="seunome@email.com.br">
+                                <div ng-messages="(registerForm.email.$dirty || registerForm.$submitted) &amp;&amp; registerForm.email.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: email -->
+                                    <!-- ngMessage: validate_email -->
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.password.$invalid &amp;&amp; (registerForm.password.$dirty || registerForm.$submitted)}">
+                                <label for="registerPassword">Senha</label>
+                                <input id="registerPassword" type="password" name="password" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-minlength" ng-model="regCtrl.registerData.password" minlength="8" placeholder="Mínimo 8 caracteres com letras e números" ng-change="regCtrl.validatePassword(registerForm.password)" required="">
+                                <div ng-messages="(registerForm.password.$dirty || registerForm.$submitted) &amp;&amp; registerForm.password.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: minlength -->
+                                    <!-- ngMessage: validate_password -->
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.confirmationPassword.$invalid &amp;&amp; (registerForm.confirmationPassword.$dirty || registerForm.$submitted)}">
+                                <label for="confirmationPassword">Confirme sua senha</label>
+                                <input id="confirmationPassword" type="password" name="confirmationPassword" class="form-control form-control-black ng-pristine ng-untouched ng-isolate-scope ng-empty ng-invalid ng-invalid-required ng-valid-minlength ng-valid-compare-to" ng-model="regCtrl.registerData.confirmationPassword" minlength="8" compare-to="regCtrl.registerData.password" required="" placeholder="Digite a senha novamente">
+                                <div ng-messages="(registerForm.confirmationPassword.$dirty || registerForm.$submitted) &amp;&amp; registerForm.confirmationPassword.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: minlength -->
+                                    <!-- ngMessage: compareTo -->
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="control-group">
+                                    
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.acceptPrivacyPolicy.$invalid &amp;&amp; (registerForm.acceptPrivacyPolicy.$dirty || registerForm.$submitted)}">
+                                <div class="control-group">
+                                    
+                                </div>
+                            </div>
+
+                            <button type="submit" class="mt-16 mb-20 btn btn-default btn-block">Cadastrar agora</button>
+                        </form>
+                    </div>
+					
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xs-12 form-area">
+			<br/>
+                
+				<div class="form-group" ng-class="{'has-error': registerForm.cpfcnpj.$invalid &amp;&amp; (registerForm.cpfcnpj.$dirty || registerForm.$submitted)}">
+                                <label for="cpfcnpj">CEP</label>
+                                <input onblur="pesquisacep(this.value);" id="cep" type="text" name="cep" pattern="\d*" ng-change="regCtrl.checkCNPJ()" class="form-control form-control-black ng-pristine ng-untouched ng-scope ng-empty ng-valid-cpf ng-valid-cnpj ng-invalid ng-invalid-required ng-valid-pattern" placeholder="Apenas números" gpa-validate="cpfcnpj" ng-model="regCtrl.registerData.cpfcnpj" ui-br-cpfcnpj-mask="" required="">
+                                <div ng-messages="(registerForm.cpfcnpj.$dirty || registerForm.$submitted) &amp;&amp; registerForm.cpfcnpj.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: cpf -->
+                                    <!-- ngMessage: cnpj -->
+                                    <!-- ngMessage: validate_cpfcnpj -->
+                                </div>
+                            </div>
+							
+							<div class="form-group" ng-class="{'has-error': registerForm.fullName.$invalid &amp;&amp; (registerForm.fullName.$dirty || registerForm.$submitted)}">
+                                <label for="fullName">Rua</label>
+                                <input id="rua" type="text" name="rua" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required ng-valid-pattern" ng-pattern="/^[A-ZÀÁÂÄÃÅÈÉÊËÌÍÏÒÓÔÖÕÙÚÜ.'-]+\s[A-ZÀÁÂÄÃÅÈÉÊËÌÍÏÒÓÔÖÕÙÚÜ.'-\s]+$/i" ng-model="regCtrl.registerData.fullName" required="" >
+                                <div ng-messages="(registerForm.fullName.$dirty || registerForm.$submitted) &amp;&amp; registerForm.fullName.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: pattern -->
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.cep.$invalid &amp;&amp; (registerForm.cep.$dirty || registerForm.$submitted) &amp;&amp; !regCtrl.isValidCEP()}">
+                                <label for="cep">Número</label>
+                                <input pattern="[0-9]*" ui-br-cep-mask="" id="numero" type="text" name="numero" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-valid-cep ng-invalid ng-invalid-required ng-valid-pattern" ng-model="regCtrl.registerData.address.cep" ng-change="regCtrl.handleZipCode()" required="" ng-model-options="{updateOn: 'blur'}">
+                                <!-- ngIf: regCtrl.showCepWarn -->
+                                <!-- ngIf: RegisterForm.cep.$dirty && RegisterForm.cep.$error && !proCtrl.isValidCEP() -->
+                                <div ng-messages="(registerForm.cep.$dirty || registerForm.$submitted) &amp;&amp; registerForm.cep.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: cep -->
+                                </div>
+                            </div>
+                            <!-- ngIf: registerForm.cep.$valid && !regCtrl.showCepWarn -->
+
+                            <!-- ngIf: regCtrl.showCNPJArea -->
+                            <div class="form-group" ng-class="{'has-error': registerForm.birthDate.$invalid &amp;&amp; (registerForm.birthDate.$dirty || registerForm.$submitted)}">
+                                <label for="birthDate">Bairro</label>
+                                <input pattern="[0-9]*" ui-date-mask="" type="text" name="bairro" id="bairro" minlength="8" maxlength="10" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-valid-date ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength" ng-model="regCtrl.registerData.birthDate" ng-change="regCtrl.validateDate(registerForm.birthDate)" required="">
+                                <!-- ngIf: registerForm.birthDate.$invalid && registerForm.birthDate.$touched -->
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.cellphone.$invalid &amp;&amp; (registerForm.cellphone.$dirty || registerForm.$submitted)}">
+                                <label for="cellphone">Cidade</label>
+                                <input id="cidade" maxlength="15" pattern="\d*" ng-pattern="/^\(?\d{2}\)?\s?\d{4,5}\-?\d{4}$/" ui-br-phone-number-mask="" type="text" name="cidade" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-valid-br-phone-number ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" ng-model="regCtrl.registerData.cellphone" required="">
+                                <div ng-messages="(registerForm.cellphone.$dirty || registerForm.$submitted) &amp;&amp; registerForm.cellphone.$error" class="help-block ng-inactive">
+                                    <!-- ngMessage: required -->
+                                    <!-- ngMessage: brPhoneNumber -->
+                                    <!-- ngMessage: pattern -->
+                                    <!-- ngMessage: maxlength -->
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{'has-error': registerForm.birthDate.$invalid &amp;&amp; (registerForm.birthDate.$dirty || registerForm.$submitted)}">
+                                <label for="birthDate">Estado</label>
+                                <input pattern="[0-9]*" ui-date-mask="" type="text" name="uf" id="uf" minlength="8" maxlength="10" class="form-control form-control-black ng-pristine ng-untouched ng-empty ng-valid-date ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength" ng-model="regCtrl.registerData.birthDate" ng-change="regCtrl.validateDate(registerForm.birthDate)" required="">
+                                <!-- ngIf: registerForm.birthDate.$invalid && registerForm.birthDate.$touched -->
+                            </div>
+
+                            
+                <div class="panel panel-default">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <!-- uiView: sidebasket-menu --><div ui-view="sidebasket-menu" class="ng-scope"></div>
+</div>		
+			<!--############################ footer ##################################-->
+			
+			<footer class="container-fluid bg-footer border-top mt-3 py-2 px-5">
+      <div class="row justify-content-center">
+        <div class="col-md-4 mt-3">
+          <h6>Institucional</h6>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Institucional</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Quem Somos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Formas de Pagamento</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Imprensa</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-4 mt-3">
+          <h6>Ajuda</h6>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Perguntas Frequentes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Política de Troca e Devolução</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Política de Privacidade</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Fale Conosco</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-4 mt-3">
+          <h6>Cadastro</h6>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Meus Pedidos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Alterar Cadastro</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Cancelar, trocar ou devolver</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Trabalhe conosco</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-3">
+        <p>
+          Grupo Corcovado - Grupo Corcovado Comércio Eletrônico S.A. - CNPJ: 12.345.678/0001-90 - Av. Brigadeiro Luís Antônio, 3000, CEP: 01402-901 -  São Paulo/SP
+        </p>
+        <p>
+          Copyright &COPY; 1995-2018. Grupo Corcovado. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+	<script type="text/javascript" src="/cepAutomatico.js" ></script
+  </body>
+</html>

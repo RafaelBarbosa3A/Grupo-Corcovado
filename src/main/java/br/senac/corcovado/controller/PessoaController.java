@@ -17,6 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/pessoas")
 public class PessoaController {
 
+    @GetMapping("/new")
+    public static ModelAndView new_() {
+        ModelAndView m =  new ModelAndView("pessoa_form");
+        m.addObject("pessoa", new Pessoa());
+        return m;
+    }
+
     @GetMapping("/create")
     public static ModelAndView create(Pessoa pessoa) {
         try {
