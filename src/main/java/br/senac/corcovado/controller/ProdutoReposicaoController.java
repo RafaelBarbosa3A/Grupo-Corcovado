@@ -1,12 +1,17 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.ProdutoReposicaoDao;
 import br.senac.corcovado.model.entity.Produto_Reposicao;
+import br.senac.corcovado.model.exception.ProdutoReposicaoException;
+import br.senac.corcovado.model.repository.ProdutoReposicaoRepository;
 import br.senac.corcovado.model.validator.ProdutoReposicaoValidador;
-import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -14,66 +19,90 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
-@RequestMapping("/produtos_reposicao")
 public class ProdutoReposicaoController {
 
-    @GetMapping("/create")
-    public static ModelAndView create(Produto_Reposicao pr) {
-        try {
-            ProdutoReposicaoValidador.validar(pr);
-
-            ProdutoReposicaoDao.create(pr);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    @Autowired 
+    private ProdutoReposicaoRepository repository;
+    
+    @GetMapping("/produtos_reposicao")
+    public ModelAndView list() {
+        ModelAndView mav = new ModelAndView("produto_reposicao_list");
+        mav.addObject("produtos_reposicao", repository.findAll());
+        return mav;
     }
-
-    @GetMapping("/uptade")
-    public static ModelAndView update(Produto_Reposicao pr) {
-        try {
-            ProdutoReposicaoValidador.validar(pr);
-
-            ProdutoReposicaoDao.update(pr);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    @GetMapping("/produtos_reposicao/{id}")
+    public ModelAndView show(@PathVariable("id") String usId) {
+        ModelAndView mav = new ModelAndView("produto_reposicao_show");
+        mav.addObject("produto_reposicao", repository.findById(Long.parseLong(usId)).get());
+        return mav;
     }
-
-    @GetMapping("/search")
-    public static ModelAndView search(long id) {
-        try {
-            return new ModelAndView("home/index", "prodReposicao", ProdutoReposicaoDao.search(id));
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    @GetMapping("/produtos_reposicao/new")
+    public ModelAndView new_() {
+        ModelAndView mav = newForm();
+        return mav;
     }
-
-    @GetMapping("/list")
-    public static ModelAndView list() {
+    
+    @PostMapping(path = "/produtos_reposicao/create")
+    public ModelAndView create(@ModelAttribute Produto_Reposicao produto_reposicao) {
+        Produto_Reposicao salvo;
         try {
-            return new ModelAndView("home/index", "prodsReposicao", ProdutoReposicaoDao.list());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
+            ProdutoReposicaoValidador.validar(produto_reposicao);
+            salvo = repository.save(produto_reposicao);
+        } catch (ProdutoReposicaoException ex) { 
+            Logger.getLogger(ProdutoReposicaoController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = newForm();
+            forward.addObject("produto_reposicao", produto_reposicao);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
+
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
     }
-
-    @GetMapping("/destroy")
-    public static ModelAndView destroy(long id) {
+    
+    @GetMapping({"/produtos_reposicao/{id}/edit", "/produtos_reposicao/edit/{id}"})
+    public ModelAndView edit(@PathVariable("id") String usId) {
+        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
+        return mav;
+    }
+    
+    @PostMapping(path = "/produtos_reposicao/update")
+    public ModelAndView update(@ModelAttribute Produto_Reposicao produto_reposicao) {
+        Produto_Reposicao salvo;
         try {
-            ProdutoReposicaoDao.destroy(id);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
+            ProdutoReposicaoValidador.validar(produto_reposicao);
+            salvo = repository.save(produto_reposicao);
+        } catch (ProdutoReposicaoException ex) { 
+            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = editForm(produto_reposicao);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
+
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
+    }
+    
+    @PostMapping(path = {"/produtos_reposicao/{id}/destroy", "/produtos_reposicao/destroy/{id}"})
+    public ModelAndView destroy(@PathVariable("id") String usId) {
+        repository.deleteById(Long.parseLong(usId));
+        ModelAndView redirect = new ModelAndView("redirect:/produtos_reposicao");
+        return redirect;
+    }
+    
+    private ModelAndView newForm() {
+        ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
+        modelAndView.addObject("action", "create");
+        modelAndView.addObject("produto_reposicao", new Produto_Reposicao());        
+        return modelAndView;
+    }
+    
+    private ModelAndView editForm(Produto_Reposicao produto_reposicao) {
+        ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
+        modelAndView.addObject("action", "update");
+        modelAndView.addObject("produto_reposicao", produto_reposicao);        
+        return modelAndView;
     }
 }

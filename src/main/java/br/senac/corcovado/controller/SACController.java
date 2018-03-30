@@ -1,12 +1,17 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.SACDao;
 import br.senac.corcovado.model.entity.SAC;
+import br.senac.corcovado.model.exception.SACException;
+import br.senac.corcovado.model.repository.SacRepository;
 import br.senac.corcovado.model.validator.SACValidador;
-import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -14,67 +19,91 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
-@RequestMapping("/sacs")
 public class SACController {
+    
+    @Autowired 
+    private SacRepository repository;
 
-    @GetMapping("/create")
-    public static ModelAndView create(SAC sac) {
+    @GetMapping("/sacs")
+    public ModelAndView list() {
+        ModelAndView mav = new ModelAndView("sacs_list");
+        mav.addObject("sacs", repository.findAll());
+        return mav;
+    }
+    
+    @GetMapping("/sacs/{id}")
+    public ModelAndView show(@PathVariable("id") String usId) {
+        ModelAndView mav = new ModelAndView("sac_show");
+        mav.addObject("sac", repository.findById(Long.parseLong(usId)).get());
+        return mav;
+    }
+    
+    @GetMapping("/sacs/new")
+    public ModelAndView new_() {
+        ModelAndView mav = newForm();
+        return mav;
+    }
+    
+    @PostMapping(path = "/sacs/create")
+    public ModelAndView create(@ModelAttribute SAC sac) {
+        SAC salvo;
         try {
             SACValidador.validar(sac);
-
-            SACDao.create(sac);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
+            salvo = repository.save(sac);
+        } catch (SACException ex) { 
+            Logger.getLogger(SACController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = newForm();
+            forward.addObject("sac", sac);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
-    }
 
-    @GetMapping("/update")
-    public static ModelAndView update(SAC sac) {
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
+    }
+    
+    @GetMapping({"/sacs/{id}/edit", "/sacs/edit/{id}"})
+    public ModelAndView edit(@PathVariable("id") String usId) {
+        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
+        return mav;
+    }
+    
+    @PostMapping(path = "/sacs/update")
+    public ModelAndView update(@ModelAttribute SAC sac) {
+        SAC salvo;
         try {
             SACValidador.validar(sac);
-
-            SACDao.update(sac);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
+            salvo = repository.save(sac);
+        } catch (SACException ex) { 
+            Logger.getLogger(SACController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = editForm(sac);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
+
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
     }
-
-    @GetMapping("/search")
-    public static ModelAndView search(long id) {
-        try {
-            return new ModelAndView("home/index", "sac", SACDao.search(id));
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
-        }
-
+    
+    @PostMapping(path = {"/sacs/{id}/destroy", "/sacs/destroy/{id}"})
+    public ModelAndView destroy(@PathVariable("id") String usId) {
+        repository.deleteById(Long.parseLong(usId));
+        ModelAndView redirect = new ModelAndView("redirect:/sacs");
+        return redirect;
     }
-
-    @GetMapping("/list")
-    public static ModelAndView list() {
-        try {
-            return new ModelAndView("home/index", "sacs", SACDao.list());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    
+    private ModelAndView newForm() {
+        ModelAndView modelAndView = new ModelAndView("sac_form");
+        modelAndView.addObject("action", "create");
+        modelAndView.addObject("sac", new SAC());        
+        return modelAndView;
     }
-
-    @GetMapping("/destroy")
-    public static ModelAndView destroy(long id) {
-        try {
-            SACDao.destroy(id);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    private ModelAndView editForm(SAC sac) {
+        ModelAndView modelAndView = new ModelAndView("sac_form");
+        modelAndView.addObject("action", "update");
+        modelAndView.addObject("sac", sac);        
+        return modelAndView;
     }
 }

@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-public interface Produto_VendidoaRepository extends CrudRepository<Produto_Vendido, Long>{
+public interface ProdutoVendidoaRepository extends CrudRepository<Produto_Vendido, Long>{
     
 }

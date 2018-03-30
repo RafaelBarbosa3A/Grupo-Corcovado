@@ -1,12 +1,17 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.PessoaDao;
 import br.senac.corcovado.model.entity.Pessoa;
+import br.senac.corcovado.model.exception.PessoaException;
+import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.validator.PessoaValidador;
-import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -14,73 +19,90 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
-@RequestMapping("/pessoas")
 public class PessoaController {
 
-    @GetMapping("/new")
-    public static ModelAndView new_() {
-        ModelAndView m =  new ModelAndView("pessoa_form");
-        m.addObject("pessoa", new Pessoa());
-        return m;
+    @Autowired 
+    private PessoaRepository repository;
+    
+    @GetMapping("/pessoas")
+    public ModelAndView list() {
+        ModelAndView mav = new ModelAndView("pessoa_list");
+        mav.addObject("pessoas", repository.findAll());
+        return mav;
     }
-
-    @GetMapping("/create")
-    public static ModelAndView create(Pessoa pessoa) {
+    
+    @GetMapping("/pessoas/{id}")
+    public ModelAndView show(@PathVariable("id") String usId) {
+        ModelAndView mav = new ModelAndView("pessoa_show");
+        mav.addObject("pessoa", repository.findById(Long.parseLong(usId)).get());
+        return mav;
+    }
+    
+    @GetMapping("/pessoas/new")
+    public ModelAndView new_() {
+        ModelAndView mav = newForm();
+        return mav;
+    }
+    
+    @PostMapping(path = "/pessoas/create")
+    public ModelAndView create(@ModelAttribute Pessoa pessoa) {
+        Pessoa salvo;
         try {
             PessoaValidador.validar(pessoa);
-
-            PessoaDao.create(pessoa);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
+            salvo = repository.save(pessoa);
+        } catch (PessoaException ex) { 
+            Logger.getLogger(PessoaController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = newForm();
+            forward.addObject("pessoa", pessoa);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
-    }
 
-    @GetMapping("/update")
-    public static ModelAndView update(Pessoa pessoa) {
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
+    }
+    
+    @GetMapping({"/pessoas/{id}/edit", "/pessoas/edit/{id}"})
+    public ModelAndView edit(@PathVariable("id") String usId) {
+        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
+        return mav;
+    }
+    
+    @PostMapping(path = "/pessoas/update")
+    public ModelAndView update(@ModelAttribute Pessoa pessoa) {
+        Pessoa salvo;
         try {
             PessoaValidador.validar(pessoa);
-
-            PessoaDao.update(pessoa);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
+            salvo = repository.save(pessoa); 
+        } catch (PessoaException ex) { 
+            Logger.getLogger(PessoaController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = editForm(pessoa);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
+
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
     }
-
-    @GetMapping("/search")
-    public static ModelAndView search(long id) {
-        try {
-            return new ModelAndView("home/index", "preco", PessoaDao.search(id));
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    @PostMapping(path = {"/pessoas/{id}/destroy", "/pessoas/destroy/{id}"})
+    public ModelAndView destroy(@PathVariable("id") String usId) {
+        repository.deleteById(Long.parseLong(usId));
+        ModelAndView redirect = new ModelAndView("redirect:/pessoas");
+        return redirect;
     }
-
-    @GetMapping("/list")
-    public static ModelAndView list() {
-        try {
-            return new ModelAndView("home/index", "precos", PessoaDao.list());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    private ModelAndView newForm() {
+        ModelAndView modelAndView = new ModelAndView("pessoa_form");
+        modelAndView.addObject("action", "create");
+        modelAndView.addObject("pessoa", new Pessoa());        
+        return modelAndView;
     }
-
-    @GetMapping("/destroy")
-    public static ModelAndView destroy(long id) {
-        try {
-            PessoaDao.destroy(id);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    private ModelAndView editForm(Pessoa pessoa) {
+        ModelAndView modelAndView = new ModelAndView("pessoa_form");
+        modelAndView.addObject("action", "update");
+        modelAndView.addObject("pessoa", pessoa);        
+        return modelAndView;
     }
 }

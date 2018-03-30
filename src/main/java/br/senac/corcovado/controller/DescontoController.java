@@ -1,12 +1,17 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.dao.DescontoDao;
 import br.senac.corcovado.model.entity.Desconto;
+import br.senac.corcovado.model.exception.DescontoException;
+import br.senac.corcovado.model.repository.DescontoRepository;
 import br.senac.corcovado.model.validator.DescontoValidador;
-import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -14,66 +19,91 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
-@RequestMapping("/descontos")
 public class DescontoController {
 
-    @GetMapping("/create")
-    public static ModelAndView create(Desconto desconto) {
+    @Autowired 
+    private DescontoRepository repository;
+    
+    @GetMapping("/descontos")
+    public ModelAndView list() {
+        ModelAndView mav = new ModelAndView("desconto_list");
+        mav.addObject("descontos", repository.findAll());
+        return mav;
+    }
+    
+    @GetMapping("/descontos/{id}")
+    public ModelAndView show(@PathVariable("id") String usId) {
+        ModelAndView mav = new ModelAndView("desconto_show");
+        mav.addObject("desconto", repository.findById(Long.parseLong(usId)).get());
+        return mav;
+    }
+    
+    @GetMapping("/descontos/new")
+    public ModelAndView new_() {
+        ModelAndView mav = newForm();
+        return mav;
+    }
+    
+    @PostMapping(path = "/descontos/create")
+    public ModelAndView create(@ModelAttribute Desconto desconto) {
+        Desconto salvo;
         try {
             DescontoValidador.validar(desconto);
-
-            DescontoDao.create(desconto);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
+            salvo = repository.save(desconto);
+        } catch (DescontoException ex) { 
+            Logger.getLogger(DescontoController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = newForm();
+            forward.addObject("desconto", desconto);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
-    }
 
-    @GetMapping("/update")
-    public static ModelAndView update(Desconto desconto) {
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
+    }
+    
+    @GetMapping({"/descontos/{id}/edit", "/descontos/edit/{id}"})
+    public ModelAndView edit(@PathVariable("id") String usId) {
+        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
+        return mav;
+    }
+    
+    @PostMapping(path = "/descontos/update")
+    public ModelAndView update(@ModelAttribute Desconto desconto) {
+        Desconto salvo;
         try {
             DescontoValidador.validar(desconto);
-
-            DescontoDao.update(desconto);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
+            salvo = repository.save(desconto);
+        } catch (DescontoException ex) { 
+            Logger.getLogger(DescontoController.class.getName()).log(Level.SEVERE, null, ex);
+            ModelAndView forward = editForm(desconto);
+            forward.addObject("erros", ex.getErrors());
+            return forward;
         }
+
+        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        return redirect;
     }
-
-    @GetMapping("/search")
-    public static ModelAndView search(long id) {
-        try {
-            return new ModelAndView("home/index", "desconto", DescontoDao.search(id));
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    @PostMapping(path = {"/descontos/{id}/destroy", "/descontos/destroy/{id}"})
+    public ModelAndView destroy(@PathVariable("id") String usId) {
+        repository.deleteById(Long.parseLong(usId));
+        ModelAndView redirect = new ModelAndView("redirect:/descontos");
+        return redirect;
     }
-
-    @GetMapping("/list")
-    public static ModelAndView list() {
-        try {
-            return new ModelAndView("home/index", "descontos", DescontoDao.list());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    
+    private ModelAndView newForm() {
+        ModelAndView modelAndView = new ModelAndView("desconto_form");
+        modelAndView.addObject("action", "create");
+        modelAndView.addObject("desconto", new Desconto());        
+        return modelAndView;
     }
-
-    @GetMapping("/destroy")
-    public static ModelAndView destroy(long id) {
-        try {
-            DescontoDao.destroy(id);
-
-            return new ModelAndView("home/index");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ModelAndView("home/index");
-        }
+    
+    private ModelAndView editForm(Desconto desconto) {
+        ModelAndView modelAndView = new ModelAndView("desconto_form");
+        modelAndView.addObject("action", "update");
+        modelAndView.addObject("desconto", desconto);        
+        return modelAndView;
     }
 }
