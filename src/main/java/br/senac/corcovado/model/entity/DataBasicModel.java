@@ -37,16 +37,16 @@ public class DataBasicModel {
 
     public void setCreated_at(GregorianCalendar created_at) {
         this.created_at = created_at;
-    }
+    }    
     
     public void setCreated_at(long timeInMillis) {
         this.created_at = new GregorianCalendar();
         this.created_at.setTimeInMillis(timeInMillis);
     }
-
+    
     public GregorianCalendar getUpdated_at() {
         return updated_at;
-    }
+    }    
 
     public void setUpdated_at(GregorianCalendar updated_at) {
         this.updated_at = updated_at;
