@@ -1,6 +1,7 @@
 package br.senac.corcovado.model.validator;
 
 import br.senac.corcovado.model.entity.Venda;
+import br.senac.corcovado.model.exception.VendaException;
 
 /**
  *
@@ -8,7 +9,7 @@ import br.senac.corcovado.model.entity.Venda;
  */
 public class VendaValidador {
 
-    public static void validar(Venda venda) {
+    public static void validar(Venda venda) throws VendaException{
         if (venda == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (venda.getCliente_id() == null) {

@@ -1,6 +1,7 @@
 package br.senac.corcovado.model.validator;
 
 import br.senac.corcovado.model.entity.Produto_Reposicao;
+import br.senac.corcovado.model.exception.ProdutoReposicaoException;
 
 
 /**
@@ -8,7 +9,7 @@ import br.senac.corcovado.model.entity.Produto_Reposicao;
  * @author wesley
  */
 public class ProdutoReposicaoValidador {
-    public static void validar(Produto_Reposicao pr) {
+    public static void validar(Produto_Reposicao pr) throws ProdutoReposicaoException{
         if (pr == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (pr.getProduto_id() == null) {

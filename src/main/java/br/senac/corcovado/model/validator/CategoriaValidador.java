@@ -1,6 +1,7 @@
 package br.senac.corcovado.model.validator;
 
 import br.senac.corcovado.model.entity.Categoria;
+import br.senac.corcovado.model.exception.CategoriaException;
 
 /**
  *
@@ -8,7 +9,7 @@ import br.senac.corcovado.model.entity.Categoria;
  */
 public class CategoriaValidador {
 
-    public static void validar(Categoria categoria) {
+    public static void validar(Categoria categoria) throws CategoriaException{
         if (categoria == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (categoria.getNome().isEmpty()) {

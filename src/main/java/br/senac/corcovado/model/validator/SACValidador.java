@@ -1,6 +1,7 @@
 package br.senac.corcovado.model.validator;
 
 import br.senac.corcovado.model.entity.SAC;
+import br.senac.corcovado.model.exception.SACException;
 
 /**
  *
@@ -8,7 +9,7 @@ import br.senac.corcovado.model.entity.SAC;
  */
 public class SACValidador {
 
-    public static void validar(SAC sac) {
+    public static void validar(SAC sac) throws SACException{
         if (sac == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (sac.getCliente_id() == null) {

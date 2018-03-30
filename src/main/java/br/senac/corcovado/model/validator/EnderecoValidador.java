@@ -1,6 +1,7 @@
 package br.senac.corcovado.model.validator;
 
 import br.senac.corcovado.model.entity.Endereco;
+import br.senac.corcovado.model.exception.EnderecoException;
 
 /**
  *
@@ -8,7 +9,7 @@ import br.senac.corcovado.model.entity.Endereco;
  */
 public class EnderecoValidador {
 
-    public static void validar(Endereco endereco) {
+    public static void validar(Endereco endereco) throws EnderecoException{
         if (endereco == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (endereco.getCliente_id() == null) {

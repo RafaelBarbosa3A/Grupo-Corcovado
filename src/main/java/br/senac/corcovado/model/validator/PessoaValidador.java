@@ -1,13 +1,14 @@
 package br.senac.corcovado.model.validator;
 
 import br.senac.corcovado.model.entity.Pessoa;
+import br.senac.corcovado.model.exception.PessoaException;
 
 /**
  *
  * @author wesley
  */
 public class PessoaValidador {
-    public static void validar(Pessoa pessoa) {
+    public static void validar(Pessoa pessoa) throws PessoaException{
         if (pessoa == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (pessoa.getNivel_id() == null) {
