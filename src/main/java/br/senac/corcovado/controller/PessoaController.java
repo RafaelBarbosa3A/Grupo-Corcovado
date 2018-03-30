@@ -1,5 +1,7 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.model.entity.Cargo;
+import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.exception.PessoaException;
 import br.senac.corcovado.model.repository.PessoaRepository;
@@ -95,14 +97,18 @@ public class PessoaController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("pessoa_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("pessoa", new Pessoa());        
+        modelAndView.addObject("pessoa", new Pessoa());
+        modelAndView.addObject("niveis", Nivel.values());
+        modelAndView.addObject("cargos", Cargo.values());
         return modelAndView;
     }
     
     private ModelAndView editForm(Pessoa pessoa) {
         ModelAndView modelAndView = new ModelAndView("pessoa_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("pessoa", pessoa);        
+        modelAndView.addObject("pessoa", pessoa);
+        modelAndView.addObject("niveis", Nivel.values());
+        modelAndView.addObject("cargos", Cargo.values());
         return modelAndView;
     }
 }

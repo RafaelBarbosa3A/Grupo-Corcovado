@@ -2,6 +2,7 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.exception.ProdutoException;
+import br.senac.corcovado.model.repository.CategoriaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.validator.ProdutoValidador;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ public class ProdutoController {
 
     @Autowired 
     private ProdutoRepository repository;
+    private CategoriaRepository categoriaRepository;
     
     @GetMapping("/produtos")
     public ModelAndView list() {
@@ -96,14 +98,16 @@ public class ProdutoController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("produto_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("produto", new Produto());        
+        modelAndView.addObject("produto", new Produto());
+        modelAndView.addObject("categorias", categoriaRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Produto produto) {
         ModelAndView modelAndView = new ModelAndView("produto_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("produto", produto);        
+        modelAndView.addObject("produto", produto);
+        modelAndView.addObject("categorias", categoriaRepository.findAll());
         return modelAndView;
     }
 }

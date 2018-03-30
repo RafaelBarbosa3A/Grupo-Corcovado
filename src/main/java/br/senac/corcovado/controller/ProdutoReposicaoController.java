@@ -3,6 +3,8 @@ package br.senac.corcovado.controller;
 import br.senac.corcovado.model.entity.Produto_Reposicao;
 import br.senac.corcovado.model.exception.ProdutoReposicaoException;
 import br.senac.corcovado.model.repository.ProdutoReposicaoRepository;
+import br.senac.corcovado.model.repository.ProdutoRepository;
+import br.senac.corcovado.model.repository.ReposicaoRepository;
 import br.senac.corcovado.model.validator.ProdutoReposicaoValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,8 @@ public class ProdutoReposicaoController {
 
     @Autowired 
     private ProdutoReposicaoRepository repository;
+    private ProdutoRepository produtoRepository;
+    private ReposicaoRepository reposicaoRepository;
     
     @GetMapping("/produtos_reposicao")
     public ModelAndView list() {
@@ -95,14 +99,18 @@ public class ProdutoReposicaoController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("produto_reposicao", new Produto_Reposicao());        
+        modelAndView.addObject("produto_reposicao", new Produto_Reposicao());
+        modelAndView.addObject("produtos", produtoRepository.findAll());
+        modelAndView.addObject("reposicoes", reposicaoRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Produto_Reposicao produto_reposicao) {
         ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("produto_reposicao", produto_reposicao);        
+        modelAndView.addObject("produto_reposicao", produto_reposicao);
+        modelAndView.addObject("produtos", produtoRepository.findAll());
+        modelAndView.addObject("reposicoes", reposicaoRepository.findAll());        
         return modelAndView;
     }
 }

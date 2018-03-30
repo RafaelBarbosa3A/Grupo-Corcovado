@@ -3,6 +3,8 @@ package br.senac.corcovado.controller;
 import br.senac.corcovado.model.entity.Aviso;
 import br.senac.corcovado.model.exception.AvisoException;
 import br.senac.corcovado.model.repository.AvisoRepository;
+import br.senac.corcovado.model.repository.PessoaRepository;
+import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.validator.AvisoValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,8 @@ public class AvisoController {
     
     @Autowired 
     private AvisoRepository repository;
+    private ProdutoRepository produtoRepository;
+    private PessoaRepository clienteRepository;
     
     @GetMapping("/avisos")
     public ModelAndView list() {
@@ -95,14 +99,18 @@ public class AvisoController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("aviso_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("aviso", new Aviso());        
+        modelAndView.addObject("aviso", new Aviso());
+        modelAndView.addObject("produtos", produtoRepository.findAll());
+        modelAndView.addObject("pessoas", clienteRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Aviso aviso) {
         ModelAndView modelAndView = new ModelAndView("aviso_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("aviso", aviso);        
+        modelAndView.addObject("aviso", aviso);
+        modelAndView.addObject("produtos", produtoRepository.findAll());
+        modelAndView.addObject("pessoas", clienteRepository.findAll());
         return modelAndView;
     }
 }

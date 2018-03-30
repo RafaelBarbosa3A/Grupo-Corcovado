@@ -1,7 +1,11 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.exception.VendaException;
+import br.senac.corcovado.model.repository.DescontoRepository;
+import br.senac.corcovado.model.repository.EnderecoRepository;
+import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
 import br.senac.corcovado.model.validator.VendaValidador;
 import java.util.logging.Level;
@@ -22,6 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class VendaController {    
     @Autowired 
     private VendaRepository repository;
+    private PessoaRepository pessoaRepository;
+    private EnderecoRepository enderecoRepository;
+    private DescontoRepository descontoRepository;
     
     @GetMapping("/vendas")
     public ModelAndView list() {        
@@ -95,14 +102,21 @@ public class VendaController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("vendas_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("venda", new Venda());        
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());        
+        modelAndView.addObject("enderecos", enderecoRepository.findAll());
+        modelAndView.addObject("descontos", descontoRepository.findAll());
+        modelAndView.addObject("status", Status.values());
         return modelAndView;
     }
     
     private ModelAndView editForm(Venda venda) {
         ModelAndView modelAndView = new ModelAndView("venda_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("venda", venda);        
+        modelAndView.addObject("venda", venda);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());        
+        modelAndView.addObject("enderecos", enderecoRepository.findAll());
+        modelAndView.addObject("descontos", descontoRepository.findAll());
+        modelAndView.addObject("status", Status.values());        
         return modelAndView;
     }
 }

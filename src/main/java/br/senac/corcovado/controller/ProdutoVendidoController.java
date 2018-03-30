@@ -2,7 +2,9 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Produto_Vendido;
 import br.senac.corcovado.model.exception.ProdutoVendidoException;
+import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoaRepository;
+import br.senac.corcovado.model.repository.VendaRepository;
 import br.senac.corcovado.model.validator.ProdutoVendidoValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,8 @@ public class ProdutoVendidoController {
 
     @Autowired 
     private ProdutoVendidoaRepository repository;
+    private ProdutoRepository produtoRepository;
+    private VendaRepository vendaRepository;
     
     @GetMapping("/produtos_vendidos")
     public ModelAndView list() {
@@ -95,14 +99,18 @@ public class ProdutoVendidoController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("produto_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("produtos_vendidos", new Produto_Vendido());        
+        modelAndView.addObject("produtos_vendidos", new Produto_Vendido());
+        modelAndView.addObject("produtos", produtoRepository.findAll());
+        modelAndView.addObject("vendas", vendaRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Produto_Vendido produto_vendido) {
         ModelAndView modelAndView = new ModelAndView("produto_vendido_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("produtos_vendidos", produto_vendido);        
+        modelAndView.addObject("produtos_vendidos", produto_vendido);
+        modelAndView.addObject("produtos", produtoRepository.findAll());
+        modelAndView.addObject("vendas", vendaRepository.findAll());
         return modelAndView;
     }
 }

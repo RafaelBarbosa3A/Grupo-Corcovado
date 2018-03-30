@@ -2,7 +2,9 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Resposta;
 import br.senac.corcovado.model.exception.RespostaException;
+import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.RespostaRepository;
+import br.senac.corcovado.model.repository.SacRepository;
 import br.senac.corcovado.model.validator.RespostaValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,8 @@ public class RespostaController {
     
     @Autowired 
     private RespostaRepository repository;
+    private PessoaRepository pessoaRepository;
+    private SacRepository sacRepository;
 
     @GetMapping("/respostas")
     public ModelAndView list() {
@@ -96,14 +100,18 @@ public class RespostaController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("resposta_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("resposta", new Resposta());        
+        modelAndView.addObject("resposta", new Resposta());
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());
+        modelAndView.addObject("sacs", sacRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Resposta resposta) {
         ModelAndView modelAndView = new ModelAndView("resposta_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("resposta", resposta);        
+        modelAndView.addObject("resposta", resposta);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());
+        modelAndView.addObject("sacs", sacRepository.findAll());
         return modelAndView;
     }
 }

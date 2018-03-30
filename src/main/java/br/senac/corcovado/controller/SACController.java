@@ -2,6 +2,7 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.SAC;
 import br.senac.corcovado.model.exception.SACException;
+import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.SacRepository;
 import br.senac.corcovado.model.validator.SACValidador;
 import java.util.logging.Level;
@@ -23,6 +24,7 @@ public class SACController {
     
     @Autowired 
     private SacRepository repository;
+    private PessoaRepository pessoaRepository;
 
     @GetMapping("/sacs")
     public ModelAndView list() {
@@ -96,14 +98,16 @@ public class SACController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("sac_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("sac", new SAC());        
+        modelAndView.addObject("sac", new SAC());
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(SAC sac) {
         ModelAndView modelAndView = new ModelAndView("sac_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("sac", sac);        
+        modelAndView.addObject("sac", sac);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());
         return modelAndView;
     }
 }

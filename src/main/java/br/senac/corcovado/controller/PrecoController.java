@@ -1,8 +1,10 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Preco;
 import br.senac.corcovado.model.exception.PrecoException;
 import br.senac.corcovado.model.repository.PrecoRepository;
+import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.validator.PrecoValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +27,7 @@ public class PrecoController {
 
     @Autowired 
     private PrecoRepository repository;
+    private ProdutoRepository produtosRepository;
     
     @GetMapping("/precos")
     public ModelAndView list() {
@@ -98,14 +101,18 @@ public class PrecoController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("preco_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("preco", new Preco());        
+        modelAndView.addObject("preco", new Preco());
+        modelAndView.addObject("niveis", Nivel.values());
+        modelAndView.addObject("produtos", produtosRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Preco preco) {
         ModelAndView modelAndView = new ModelAndView("preco_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("preco", preco);        
+        modelAndView.addObject("preco", preco);
+        modelAndView.addObject("niveis", Nivel.values());
+        modelAndView.addObject("produtos", produtosRepository.findAll());
         return modelAndView;
     }
 }

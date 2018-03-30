@@ -3,6 +3,7 @@ package br.senac.corcovado.controller;
 import br.senac.corcovado.model.entity.Endereco;
 import br.senac.corcovado.model.exception.EnderecoException;
 import br.senac.corcovado.model.repository.EnderecoRepository;
+import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.validator.EnderecoValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ public class EnderecoController {
 
     @Autowired 
     private EnderecoRepository repository;
+    private PessoaRepository pessoaRepository;
     
     @GetMapping("/enderecos")
     public ModelAndView list() {
@@ -92,18 +94,19 @@ public class EnderecoController {
         return redirect;
     }
     
-    
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("endereco_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("endereco", new Endereco());        
+        modelAndView.addObject("endereco", new Endereco());
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Endereco endereco) {
         ModelAndView modelAndView = new ModelAndView("endereco_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("endereco", endereco);        
+        modelAndView.addObject("endereco", endereco);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll());
         return modelAndView;
     }
 }

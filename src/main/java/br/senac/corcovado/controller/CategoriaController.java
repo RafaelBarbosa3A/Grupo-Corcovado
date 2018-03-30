@@ -3,6 +3,7 @@ package br.senac.corcovado.controller;
 import br.senac.corcovado.model.entity.Categoria;
 import br.senac.corcovado.model.exception.CategoriaException;
 import br.senac.corcovado.model.repository.CategoriaRepository;
+import br.senac.corcovado.model.repository.DepartamentoRepository;
 import br.senac.corcovado.model.validator.CategoriaValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ public class CategoriaController {
 
     @Autowired 
     private CategoriaRepository repository;
+    private DepartamentoRepository departamentoRepository;
     
     @GetMapping("/categorias")
     public ModelAndView list() {
@@ -95,14 +97,16 @@ public class CategoriaController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("categoria_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("categoria", new Categoria());        
+        modelAndView.addObject("categoria", new Categoria());
+        modelAndView.addObject("departamentos", departamentoRepository.findAll());
         return modelAndView;
     }
     
     private ModelAndView editForm(Categoria categoria) {
         ModelAndView modelAndView = new ModelAndView("categoria_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("categoria", categoria);        
+        modelAndView.addObject("categoria", categoria);
+        modelAndView.addObject("departamentos", departamentoRepository.findAll());        
         return modelAndView;
     }
 }
