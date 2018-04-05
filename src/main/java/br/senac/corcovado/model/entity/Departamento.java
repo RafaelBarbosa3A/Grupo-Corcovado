@@ -20,12 +20,12 @@ import javax.persistence.Table;
 public class Departamento implements Serializable{
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "nome")private String nome;
-    @Column(name = "descricao")private String descricao;
-    @Column(name = "created_at")private GregorianCalendar created_at;
-    @Column(name = "updated_at")private GregorianCalendar updated_at;
-    @Column(name = "active")private boolean active;
+    @Column(name = "id") private Long id;
+    @Column(name = "nome") private String nome;
+    @Column(name = "descricao") private String descricao;
+    @Column(name = "created_at") private GregorianCalendar created_at;
+    @Column(name = "updated_at") private GregorianCalendar updated_at;
+    @Column(name = "active") private boolean active;
 
     public Departamento() {
         this.id = 0L;

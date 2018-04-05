@@ -26,14 +26,14 @@ public class DepartamentoController {
     
     @GetMapping("/departamentos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("departamento_list");
+        ModelAndView mav = new ModelAndView("/departamento/departamento_list");
         mav.addObject("departamentos", repository.findAll());
         return mav;
     }
     
     @GetMapping("/departamentos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("departamento_show");
+        ModelAndView mav = new ModelAndView("/departamento/departamento_show");
         mav.addObject("departamento", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -93,14 +93,14 @@ public class DepartamentoController {
     }
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("departamento_form");
+        ModelAndView modelAndView = new ModelAndView("departamento/departamento_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("departamento", new Departamento());        
         return modelAndView;
     }
     
     private ModelAndView editForm(Departamento departamento) {
-        ModelAndView modelAndView = new ModelAndView("departamento_form");
+        ModelAndView modelAndView = new ModelAndView("departamento/departamento_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("departamento", departamento);        
         return modelAndView;
