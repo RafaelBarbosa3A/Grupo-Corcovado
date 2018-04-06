@@ -57,8 +57,24 @@
         </header>
 
         <main class="container">
-            <h1 data-th-text="${departamento.nome}"></h1>
-            <p  data-th-text="${departamento.descricao}"></p>
+            <div class="d-flex justify-content-between">
+                <h1 class="h2 mt-4" data-th-text="${departamento.nome}"></h1>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="#" class="btn btn-secondary">Left</a>
+                    <button type="button" class="btn btn-secondary">Middle</button>
+                </div>
+            </div>
+            <p class="mt-3 mb-2">
+                <strong>Descrição:</strong><br>
+                <span data-th-text="${departamento.descricao}">descrição</span>
+            </p>
+            
+            <p class="mt-3 mb-2">
+                <strong>Descrição:</strong><br>
+                <span data-th-text="${departamento.descricao}">descrição</span>
+            </p>
+            
+            <a href="#">Voltar</a>
         </main>
 
         <footer class="container-fluid bg-footer border-top mt-3 py-2 px-5">

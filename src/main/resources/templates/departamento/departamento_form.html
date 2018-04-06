@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Corcovado - Detalhes Departamento</title>
+        <title>Corcovado - Formulário Departamento</title>
         <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" data-th-href="@{/css/main.css}" />
@@ -57,7 +57,9 @@
         </header>
 
         <main class="container">
-            <form data-th-action="@{/departamentos/create}" method="post" data-th-object="${departamento}">
+            <h1 class="h3 mt-3">Formulário de Departamento</h1>
+            <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Departamento' : 'Alterar Departamento'">Lero-lero</div>
+            <form data-th-action="@{/departamentos/{act}(act = ${action})}" method="post" data-th-object="${departamento}">
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input placeholder="Nome" class="form-control"  id="nome" data-th-field="*{nome}" />
@@ -69,7 +71,7 @@
                     <textarea placeholder="Descrição" class="form-control" rows="3" id="descricao" data-th-field="*{descricao}"></textarea>
                 </div>
                 
-                <button class="btn" type="submit">Salvar</button>
+                <button class="btn btn-success" type="submit">Salvar</button>
             </form>
         </main>
 
