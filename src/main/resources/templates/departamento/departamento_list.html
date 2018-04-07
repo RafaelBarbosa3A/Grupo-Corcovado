@@ -56,25 +56,30 @@
             </nav>
         </header>
 
-        <main class="container">
-            <div class=" rounded box-shadow px-4 py-3 mt-4 mb-3">
-                <div class="d-flex justify-content-between border-bottom border-gray pt-1 pb-2 mb-0">
-                    <h1 class="h4">Lista de Departamentos</h1>
-                    <a href="#" data-th-href="@{/departamentos/new}" class="btn btn-outline-info" >Novo</a>
+        <main class="container main">
+            <div class=" rounded box-shadow px-3 py-3 mt-4 mb-3">
+                <div class="row no-gutters justify-content-between mx-3 pt-1 pb-2 mb-0">
+                    <h1 class="h4 col-12  col-md-10">Lista de Departamentos</h1>
+                    <div class="col-12 col-md-2 text-right">
+                        <a href="#" data-th-href="@{/departamentos/new}" class="btn btn-outline-info" >Novo</a>
+                    </div>
                 </div>
-                <div class="pb-2" data-th-each="departamento : ${departamentos}">
-                    <div class="media pt-3 border-bottom border-gray pb-1 mb-0">
-                        <div class="media-body">
+                
+                <div class="pb-2 mx-3" data-th-each="departamento : ${departamentos}">
+                    <div class="row no-gutters border-bottom border-gray pt-3 pb-1 mb-0">
+                        <div class="col-12 col-md-10">
                             <div data-th-text="${departamento.nome}"></div>
                             <span class="text-muted" data-th-text="${departamento.descricao}"></span>
                         </div>
-                        <a class="btn" href="#" data-th-href="@{/departamentos/{id}(id=${departamento.id})}">Detalhes</a>
+                        <div class="col-12 col-md-2 text-right">
+                            <a class="btn" href="#" data-th-href="@{/departamentos/{id}(id=${departamento.id})}">Detalhes</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
 
-        <footer class="container-fluid bg-footer border-top mt-3 py-2 px-5">
+        <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">
             <div class="row justify-content-center">
                 <div class="col-md-4 col-lg-3 mt-3">
                     <p class="h6">Institucional</p>

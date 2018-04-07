@@ -56,13 +56,15 @@
             </nav>
         </header>
 
-        <main class="container">
+        <main class="container main">
             <h1 class="h3 mt-3">Formulário de Departamento</h1>
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Departamento' : 'Alterar Departamento'">Lero-lero</div>
             <form data-th-action="@{/departamentos/{act}(act = ${action})}" method="post" data-th-object="${departamento}">
+                <input type="hidden" data-th-field="*{id}" />
+                
                 <div class="form-group">
                     <label for="nome">Nome:</label>
-                    <input placeholder="Nome" class="form-control"  id="nome" data-th-field="*{nome}" />
+                    <input placeholder="Nome" class="form-control" id="nome" data-th-field="*{nome}" />
                 
                 </div>
                 
@@ -71,11 +73,19 @@
                     <textarea placeholder="Descrição" class="form-control" rows="3" id="descricao" data-th-field="*{descricao}"></textarea>
                 </div>
                 
-                <button class="btn btn-success" type="submit">Salvar</button>
+                <div class="row justify-content-between align-items-center">
+                    <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${departamento.id}">
+                        <a class="btn" data-th-case="0" href="#" data-th-href="@{/departamentos}">Voltar</a>
+                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/departamentos/{id}(id = ${departamento.id})}">Voltar</a>
+                    </span>
+                    <div class="col-12 order-first col-md-4 order-md-last text-right">
+                        <button class="btn btn-success" type="submit">Salvar</button>
+                    </div>
+                </div>
             </form>
         </main>
 
-        <footer class="container-fluid bg-footer border-top mt-3 py-2 px-5">
+        <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">
             <div class="row justify-content-center">
                 <div class="col-md-4 col-lg-3 mt-3">
                     <p class="h6">Institucional</p>

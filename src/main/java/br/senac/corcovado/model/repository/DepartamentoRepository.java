@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-public interface DepartamentoRepository extends CrudRepository<Departamento, Long>{
+public interface DepartamentoRepository extends CrudRepository<Departamento, Long> {
     
 }
