@@ -3,6 +3,13 @@
     background-color: #f7f7f9;
 }
 
+.footer {
+    /*
+    position: relative;
+    bottom: 0;
+    */
+}
+
 .bg-footer {
     background-color: #f7f7f9 !important;
 }
