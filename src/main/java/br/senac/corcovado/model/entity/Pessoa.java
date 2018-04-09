@@ -17,34 +17,34 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "pessoa")
-public class Pessoa implements Serializable{
+public class Pessoa implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "nome")private String nome;
-    @Column(name = "documento")private String documento;
-    @Column(name = "login")private String login;
-    @Column(name = "senha")private String senha;
-    @Column(name = "nivel_id")private Long nivel_id;
-    @Column(name = "cargo_id")private Long cargo_id;
-    @Column(name = "created_at")private GregorianCalendar created_at;
-    @Column(name = "updated_at")private GregorianCalendar updated_at;
-    @Column(name = "active")private boolean active;
+    @Column(name = "id") private Long id;
+    @Column(name = "nome") private String nome;
+    @Column(name = "documento") private String documento;
+    @Column(name = "email") private String email;
+    @Column(name = "senha") private String senha;
+    @Column(name = "nivel_id") private Long nivelId;
+    @Column(name = "cargo_id") private Long cargoId;
+    @Column(name = "created_at") private GregorianCalendar createdAt;
+    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "active") private boolean active;
 
     public Pessoa() {
         this.id = 0L;
     }
 
-    public Pessoa(Long id, String nome, String documento, String login, String senha, Long nivel_id, Long cargo_id, GregorianCalendar created_at, GregorianCalendar updated_at, boolean active) {
+    public Pessoa(Long id, String nome, String documento, String email, String senha, Long nivel_id, Long cargo_id, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.documento = documento;
-        this.login = login;
+        this.email = email;
         this.senha = senha;
-        this.nivel_id = nivel_id;
-        this.cargo_id = cargo_id;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.nivelId = nivel_id;
+        this.cargoId = cargo_id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.active = active;
     }
 
@@ -72,12 +72,12 @@ public class Pessoa implements Serializable{
         this.documento = documento;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {
@@ -88,36 +88,36 @@ public class Pessoa implements Serializable{
         this.senha = senha;
     }
 
-    public Long getNivel_id() {
-        return nivel_id;
+    public Long getNivelId() {
+        return nivelId;
     }
 
-    public void setNivel_id(Long nivel_id) {
-        this.nivel_id = nivel_id;
+    public void setNivelId(Long nivelId) {
+        this.nivelId = nivelId;
     }
 
-    public Long getCargo_id() {
-        return cargo_id;
+    public Long getCargoId() {
+        return cargoId;
     }
 
-    public void setCargo_id(Long cargo_id) {
-        this.cargo_id = cargo_id;
+    public void setCargoId(Long cargoId) {
+        this.cargoId = cargoId;
     }
 
     public GregorianCalendar getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }
 
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
@@ -129,13 +129,13 @@ public class Pessoa implements Serializable{
     }
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
@@ -144,12 +144,12 @@ public class Pessoa implements Serializable{
         hash = 97 * hash + Objects.hashCode(this.id);
         hash = 97 * hash + Objects.hashCode(this.nome);
         hash = 97 * hash + Objects.hashCode(this.documento);
-        hash = 97 * hash + Objects.hashCode(this.login);
+        hash = 97 * hash + Objects.hashCode(this.email);
         hash = 97 * hash + Objects.hashCode(this.senha);
-        hash = 97 * hash + Objects.hashCode(this.nivel_id);
-        hash = 97 * hash + Objects.hashCode(this.cargo_id);
-        hash = 97 * hash + Objects.hashCode(this.created_at);
-        hash = 97 * hash + Objects.hashCode(this.updated_at);
+        hash = 97 * hash + Objects.hashCode(this.nivelId);
+        hash = 97 * hash + Objects.hashCode(this.cargoId);
+        hash = 97 * hash + Objects.hashCode(this.createdAt);
+        hash = 97 * hash + Objects.hashCode(this.updatedAt);
         hash = 97 * hash + (this.active ? 1 : 0);
         return hash;
     }
@@ -175,7 +175,7 @@ public class Pessoa implements Serializable{
         if (!Objects.equals(this.documento, other.documento)) {
             return false;
         }
-        if (!Objects.equals(this.login, other.login)) {
+        if (!Objects.equals(this.email, other.email)) {
             return false;
         }
         if (!Objects.equals(this.senha, other.senha)) {
@@ -184,16 +184,16 @@ public class Pessoa implements Serializable{
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.nivel_id, other.nivel_id)) {
+        if (!Objects.equals(this.nivelId, other.nivelId)) {
             return false;
         }
-        if (!Objects.equals(this.cargo_id, other.cargo_id)) {
+        if (!Objects.equals(this.cargoId, other.cargoId)) {
             return false;
         }
-        if (!Objects.equals(this.created_at, other.created_at)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        if (!Objects.equals(this.updated_at, other.updated_at)) {
+        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -201,6 +201,6 @@ public class Pessoa implements Serializable{
 
     @Override
     public String toString() {
-        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", documento=" + documento + ", login=" + login + ", senha=" + senha + ", nivel_id=" + nivel_id + ", cargo_id=" + cargo_id + ", created_at=" + created_at + ", updated_at=" + updated_at + ", active=" + active + '}';
+        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", documento=" + documento + ", email=" + email + ", senha=" + senha + ", nivel_id=" + nivelId + ", cargo_id=" + cargoId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

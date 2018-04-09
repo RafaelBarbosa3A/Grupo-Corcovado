@@ -1,6 +1,6 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.entity.SAC;
+import br.senac.corcovado.model.entity.Sac;
 import br.senac.corcovado.model.exception.SACException;
 import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.SacRepository;
@@ -47,8 +47,8 @@ public class SACController {
     }
     
     @PostMapping(path = "/sacs/create")
-    public ModelAndView create(@ModelAttribute SAC sac) {
-        SAC salvo;
+    public ModelAndView create(@ModelAttribute Sac sac) {
+        Sac salvo;
         try {
             SACValidador.validar(sac);
             salvo = repository.save(sac);
@@ -71,8 +71,8 @@ public class SACController {
     }
     
     @PostMapping(path = "/sacs/update")
-    public ModelAndView update(@ModelAttribute SAC sac) {
-        SAC salvo;
+    public ModelAndView update(@ModelAttribute Sac sac) {
+        Sac salvo;
         try {
             SACValidador.validar(sac);
             salvo = repository.save(sac);
@@ -98,12 +98,12 @@ public class SACController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("sac_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("sac", new SAC());
+        modelAndView.addObject("sac", new Sac());
         modelAndView.addObject("pessoas", pessoaRepository.findAll());
         return modelAndView;
     }
     
-    private ModelAndView editForm(SAC sac) {
+    private ModelAndView editForm(Sac sac) {
         ModelAndView modelAndView = new ModelAndView("sac_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("sac", sac);

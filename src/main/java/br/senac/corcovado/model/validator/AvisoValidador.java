@@ -11,9 +11,9 @@ public class AvisoValidador {
     public static void validar(Aviso aviso) throws AvisoException{
         if (aviso == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (aviso.getCliente_id() == null) {
+        } else if (aviso.getClienteId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (aviso.getProduto_id() == null) {
+        } else if (aviso.getProdutoId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         }
     }

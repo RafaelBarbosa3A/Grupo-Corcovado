@@ -19,23 +19,23 @@ import javax.persistence.Table;
 public class Produto implements Serializable{
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "nome")private String nome;
-    @Column(name = "descricao")private String descricao;
-    @Column(name = "fabricante")private String fabricante;
-    @Column(name = "codigo")private String codigo;
-    @Column(name = "estoque")private Integer estoque;
-    @Column(name = "reservado")private Integer reservado;
-    @Column(name = "categoria_id")private Long categoria_id;
-    @Column(name = "created_at")private GregorianCalendar created_at;
-    @Column(name = "updated_at")private GregorianCalendar updated_at;
-    @Column(name = "active")private boolean active;
+    @Column(name = "id") private Long id;
+    @Column(name = "nome") private String nome;
+    @Column(name = "descricao") private String descricao;
+    @Column(name = "fabricante") private String fabricante;
+    @Column(name = "codigo") private String codigo;
+    @Column(name = "estoque") private Integer estoque;
+    @Column(name = "reservado") private Integer reservado;
+    @Column(name = "categoria_id") private Long categoriaId;
+    @Column(name = "created_at") private GregorianCalendar createdAt;
+    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "active") private boolean active;
 
     public Produto() {
         this.id = 0L;
     }
 
-    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, Integer estoque, Integer reservado, Long categoria_id, GregorianCalendar created_at, GregorianCalendar updated_at, boolean active) {
+    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, Integer estoque, Integer reservado, Long categoria_id, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -43,9 +43,9 @@ public class Produto implements Serializable{
         this.codigo = codigo;
         this.estoque = estoque;
         this.reservado = reservado;
-        this.categoria_id = categoria_id;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.categoriaId = categoria_id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.active = active;
     }
 
@@ -105,28 +105,28 @@ public class Produto implements Serializable{
         this.reservado = reservado;
     }
 
-    public Long getCategoria_id() {
-        return categoria_id;
+    public Long getCategoriaId() {
+        return categoriaId;
     }
 
-    public void setCategoria_id(Long categoria_id) {
-        this.categoria_id = categoria_id;
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
     public GregorianCalendar getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }
 
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
@@ -138,13 +138,13 @@ public class Produto implements Serializable{
     }
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
@@ -157,9 +157,9 @@ public class Produto implements Serializable{
         hash = 17 * hash + Objects.hashCode(this.codigo);
         hash = 17 * hash + Objects.hashCode(this.estoque);
         hash = 17 * hash + Objects.hashCode(this.reservado);
-        hash = 17 * hash + Objects.hashCode(this.categoria_id);
-        hash = 17 * hash + Objects.hashCode(this.created_at);
-        hash = 17 * hash + Objects.hashCode(this.updated_at);
+        hash = 17 * hash + Objects.hashCode(this.categoriaId);
+        hash = 17 * hash + Objects.hashCode(this.createdAt);
+        hash = 17 * hash + Objects.hashCode(this.updatedAt);
         hash = 17 * hash + (this.active ? 1 : 0);
         return hash;
     }
@@ -200,13 +200,13 @@ public class Produto implements Serializable{
         if (!Objects.equals(this.reservado, other.reservado)) {
             return false;
         }
-        if (!Objects.equals(this.categoria_id, other.categoria_id)) {
+        if (!Objects.equals(this.categoriaId, other.categoriaId)) {
             return false;
         }
-        if (!Objects.equals(this.created_at, other.created_at)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        if (!Objects.equals(this.updated_at, other.updated_at)) {
+        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -214,6 +214,6 @@ public class Produto implements Serializable{
 
     @Override
     public String toString() {
-        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria_id=" + categoria_id + ", created_at=" + created_at + ", updated_at=" + updated_at + ", active=" + active + '}';
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria_id=" + categoriaId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

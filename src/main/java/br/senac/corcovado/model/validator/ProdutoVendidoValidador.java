@@ -1,6 +1,6 @@
 package br.senac.corcovado.model.validator;
 
-import br.senac.corcovado.model.entity.Produto_Vendido;
+import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.exception.ProdutoVendidoException;
 
 /**
@@ -8,14 +8,14 @@ import br.senac.corcovado.model.exception.ProdutoVendidoException;
  * @author wesley
  */
 public class ProdutoVendidoValidador {
-    public static void validar(Produto_Vendido pv) throws ProdutoVendidoException{
+    public static void validar(ProdutoVendido pv) throws ProdutoVendidoException{
         if (pv == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (pv.getProduto_id() == null) {
+        } else if (pv.getProdutoId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (pv.getVenda_id() == null) {
+        } else if (pv.getVendaId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (pv.getPreco_total() == null) {
+        } else if (pv.getPrecoTotal() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (pv.getQuantidade() <= 0) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");

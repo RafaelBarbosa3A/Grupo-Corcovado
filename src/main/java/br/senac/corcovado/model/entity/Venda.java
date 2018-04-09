@@ -17,40 +17,40 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "venda")
-public class Venda implements Serializable{
+public class Venda implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "cliente_id")private Long cliente_id;
-    @Column(name = "endereco_id")private Long endereco_id;
-    @Column(name = "desconto_id")private Long desconto_id;    
-    @Column(name = "status_id")private Long status_id;
-    @Column(name = "total")private Double total;
-    @Column(name = "pagamento")private String pagamento;
-    @Column(name = "comprovante")private String comprovante;
-    @Column(name = "prazo_entrega")private String prazo_entrega;
-    @Column(name = "codigo_rastreamento")private String codigo_rastreamento;
-    @Column(name = "created_at")private GregorianCalendar created_at;
-    @Column(name = "updated_at")private GregorianCalendar updated_at;
-    @Column(name = "active")private boolean active;
+    @Column(name = "id") private Long id;
+    @Column(name = "cliente_id") private Long clienteId;
+    @Column(name = "endereco_id") private Long enderecoId;
+    @Column(name = "desconto_id") private Long descontoId;    
+    @Column(name = "status_id") private int statusId;
+    @Column(name = "total") private Double total;
+    @Column(name = "pagamento") private String pagamento;
+    @Column(name = "comprovante") private String comprovante;
+    @Column(name = "prazo_entrega") private String prazoEntrega;
+    @Column(name = "codigo_rastreamento") private String codigoRastreamento;
+    @Column(name = "created_at") private GregorianCalendar createdAt;
+    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "active") private boolean active;
 
     public Venda() {
         this.id = 0L;
     }
 
-    public Venda(Long id, Long cliente_id, Long endereco_id, Long desconto_id, Long status_id, Double total, String pagamento, String comprovante, String prazo_entrega, String codigo_rastreamento, GregorianCalendar created_at, GregorianCalendar updated_at, boolean active) {
+    public Venda(Long id, Long clienteId, Long enderecoId, Long descontoId, int statusId, Double total, String pagamento, String comprovante, String prazoEntrega, String codigoRastreamento, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
-        this.cliente_id = cliente_id;
-        this.endereco_id = endereco_id;
-        this.desconto_id = desconto_id;
-        this.status_id = status_id;
+        this.clienteId = clienteId;
+        this.enderecoId = enderecoId;
+        this.descontoId = descontoId;
+        this.statusId = statusId;
         this.total = total;
         this.pagamento = pagamento;
         this.comprovante = comprovante;
-        this.prazo_entrega = prazo_entrega;
-        this.codigo_rastreamento = codigo_rastreamento;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.prazoEntrega = prazoEntrega;
+        this.codigoRastreamento = codigoRastreamento;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.active = active;
     }
 
@@ -62,36 +62,36 @@ public class Venda implements Serializable{
         this.id = id;
     }
 
-    public Long getCliente_id() {
-        return cliente_id;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente_id(Long cliente_id) {
-        this.cliente_id = cliente_id;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 
-    public Long getEndereco_id() {
-        return endereco_id;
+    public Long getEnderecoId() {
+        return enderecoId;
     }
 
-    public void setEndereco_id(Long endereco_id) {
-        this.endereco_id = endereco_id;
+    public void setEnderecoId(Long enderecoId) {
+        this.enderecoId = enderecoId;
     }
 
-    public Long getDesconto_id() {
-        return desconto_id;
+    public Long getDescontoId() {
+        return descontoId;
     }
 
-    public void setDesconto_id(Long desconto_id) {
-        this.desconto_id = desconto_id;
+    public void setDescontoId(Long descontoId) {
+        this.descontoId = descontoId;
     }
 
-    public Long getStatus_id() {
-        return status_id;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(Long status_id) {
-        this.status_id = status_id;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
     public Double getTotal() {
@@ -118,36 +118,36 @@ public class Venda implements Serializable{
         this.comprovante = comprovante;
     }
 
-    public String getPrazo_entrega() {
-        return prazo_entrega;
+    public String getPrazoEntrega() {
+        return prazoEntrega;
     }
 
-    public void setPrazo_entrega(String prazo_entrega) {
-        this.prazo_entrega = prazo_entrega;
+    public void setPrazoEntrega(String prazoEntrega) {
+        this.prazoEntrega = prazoEntrega;
     }
 
-    public String getCodigo_rastreamento() {
-        return codigo_rastreamento;
+    public String getCodigoRastreamento() {
+        return codigoRastreamento;
     }
 
-    public void setCodigo_rastreamento(String codigo_rastreamento) {
-        this.codigo_rastreamento = codigo_rastreamento;
+    public void setCodigoRastreamento(String codigoRastreamento) {
+        this.codigoRastreamento = codigoRastreamento;
     }
 
     public GregorianCalendar getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }
 
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
@@ -159,31 +159,31 @@ public class Venda implements Serializable{
     }
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        hash = 59 * hash + Objects.hashCode(this.cliente_id);
-        hash = 59 * hash + Objects.hashCode(this.endereco_id);
-        hash = 59 * hash + Objects.hashCode(this.desconto_id);
-        hash = 59 * hash + Objects.hashCode(this.status_id);
-        hash = 59 * hash + Objects.hashCode(this.total);
-        hash = 59 * hash + Objects.hashCode(this.pagamento);
-        hash = 59 * hash + Objects.hashCode(this.comprovante);
-        hash = 59 * hash + Objects.hashCode(this.prazo_entrega);
-        hash = 59 * hash + Objects.hashCode(this.codigo_rastreamento);
-        hash = 59 * hash + Objects.hashCode(this.created_at);
-        hash = 59 * hash + Objects.hashCode(this.updated_at);
-        hash = 59 * hash + (this.active ? 1 : 0);
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.clienteId);
+        hash = 29 * hash + Objects.hashCode(this.enderecoId);
+        hash = 29 * hash + Objects.hashCode(this.descontoId);
+        hash = 29 * hash + this.statusId;
+        hash = 29 * hash + Objects.hashCode(this.total);
+        hash = 29 * hash + Objects.hashCode(this.pagamento);
+        hash = 29 * hash + Objects.hashCode(this.comprovante);
+        hash = 29 * hash + Objects.hashCode(this.prazoEntrega);
+        hash = 29 * hash + Objects.hashCode(this.codigoRastreamento);
+        hash = 29 * hash + Objects.hashCode(this.createdAt);
+        hash = 29 * hash + Objects.hashCode(this.updatedAt);
+        hash = 29 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -199,6 +199,9 @@ public class Venda implements Serializable{
             return false;
         }
         final Venda other = (Venda) obj;
+        if (this.statusId != other.statusId) {
+            return false;
+        }
         if (this.active != other.active) {
             return false;
         }
@@ -208,34 +211,31 @@ public class Venda implements Serializable{
         if (!Objects.equals(this.comprovante, other.comprovante)) {
             return false;
         }
-        if (!Objects.equals(this.prazo_entrega, other.prazo_entrega)) {
+        if (!Objects.equals(this.prazoEntrega, other.prazoEntrega)) {
             return false;
         }
-        if (!Objects.equals(this.codigo_rastreamento, other.codigo_rastreamento)) {
+        if (!Objects.equals(this.codigoRastreamento, other.codigoRastreamento)) {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.cliente_id, other.cliente_id)) {
+        if (!Objects.equals(this.clienteId, other.clienteId)) {
             return false;
         }
-        if (!Objects.equals(this.endereco_id, other.endereco_id)) {
+        if (!Objects.equals(this.enderecoId, other.enderecoId)) {
             return false;
         }
-        if (!Objects.equals(this.desconto_id, other.desconto_id)) {
-            return false;
-        }
-        if (!Objects.equals(this.status_id, other.status_id)) {
+        if (!Objects.equals(this.descontoId, other.descontoId)) {
             return false;
         }
         if (!Objects.equals(this.total, other.total)) {
             return false;
         }
-        if (!Objects.equals(this.created_at, other.created_at)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        if (!Objects.equals(this.updated_at, other.updated_at)) {
+        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -243,6 +243,6 @@ public class Venda implements Serializable{
 
     @Override
     public String toString() {
-        return "Venda{" + "id=" + id + ", cliente_id=" + cliente_id + ", endereco_id=" + endereco_id + ", desconto_id=" + desconto_id + ", status_id=" + status_id + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazo_entrega=" + prazo_entrega + ", codigo_rastreamento=" + codigo_rastreamento + ", created_at=" + created_at + ", updated_at=" + updated_at + ", active=" + active + '}';
+        return "Venda{" + "id=" + id + ", clienteId=" + clienteId + ", enderecoId=" + enderecoId + ", descontoId=" + descontoId + ", statusId=" + statusId + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

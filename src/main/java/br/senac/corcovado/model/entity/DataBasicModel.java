@@ -9,8 +9,8 @@ import java.util.GregorianCalendar;
 public class DataBasicModel {
 
     private Long id;    
-    private GregorianCalendar created_at;
-    private GregorianCalendar updated_at;
+    private GregorianCalendar createdAt;
+    private GregorianCalendar updatedAt;
     private boolean active;
 
     public DataBasicModel() {
@@ -32,29 +32,29 @@ public class DataBasicModel {
     }
 
     public GregorianCalendar getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }    
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }    
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     public boolean isActive() {

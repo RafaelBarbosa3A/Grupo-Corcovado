@@ -4,7 +4,7 @@ package br.senac.corcovado.model.entity;
  *
  * @author wesley
  */
-public enum Status{
+public enum Status {
     
     RASCUNHO(1, "Rascunho"),
     PAGAMENTO(2, "Pagamento"),

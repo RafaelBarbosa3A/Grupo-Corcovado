@@ -11,11 +11,11 @@ public class PrecoValidador {
     public static void validar(Preco preco) throws PrecoException{
         if (preco == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (preco.getProduto_id() == null) {
+        } else if (preco.getProdutoId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (preco.getPreco() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (preco.getNivel_id() == null) {
+        } else if (preco.getNivelId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         }
     }

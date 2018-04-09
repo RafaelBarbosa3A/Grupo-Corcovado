@@ -12,7 +12,7 @@ public class ProdutoValidador {
     public static void validar(Produto produto) throws ProdutoException{
         if (produto == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (produto.getCategoria_id() == null) {
+        } else if (produto.getCategoriaId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (produto.getNome().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");

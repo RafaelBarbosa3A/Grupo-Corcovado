@@ -15,7 +15,7 @@ public class DescontoValidador {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (desconto.getPercentual() <= 0) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (desconto.getCod_cupom().isEmpty()) {
+        } else if (desconto.getCodigoCupom().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         }
     }

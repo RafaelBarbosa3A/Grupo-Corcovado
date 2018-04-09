@@ -20,25 +20,25 @@ import javax.persistence.Table;
 public class Endereco implements Serializable{
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "rua")private String rua;
-    @Column(name = "numero")private int numero;
-    @Column(name = "bairro")private String bairro;
-    @Column(name = "cidade")private String cidade;
-    @Column(name = "estado")private String estado;
-    @Column(name = "cep")private String cep;
-    @Column(name = "complemento")private String complemento;
-    @Column(name = "principal")private String principal;
-    @Column(name = "cliente_id")private Long cliente_id;
-    @Column(name = "created_at")private GregorianCalendar created_at;
-    @Column(name = "updated_at")private GregorianCalendar updated_at;
-    @Column(name = "active")private boolean active;
+    @Column(name = "id") private Long id;
+    @Column(name = "rua") private String rua;
+    @Column(name = "numero") private int numero;
+    @Column(name = "bairro") private String bairro;
+    @Column(name = "cidade") private String cidade;
+    @Column(name = "estado") private String estado;
+    @Column(name = "cep") private String cep;
+    @Column(name = "complemento") private String complemento;
+    @Column(name = "principal") private String principal;
+    @Column(name = "cliente_id") private Long clienteId;
+    @Column(name = "created_at") private GregorianCalendar createdAt;
+    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "active") private boolean active;
     
     public Endereco() {
         this.id = 0L;
     }
 
-    public Endereco(Long id, String rua, int numero, String bairro, String cidade, String estado, String cep, String complemento, String principal, Long cliente_id, GregorianCalendar created_at, GregorianCalendar updated_at, boolean active) {
+    public Endereco(Long id, String rua, int numero, String bairro, String cidade, String estado, String cep, String complemento, String principal, Long clienteId, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
         this.rua = rua;
         this.numero = numero;
@@ -48,9 +48,9 @@ public class Endereco implements Serializable{
         this.cep = cep;
         this.complemento = complemento;
         this.principal = principal;
-        this.cliente_id = cliente_id;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.clienteId = clienteId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.active = active;
     }
 
@@ -126,28 +126,28 @@ public class Endereco implements Serializable{
         this.principal = principal;
     }
 
-    public Long getCliente_id() {
-        return cliente_id;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente_id(Long cliente_id) {
-        this.cliente_id = cliente_id;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 
     public GregorianCalendar getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }
 
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
@@ -159,13 +159,13 @@ public class Endereco implements Serializable{
     }
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
@@ -180,9 +180,9 @@ public class Endereco implements Serializable{
         hash = 17 * hash + Objects.hashCode(this.cep);
         hash = 17 * hash + Objects.hashCode(this.complemento);
         hash = 17 * hash + Objects.hashCode(this.principal);
-        hash = 17 * hash + Objects.hashCode(this.cliente_id);
-        hash = 17 * hash + Objects.hashCode(this.created_at);
-        hash = 17 * hash + Objects.hashCode(this.updated_at);
+        hash = 17 * hash + Objects.hashCode(this.clienteId);
+        hash = 17 * hash + Objects.hashCode(this.createdAt);
+        hash = 17 * hash + Objects.hashCode(this.updatedAt);
         hash = 17 * hash + (this.active ? 1 : 0);
         return hash;
     }
@@ -229,13 +229,13 @@ public class Endereco implements Serializable{
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.cliente_id, other.cliente_id)) {
+        if (!Objects.equals(this.clienteId, other.clienteId)) {
             return false;
         }
-        if (!Objects.equals(this.created_at, other.created_at)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        if (!Objects.equals(this.updated_at, other.updated_at)) {
+        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -243,6 +243,6 @@ public class Endereco implements Serializable{
 
     @Override
     public String toString() {
-        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", principal=" + principal + ", cliente_id=" + cliente_id + ", created_at=" + created_at + ", updated_at=" + updated_at + ", active=" + active + '}';
+        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", principal=" + principal + ", clienteId=" + clienteId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

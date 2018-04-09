@@ -11,9 +11,9 @@ public class PessoaValidador {
     public static void validar(Pessoa pessoa) throws PessoaException{
         if (pessoa == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (pessoa.getNivel_id() == null) {
+        } else if (pessoa.getNivelId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (pessoa.getCargo_id() == null) {
+        } else if (pessoa.getCargoId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (pessoa.getNome().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");

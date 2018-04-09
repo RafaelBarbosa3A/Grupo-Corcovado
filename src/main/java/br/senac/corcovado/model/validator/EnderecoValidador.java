@@ -12,7 +12,7 @@ public class EnderecoValidador {
     public static void validar(Endereco endereco) throws EnderecoException{
         if (endereco == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (endereco.getCliente_id() == null) {
+        } else if (endereco.getClienteId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (endereco.getRua().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");

@@ -1,6 +1,6 @@
 package br.senac.corcovado.model.repository;
 
-import br.senac.corcovado.model.entity.SAC;
+import br.senac.corcovado.model.entity.Sac;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-public interface SacRepository extends CrudRepository<SAC, Long>{
+public interface SacRepository extends CrudRepository<Sac, Long>{
     
 }

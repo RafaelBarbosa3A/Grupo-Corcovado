@@ -1,6 +1,6 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.entity.Produto_Vendido;
+import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.exception.ProdutoVendidoException;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoaRepository;
@@ -49,8 +49,8 @@ public class ProdutoVendidoController {
     }
     
     @PostMapping(path = "/produtos_vendidos/create")
-    public ModelAndView create(@ModelAttribute Produto_Vendido produto_vendido) {
-        Produto_Vendido salvo;
+    public ModelAndView create(@ModelAttribute ProdutoVendido produto_vendido) {
+        ProdutoVendido salvo;
         try {
             ProdutoVendidoValidador.validar(produto_vendido);
             salvo = repository.save(produto_vendido);
@@ -73,8 +73,8 @@ public class ProdutoVendidoController {
     }
     
     @PostMapping(path = "/produtos_vendidos/update")
-    public ModelAndView update(@ModelAttribute Produto_Vendido produto_vendido) {
-        Produto_Vendido salvo;
+    public ModelAndView update(@ModelAttribute ProdutoVendido produto_vendido) {
+        ProdutoVendido salvo;
         try {
             ProdutoVendidoValidador.validar(produto_vendido);
             salvo = repository.save(produto_vendido);
@@ -99,13 +99,13 @@ public class ProdutoVendidoController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("produto_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("produtos_vendidos", new Produto_Vendido());
+        modelAndView.addObject("produtos_vendidos", new ProdutoVendido());
         modelAndView.addObject("produtos", produtoRepository.findAll());
         modelAndView.addObject("vendas", vendaRepository.findAll());
         return modelAndView;
     }
     
-    private ModelAndView editForm(Produto_Vendido produto_vendido) {
+    private ModelAndView editForm(ProdutoVendido produto_vendido) {
         ModelAndView modelAndView = new ModelAndView("produto_vendido_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("produtos_vendidos", produto_vendido);

@@ -12,23 +12,21 @@ public class VendaValidador {
     public static void validar(Venda venda) throws VendaException{
         if (venda == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getCliente_id() == null) {
+        } else if (venda.getClienteId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getEndereco_id() == null) {
+        } else if (venda.getEnderecoId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getDesconto_id() == null) {
+        } else if (venda.getDescontoId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (venda.getTotal() == null) {
-            throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getStatus_id().toString().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (venda.getPagamento().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (venda.getComprovante().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getPrazo_entrega().isEmpty()) {
+        } else if (venda.getPrazoEntrega().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (venda.getCodigo_rastreamento().isEmpty()) {
+        } else if (venda.getCodigoRastreamento().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         }
     }

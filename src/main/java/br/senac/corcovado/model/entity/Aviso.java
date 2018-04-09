@@ -17,26 +17,26 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "aviso")
-public class Aviso implements Serializable{
+public class Aviso implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "produto_id")private Long produto_id;
-    @Column(name = "cliente_id")private Long cliente_id;
-    @Column(name = "created_at")private GregorianCalendar created_at;
-    @Column(name = "updated_at")private GregorianCalendar updated_at;
-    @Column(name = "active")private boolean active;    
+    @Column(name = "id") private Long id;
+    @Column(name = "produto_id") private Long produtoId;
+    @Column(name = "cliente_id") private Long clienteId;
+    @Column(name = "created_at") private GregorianCalendar createdAt;
+    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "active") private boolean active;    
 
     public Aviso() {
         this.id = 0L;
     }
 
-    public Aviso(Long id, Long produto_id, Long cliente_id, GregorianCalendar created_at, GregorianCalendar updated_at, boolean active) {
+    public Aviso(Long id, Long produto_id, Long cliente_id, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
-        this.produto_id = produto_id;
-        this.cliente_id = cliente_id;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.produtoId = produto_id;
+        this.clienteId = cliente_id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.active = active;
     }
 
@@ -48,36 +48,36 @@ public class Aviso implements Serializable{
         this.id = id;
     }
 
-    public Long getProduto_id() {
-        return produto_id;
+    public Long getProdutoId() {
+        return produtoId;
     }
 
-    public void setProduto_id(Long produto_id) {
-        this.produto_id = produto_id;
+    public void setProdutoId(Long produtoId) {
+        this.produtoId = produtoId;
     }
 
-    public Long getCliente_id() {
-        return cliente_id;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente_id(Long cliente_id) {
-        this.cliente_id = cliente_id;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 
     public GregorianCalendar getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }
 
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
@@ -89,23 +89,23 @@ public class Aviso implements Serializable{
     }
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 89 * hash + Objects.hashCode(this.id);
-        hash = 89 * hash + Objects.hashCode(this.produto_id);
-        hash = 89 * hash + Objects.hashCode(this.cliente_id);
-        hash = 89 * hash + Objects.hashCode(this.created_at);
-        hash = 89 * hash + Objects.hashCode(this.updated_at);
+        hash = 89 * hash + Objects.hashCode(this.produtoId);
+        hash = 89 * hash + Objects.hashCode(this.clienteId);
+        hash = 89 * hash + Objects.hashCode(this.createdAt);
+        hash = 89 * hash + Objects.hashCode(this.updatedAt);
         hash = 89 * hash + (this.active ? 1 : 0);
         return hash;
     }
@@ -128,16 +128,16 @@ public class Aviso implements Serializable{
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.produto_id, other.produto_id)) {
+        if (!Objects.equals(this.produtoId, other.produtoId)) {
             return false;
         }
-        if (!Objects.equals(this.cliente_id, other.cliente_id)) {
+        if (!Objects.equals(this.clienteId, other.clienteId)) {
             return false;
         }
-        if (!Objects.equals(this.created_at, other.created_at)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        if (!Objects.equals(this.updated_at, other.updated_at)) {
+        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -145,6 +145,6 @@ public class Aviso implements Serializable{
 
     @Override
     public String toString() {
-        return "Aviso{" + "id=" + id + ", produto_id=" + produto_id + ", cliente_id=" + cliente_id + ", created_at=" + created_at + ", updated_at=" + updated_at + ", active=" + active + '}';
+        return "Aviso{" + "id=" + id + ", produto_id=" + produtoId + ", cliente_id=" + clienteId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

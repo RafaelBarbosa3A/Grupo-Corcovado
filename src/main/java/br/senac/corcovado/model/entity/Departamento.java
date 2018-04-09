@@ -23,20 +23,20 @@ public class Departamento implements Serializable {
     @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;
     @Column(name = "descricao") private String descricao;
-    @Column(name = "created_at") private GregorianCalendar created_at;
-    @Column(name = "updated_at") private GregorianCalendar updated_at;
+    @Column(name = "created_at") private GregorianCalendar createdAt;
+    @Column(name = "updated_at") private GregorianCalendar updatedAt;
     @Column(name = "active") private boolean active;
 
     public Departamento() {
         this.id = 0L;
     }
 
-    public Departamento(Long id, String nome, String descricao, GregorianCalendar created_at, GregorianCalendar updated_at, boolean active) {
+    public Departamento(Long id, String nome, String descricao, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.active = active;
     }
 
@@ -65,19 +65,19 @@ public class Departamento implements Serializable {
     }
 
     public GregorianCalendar getCreated_at() {
-        return created_at;
+        return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }
 
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
@@ -89,13 +89,13 @@ public class Departamento implements Serializable {
     }
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
@@ -104,8 +104,8 @@ public class Departamento implements Serializable {
         hash = 53 * hash + Objects.hashCode(this.id);
         hash = 53 * hash + Objects.hashCode(this.nome);
         hash = 53 * hash + Objects.hashCode(this.descricao);
-        hash = 53 * hash + Objects.hashCode(this.created_at);
-        hash = 53 * hash + Objects.hashCode(this.updated_at);
+        hash = 53 * hash + Objects.hashCode(this.createdAt);
+        hash = 53 * hash + Objects.hashCode(this.updatedAt);
         hash = 53 * hash + (this.active ? 1 : 0);
         return hash;
     }
@@ -134,10 +134,10 @@ public class Departamento implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.created_at, other.created_at)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        if (!Objects.equals(this.updated_at, other.updated_at)) {
+        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -145,6 +145,6 @@ public class Departamento implements Serializable {
 
     @Override
     public String toString() {
-        return "Departamento{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", created_at=" + created_at + ", updated_at=" + updated_at + ", active=" + active + '}';
+        return "Departamento{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

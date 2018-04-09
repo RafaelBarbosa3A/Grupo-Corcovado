@@ -1,6 +1,6 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.model.entity.Produto_Reposicao;
+import br.senac.corcovado.model.entity.ProdutoReposicao;
 import br.senac.corcovado.model.exception.ProdutoReposicaoException;
 import br.senac.corcovado.model.repository.ProdutoReposicaoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
@@ -49,8 +49,8 @@ public class ProdutoReposicaoController {
     }
     
     @PostMapping(path = "/produtos_reposicao/create")
-    public ModelAndView create(@ModelAttribute Produto_Reposicao produto_reposicao) {
-        Produto_Reposicao salvo;
+    public ModelAndView create(@ModelAttribute ProdutoReposicao produto_reposicao) {
+        ProdutoReposicao salvo;
         try {
             ProdutoReposicaoValidador.validar(produto_reposicao);
             salvo = repository.save(produto_reposicao);
@@ -73,8 +73,8 @@ public class ProdutoReposicaoController {
     }
     
     @PostMapping(path = "/produtos_reposicao/update")
-    public ModelAndView update(@ModelAttribute Produto_Reposicao produto_reposicao) {
-        Produto_Reposicao salvo;
+    public ModelAndView update(@ModelAttribute ProdutoReposicao produto_reposicao) {
+        ProdutoReposicao salvo;
         try {
             ProdutoReposicaoValidador.validar(produto_reposicao);
             salvo = repository.save(produto_reposicao);
@@ -99,13 +99,13 @@ public class ProdutoReposicaoController {
     private ModelAndView newForm() {
         ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("produto_reposicao", new Produto_Reposicao());
+        modelAndView.addObject("produto_reposicao", new ProdutoReposicao());
         modelAndView.addObject("produtos", produtoRepository.findAll());
         modelAndView.addObject("reposicoes", reposicaoRepository.findAll());
         return modelAndView;
     }
     
-    private ModelAndView editForm(Produto_Reposicao produto_reposicao) {
+    private ModelAndView editForm(ProdutoReposicao produto_reposicao) {
         ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("produto_reposicao", produto_reposicao);

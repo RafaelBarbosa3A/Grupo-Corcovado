@@ -11,9 +11,9 @@ public class RespostaValidador {
     public static void validar(Resposta resposta) throws RespostaException{
         if (resposta == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (resposta.getSac_id() == null) {
+        } else if (resposta.getSacId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
-        } else if (resposta.getCliente_id() == null) {
+        } else if (resposta.getClienteId() == null) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");
         } else if (resposta.getMensagem().isEmpty()) {
             throw new IllegalArgumentException("valor informado invalido ou nulo");

@@ -1,6 +1,6 @@
 package br.senac.corcovado.model.repository;
 
-import br.senac.corcovado.model.entity.Produto_Vendido;
+import br.senac.corcovado.model.entity.ProdutoVendido;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-public interface ProdutoVendidoaRepository extends CrudRepository<Produto_Vendido, Long>{
+public interface ProdutoVendidoaRepository extends CrudRepository<ProdutoVendido, Long>{
     
 }

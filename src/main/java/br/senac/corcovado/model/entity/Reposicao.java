@@ -17,24 +17,25 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "reposicao")
-public class Reposicao implements Serializable{
+public class Reposicao implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "fornecedor")private String fornecedor;
-    @Column(name = "created_at")private GregorianCalendar created_at;
-    @Column(name = "updated_at")private GregorianCalendar updated_at;
-    @Column(name = "active")private boolean active;
+    @Column(name = "id") private Long id;
+    @Column(name = "fornecedor") private String fornecedor;
+    @Column(name = "nota_fiscal") private String notaFiscal;
+    @Column(name = "created_at") private GregorianCalendar createdAt;
+    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "active") private boolean active;
 
     public Reposicao() {
         this.id = 0L;
     }
 
-    public Reposicao(Long id, String fornecedor, GregorianCalendar created_at, GregorianCalendar updated_at, boolean active) {
+    public Reposicao(Long id, String fornecedor, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
         this.fornecedor = fornecedor;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.active = active;
     }
 
@@ -54,20 +55,28 @@ public class Reposicao implements Serializable{
         this.fornecedor = fornecedor;
     }
 
-    public GregorianCalendar getCreated_at() {
-        return created_at;
+    public String getNotaFiscal() {
+        return notaFiscal;
     }
 
-    public void setCreated_at(GregorianCalendar created_at) {
-        this.created_at = created_at;
+    public void setNotaFiscal(String notaFiscal) {
+        this.notaFiscal = notaFiscal;
+    }    
+    
+    public GregorianCalendar getCreated_at() {
+        return createdAt;
+    }
+
+    public void setCreated_at(GregorianCalendar createdAt) {
+        this.createdAt = createdAt;
     }
 
     public GregorianCalendar getUpdated_at() {
-        return updated_at;
+        return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(GregorianCalendar updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
@@ -79,23 +88,24 @@ public class Reposicao implements Serializable{
     }
     
     public void setCreated_at(long timeInMillis) {
-        this.created_at = new GregorianCalendar();
-        this.created_at.setTimeInMillis(timeInMillis);
+        this.createdAt = new GregorianCalendar();
+        this.createdAt.setTimeInMillis(timeInMillis);
     }
     
     public void setUpdated_at(long timeInMillis) {
-        this.updated_at = new GregorianCalendar();
-        this.updated_at.setTimeInMillis(timeInMillis);
+        this.updatedAt = new GregorianCalendar();
+        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.id);
-        hash = 37 * hash + Objects.hashCode(this.fornecedor);
-        hash = 37 * hash + Objects.hashCode(this.created_at);
-        hash = 37 * hash + Objects.hashCode(this.updated_at);
-        hash = 37 * hash + (this.active ? 1 : 0);
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.fornecedor);
+        hash = 97 * hash + Objects.hashCode(this.notaFiscal);
+        hash = 97 * hash + Objects.hashCode(this.createdAt);
+        hash = 97 * hash + Objects.hashCode(this.updatedAt);
+        hash = 97 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -117,13 +127,16 @@ public class Reposicao implements Serializable{
         if (!Objects.equals(this.fornecedor, other.fornecedor)) {
             return false;
         }
+        if (!Objects.equals(this.notaFiscal, other.notaFiscal)) {
+            return false;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.created_at, other.created_at)) {
+        if (!Objects.equals(this.createdAt, other.createdAt)) {
             return false;
         }
-        if (!Objects.equals(this.updated_at, other.updated_at)) {
+        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -131,6 +144,8 @@ public class Reposicao implements Serializable{
 
     @Override
     public String toString() {
-        return "Reposicao{" + "id=" + id + ", fornecedor=" + fornecedor + ", created_at=" + created_at + ", updated_at=" + updated_at + ", active=" + active + '}';
+        return "Reposicao{" + "id=" + id + ", fornecedor=" + fornecedor + ", notaFiscal=" + notaFiscal + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
+
+
 }
