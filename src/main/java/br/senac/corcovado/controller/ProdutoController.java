@@ -28,14 +28,14 @@ public class ProdutoController {
     
     @GetMapping("/produtos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("produto_list");
+        ModelAndView mav = new ModelAndView("/produto/produto_list");
         mav.addObject("produtos", repository.findAll());
         return mav;
     }
     
     @GetMapping("/produtos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("produto_show");
+        ModelAndView mav = new ModelAndView("/produto/produto_show");
         mav.addObject("produto", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -96,7 +96,7 @@ public class ProdutoController {
     
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("produto_form");
+        ModelAndView modelAndView = new ModelAndView("/produto/produto_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("produto", new Produto());
         modelAndView.addObject("categorias", categoriaRepository.findAll());
@@ -104,7 +104,7 @@ public class ProdutoController {
     }
     
     private ModelAndView editForm(Produto produto) {
-        ModelAndView modelAndView = new ModelAndView("produto_form");
+        ModelAndView modelAndView = new ModelAndView("/produto/produto_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("produto", produto);
         modelAndView.addObject("categorias", categoriaRepository.findAll());

@@ -30,14 +30,14 @@ public class ProdutoVendidoController {
     
     @GetMapping("/produtos_vendidos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("produto_vendido_list");
+        ModelAndView mav = new ModelAndView("/produto_vendido/produto_vendido_list");
         mav.addObject("produtos_vendidos", repository.findAll());
         return mav;
     }
     
     @GetMapping("/produtos_vendidos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("produto_vendido_show");
+        ModelAndView mav = new ModelAndView("/produto_vendido/produto_vendido_show");
         mav.addObject("produto_vendido", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -106,7 +106,7 @@ public class ProdutoVendidoController {
     }
     
     private ModelAndView editForm(ProdutoVendido produto_vendido) {
-        ModelAndView modelAndView = new ModelAndView("produto_vendido_form");
+        ModelAndView modelAndView = new ModelAndView("/produto_vendido/produto_vendido_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("produtos_vendidos", produto_vendido);
         modelAndView.addObject("produtos", produtoRepository.findAll());

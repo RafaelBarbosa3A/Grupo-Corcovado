@@ -30,14 +30,14 @@ public class RespostaController {
 
     @GetMapping("/respostas")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("resposta_list");
+        ModelAndView mav = new ModelAndView("/resposta/resposta_list");
         mav.addObject("respostas", repository.findAll());
         return mav;
     }
     
     @GetMapping("/respostas/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("resposta_show");
+        ModelAndView mav = new ModelAndView("/resposta/resposta_show");
         mav.addObject("resposta", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -98,7 +98,7 @@ public class RespostaController {
     
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("resposta_form");
+        ModelAndView modelAndView = new ModelAndView("/resposta/resposta_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("resposta", new Resposta());
         modelAndView.addObject("pessoas", pessoaRepository.findAll());
@@ -107,7 +107,7 @@ public class RespostaController {
     }
     
     private ModelAndView editForm(Resposta resposta) {
-        ModelAndView modelAndView = new ModelAndView("resposta_form");
+        ModelAndView modelAndView = new ModelAndView("/resposta/resposta_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("resposta", resposta);
         modelAndView.addObject("pessoas", pessoaRepository.findAll());

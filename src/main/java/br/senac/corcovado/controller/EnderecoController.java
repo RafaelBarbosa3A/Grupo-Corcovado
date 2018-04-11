@@ -28,14 +28,14 @@ public class EnderecoController {
     
     @GetMapping("/enderecos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("endereco_list");
+        ModelAndView mav = new ModelAndView("/endereco/endereco_list");
         mav.addObject("enderecos", repository.findAll());
         return mav;
     }
     
     @GetMapping("/enderecos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("endereco_show");
+        ModelAndView mav = new ModelAndView("/endereco/endereco_show");
         mav.addObject("endereco", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -95,7 +95,7 @@ public class EnderecoController {
     }
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("endereco_form");
+        ModelAndView modelAndView = new ModelAndView("/endereco/endereco_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("endereco", new Endereco());
         modelAndView.addObject("pessoas", pessoaRepository.findAll());
@@ -103,7 +103,7 @@ public class EnderecoController {
     }
     
     private ModelAndView editForm(Endereco endereco) {
-        ModelAndView modelAndView = new ModelAndView("endereco_form");
+        ModelAndView modelAndView = new ModelAndView("/endereco/endereco_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("endereco", endereco);
         modelAndView.addObject("pessoas", pessoaRepository.findAll());

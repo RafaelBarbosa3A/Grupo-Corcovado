@@ -31,14 +31,14 @@ public class PrecoController {
     
     @GetMapping("/precos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("preco_list");
+        ModelAndView mav = new ModelAndView("/preco/preco_list");
         mav.addObject("precos", repository.findAll());
         return mav;
     }
     
     @GetMapping("/precos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("preco_show");
+        ModelAndView mav = new ModelAndView("/preco/preco_show");
         mav.addObject("preco", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -99,7 +99,7 @@ public class PrecoController {
     
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("preco_form");
+        ModelAndView modelAndView = new ModelAndView("/preco/preco_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("preco", new Preco());
         modelAndView.addObject("niveis", Nivel.values());
@@ -108,7 +108,7 @@ public class PrecoController {
     }
     
     private ModelAndView editForm(Preco preco) {
-        ModelAndView modelAndView = new ModelAndView("preco_form");
+        ModelAndView modelAndView = new ModelAndView("/preco/preco_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("preco", preco);
         modelAndView.addObject("niveis", Nivel.values());

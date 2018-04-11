@@ -28,14 +28,14 @@ public class PessoaController {
     
     @GetMapping("/pessoas")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("pessoa_list");
+        ModelAndView mav = new ModelAndView("/pessoa/pessoa_list");
         mav.addObject("pessoas", repository.findAll());
         return mav;
     }
     
     @GetMapping("/pessoas/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("pessoa_show");
+        ModelAndView mav = new ModelAndView("/pessoa/pessoa_show");
         mav.addObject("pessoa", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -95,7 +95,7 @@ public class PessoaController {
     }
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("pessoa_form");
+        ModelAndView modelAndView = new ModelAndView("/pessoa/pessoa_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("pessoa", new Pessoa());
         modelAndView.addObject("niveis", Nivel.values());
@@ -104,7 +104,7 @@ public class PessoaController {
     }
     
     private ModelAndView editForm(Pessoa pessoa) {
-        ModelAndView modelAndView = new ModelAndView("pessoa_form");
+        ModelAndView modelAndView = new ModelAndView("/pessoa/pessoa_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("pessoa", pessoa);
         modelAndView.addObject("niveis", Nivel.values());

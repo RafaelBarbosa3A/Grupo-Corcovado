@@ -22,20 +22,22 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CategoriaController {
 
-    @Autowired 
+    @Autowired
     private CategoriaRepository repository;
+    
+    @Autowired
     private DepartamentoRepository departamentoRepository;
     
     @GetMapping("/categorias")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("categoria_list");
+        ModelAndView mav = new ModelAndView("/categoria/categoria_list");
         mav.addObject("categorias", repository.findAll());
         return mav;
     }
     
     @GetMapping("/categorias/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("categoria_show");
+        ModelAndView mav = new ModelAndView("/categoria/categoria_show");
         mav.addObject("categoria", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -95,7 +97,7 @@ public class CategoriaController {
     }
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("categoria_form");
+        ModelAndView modelAndView = new ModelAndView("/categoria/categoria_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("categoria", new Categoria());
         modelAndView.addObject("departamentos", departamentoRepository.findAll());
@@ -103,7 +105,7 @@ public class CategoriaController {
     }
     
     private ModelAndView editForm(Categoria categoria) {
-        ModelAndView modelAndView = new ModelAndView("categoria_form");
+        ModelAndView modelAndView = new ModelAndView("/categoria/categoria_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("categoria", categoria);
         modelAndView.addObject("departamentos", departamentoRepository.findAll());        

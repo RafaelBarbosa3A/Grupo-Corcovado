@@ -26,27 +26,27 @@ public class SACController {
     private SacRepository repository;
     private PessoaRepository pessoaRepository;
 
-    @GetMapping("/sacs")
+    @GetMapping("/sac")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("sacs_list");
-        mav.addObject("sacs", repository.findAll());
+        ModelAndView mav = new ModelAndView("/sac/sac_list");
+        mav.addObject("sac", repository.findAll());
         return mav;
     }
     
-    @GetMapping("/sacs/{id}")
+    @GetMapping("/sac/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("sac_show");
+        ModelAndView mav = new ModelAndView("/sac/sac_show");
         mav.addObject("sac", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
     
-    @GetMapping("/sacs/new")
+    @GetMapping("/sac/new")
     public ModelAndView new_() {
         ModelAndView mav = newForm();
         return mav;
     }
     
-    @PostMapping(path = "/sacs/create")
+    @PostMapping(path = "/sac/create")
     public ModelAndView create(@ModelAttribute Sac sac) {
         Sac salvo;
         try {
@@ -64,13 +64,13 @@ public class SACController {
         return redirect;
     }
     
-    @GetMapping({"/sacs/{id}/edit", "/sacs/edit/{id}"})
+    @GetMapping({"/sac/{id}/edit", "/sac/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") String usId) {
         ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
     
-    @PostMapping(path = "/sacs/update")
+    @PostMapping(path = "/sac/update")
     public ModelAndView update(@ModelAttribute Sac sac) {
         Sac salvo;
         try {
@@ -87,16 +87,16 @@ public class SACController {
         return redirect;
     }
     
-    @PostMapping(path = {"/sacs/{id}/destroy", "/sacs/destroy/{id}"})
+    @PostMapping(path = {"/sac/{id}/destroy", "/sac/destroy/{id}"})
     public ModelAndView destroy(@PathVariable("id") String usId) {
         repository.deleteById(Long.parseLong(usId));
-        ModelAndView redirect = new ModelAndView("redirect:/sacs");
+        ModelAndView redirect = new ModelAndView("redirect:/sac");
         return redirect;
     }
     
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("sac_form");
+        ModelAndView modelAndView = new ModelAndView("/sac/sac_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("sac", new Sac());
         modelAndView.addObject("pessoas", pessoaRepository.findAll());
@@ -104,7 +104,7 @@ public class SACController {
     }
     
     private ModelAndView editForm(Sac sac) {
-        ModelAndView modelAndView = new ModelAndView("sac_form");
+        ModelAndView modelAndView = new ModelAndView("/sac/sac_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("sac", sac);
         modelAndView.addObject("pessoas", pessoaRepository.findAll());

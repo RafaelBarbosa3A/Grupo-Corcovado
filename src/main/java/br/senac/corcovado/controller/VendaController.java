@@ -32,14 +32,14 @@ public class VendaController {
     
     @GetMapping("/vendas")
     public ModelAndView list() {        
-        ModelAndView mav = new ModelAndView("venda_list");
+        ModelAndView mav = new ModelAndView("/venda/venda_list");
         mav.addObject("vendas", repository.findAll());
         return mav;
     }
     
     @GetMapping("/vendas/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {        
-        ModelAndView mav = new ModelAndView("venda_show");
+        ModelAndView mav = new ModelAndView("/venda/venda_show");
         mav.addObject("venda", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -100,7 +100,7 @@ public class VendaController {
     }    
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("vendas_form");
+        ModelAndView modelAndView = new ModelAndView("/venda/venda_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("pessoas", pessoaRepository.findAll());        
         modelAndView.addObject("enderecos", enderecoRepository.findAll());
@@ -110,7 +110,7 @@ public class VendaController {
     }
     
     private ModelAndView editForm(Venda venda) {
-        ModelAndView modelAndView = new ModelAndView("venda_form");
+        ModelAndView modelAndView = new ModelAndView("/venda/venda_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("venda", venda);
         modelAndView.addObject("pessoas", pessoaRepository.findAll());        

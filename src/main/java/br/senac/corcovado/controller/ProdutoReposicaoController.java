@@ -30,14 +30,14 @@ public class ProdutoReposicaoController {
     
     @GetMapping("/produtos_reposicao")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("produto_reposicao_list");
+        ModelAndView mav = new ModelAndView("/produto_reposicao/produto_reposicao_list");
         mav.addObject("produtos_reposicao", repository.findAll());
         return mav;
     }
     
     @GetMapping("/produtos_reposicao/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("produto_reposicao_show");
+        ModelAndView mav = new ModelAndView("/produto_reposicao/produto_reposicao_show");
         mav.addObject("produto_reposicao", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -97,7 +97,7 @@ public class ProdutoReposicaoController {
     }
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
+        ModelAndView modelAndView = new ModelAndView("/produto_reposicao/produto_reposicao_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("produto_reposicao", new ProdutoReposicao());
         modelAndView.addObject("produtos", produtoRepository.findAll());
@@ -106,7 +106,7 @@ public class ProdutoReposicaoController {
     }
     
     private ModelAndView editForm(ProdutoReposicao produto_reposicao) {
-        ModelAndView modelAndView = new ModelAndView("produto_reposicao_form");
+        ModelAndView modelAndView = new ModelAndView("/produto_reposicao/produto_reposicao_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("produto_reposicao", produto_reposicao);
         modelAndView.addObject("produtos", produtoRepository.findAll());

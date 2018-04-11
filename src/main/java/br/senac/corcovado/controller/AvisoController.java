@@ -30,14 +30,14 @@ public class AvisoController {
     
     @GetMapping("/avisos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("aviso_list");
+        ModelAndView mav = new ModelAndView("/aviso/aviso_list");
         mav.addObject("avisos", repository.findAll());
         return mav;
     }
     
     @GetMapping("/avisos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("aviso_show");
+        ModelAndView mav = new ModelAndView("/aviso/aviso_show");
         mav.addObject("aviso", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -97,7 +97,7 @@ public class AvisoController {
     }
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("aviso_form");
+        ModelAndView modelAndView = new ModelAndView("/aviso/aviso_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("aviso", new Aviso());
         modelAndView.addObject("produtos", produtoRepository.findAll());
@@ -106,7 +106,7 @@ public class AvisoController {
     }
     
     private ModelAndView editForm(Aviso aviso) {
-        ModelAndView modelAndView = new ModelAndView("aviso_form");
+        ModelAndView modelAndView = new ModelAndView("/aviso/aviso_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("aviso", aviso);
         modelAndView.addObject("produtos", produtoRepository.findAll());

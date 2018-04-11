@@ -26,14 +26,14 @@ public class DescontoController {
     
     @GetMapping("/descontos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("desconto_list");
+        ModelAndView mav = new ModelAndView("/desconto/desconto_list");
         mav.addObject("descontos", repository.findAll());
         return mav;
     }
     
     @GetMapping("/descontos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("desconto_show");
+        ModelAndView mav = new ModelAndView("/desconto/desconto_show");
         mav.addObject("desconto", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -94,14 +94,14 @@ public class DescontoController {
     
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("desconto_form");
+        ModelAndView modelAndView = new ModelAndView("/desconto/desconto_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("desconto", new Desconto());        
         return modelAndView;
     }
     
     private ModelAndView editForm(Desconto desconto) {
-        ModelAndView modelAndView = new ModelAndView("desconto_form");
+        ModelAndView modelAndView = new ModelAndView("/desconto/desconto_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("desconto", desconto);        
         return modelAndView;

@@ -26,14 +26,14 @@ public class ReposicaoController {
     
     @GetMapping("/reposicoes")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("reposicao_list");
+        ModelAndView mav = new ModelAndView("/reposicao/reposicao_list");
         mav.addObject("reposicoes", repository.findAll());
         return mav;
     }
     
     @GetMapping("/reposicoes/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("reposicao_show");
+        ModelAndView mav = new ModelAndView("/reposicao/reposicao_show");
         mav.addObject("reposicoes", repository.findById(Long.parseLong(usId)).get());
         return mav;
     }
@@ -94,14 +94,14 @@ public class ReposicaoController {
     
     
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("reposicao_form");
+        ModelAndView modelAndView = new ModelAndView("/reposicao/reposicao_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("reposicao", new Reposicao());        
         return modelAndView;
     }
     
     private ModelAndView editForm(Reposicao reposicao) {
-        ModelAndView modelAndView = new ModelAndView("reposicao_form");
+        ModelAndView modelAndView = new ModelAndView("/reposicao/reposicao_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("reposicao", reposicao);        
         return modelAndView;
