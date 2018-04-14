@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-public interface PrecoRepository extends CrudRepository<Preco, Long>{
-    
+public interface PrecoRepository extends CrudRepository<Preco, Long> {
+    public Iterable<Preco> findAllByProdutoId(Long produtoId);
 }

@@ -3,7 +3,6 @@ package br.senac.corcovado.controller;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.exception.ProdutoVendidoException;
 import br.senac.corcovado.model.repository.ProdutoRepository;
-import br.senac.corcovado.model.repository.ProdutoVendidoaRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
 import br.senac.corcovado.model.validator.ProdutoVendidoValidador;
 import java.util.logging.Level;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 
 /**
  *
@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProdutoVendidoController {
 
     @Autowired 
-    private ProdutoVendidoaRepository repository;
+    private ProdutoVendidoRepository repository;
     private ProdutoRepository produtoRepository;
     private VendaRepository vendaRepository;
     

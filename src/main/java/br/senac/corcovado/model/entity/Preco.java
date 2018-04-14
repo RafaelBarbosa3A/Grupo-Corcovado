@@ -74,19 +74,19 @@ public class Preco implements Serializable{
         this.nivelId = nivelId;
     }
 
-    public GregorianCalendar getCreated_at() {
+    public GregorianCalendar getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreated_at(GregorianCalendar createdAt) {
+    public void setCreatedAt(GregorianCalendar createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdated_at() {
+    public GregorianCalendar getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdated_at(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(GregorianCalendar updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -98,12 +98,12 @@ public class Preco implements Serializable{
         this.active = active;
     }
     
-    public void setCreated_at(long timeInMillis) {
+    public void setCreatedAt(long timeInMillis) {
         this.createdAt = new GregorianCalendar();
         this.createdAt.setTimeInMillis(timeInMillis);
     }
     
-    public void setUpdated_at(long timeInMillis) {
+    public void setUpdatedAt(long timeInMillis) {
         this.updatedAt = new GregorianCalendar();
         this.updatedAt.setTimeInMillis(timeInMillis);
     }
