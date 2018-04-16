@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.function.Consumer;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -46,24 +50,36 @@ public class ComercioController {
     
     @RequestMapping(value = "/comercio/addToCart", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String addCart(@RequestParam("produtoId") Long produtoId, 
+    @ResponseBody
+    public Iterable<ProdutoVendido> addCart(@RequestParam("produtoId") Long produtoId, 
             @RequestParam("quantidade") Integer quantidade) {
         
         //TODO Se não for possivel montar na view montar um builder/factory para ProdutoVendido.class
-        
         Venda venda = vendaRepo.findById(1L).get(); /* TODO encotrar uma venda baseada no usuário logado, depende de Spring security QUE O TSUDA AINDA NÃO PASSOU!!! */
+        
         Produto produto = produtoRepo.findById(produtoId).get();
         Iterable<Preco> precos = precoRepo.findAllByProdutoId(produtoId);
         Preco preco = precos.iterator().next(); // TODO selecionar o preço baseadno no perfil do usuário
         
-        ProdutoVendido item = new ProdutoVendido();
-        item.setVendaId(venda.getId());
-        item.setProdutoId(produto.getId());
-        item.setQuantidade(quantidade);
-        item.setPrecoTotal(preco.getPreco() * quantidade);
+        if(quantidade == null) {
+            quantidade = 1;
+        }
+        /* Cria ou modifica ProdutoVendido */
+        ProdutoVendido prodVenda;
+        if (prodVendRepo.existsByVendaIdAndProdutoId(venda.getId(), produtoId)) {
+            prodVenda = prodVendRepo.findByVendaIdAndProdutoId(venda.getId(), produtoId).get();
+            prodVenda.setQuantidade(prodVenda.getQuantidade() + quantidade);
+            
+        } else {
+            prodVenda = new ProdutoVendido();
+            prodVenda.setVendaId(venda.getId());
+            prodVenda.setProdutoId(produto.getId());
+            prodVenda.setQuantidade(quantidade);
+        }
         
-        prodVendRepo.save(item);
+        prodVenda.setPrecoTotal(prodVenda.getQuantidade() * preco.getPreco());
+        prodVendRepo.save(prodVenda);
         
-        return "Success";
+        return prodVendRepo.findByVendaId(venda.getId());
     }
 }
