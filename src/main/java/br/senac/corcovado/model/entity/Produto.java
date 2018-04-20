@@ -2,13 +2,22 @@ package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -16,8 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "produto")
-public class Produto implements Serializable{
-    
+public class Produto implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;
@@ -26,16 +34,24 @@ public class Produto implements Serializable{
     @Column(name = "codigo") private String codigo;
     @Column(name = "estoque") private Integer estoque;
     @Column(name = "reservado") private Integer reservado;
-    @Column(name = "categoria_id") private Long categoriaId;
-    @Column(name = "created_at") private GregorianCalendar createdAt;
-    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "id")) 
+    private Categoria categoria;
+    
+    @OneToMany(mappedBy = "preco", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Preco> precos;
+    
+    @Column(name = "created_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar createdAt;
+    @Column(name = "updated_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar updatedAt;
     @Column(name = "active") private boolean active;
 
     public Produto() {
         this.id = 0L;
+        this.active = true;
     }
 
-    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, Integer estoque, Integer reservado, Long categoria_id, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, Integer estoque, Integer reservado, Categoria categoria, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -43,7 +59,7 @@ public class Produto implements Serializable{
         this.codigo = codigo;
         this.estoque = estoque;
         this.reservado = reservado;
-        this.categoriaId = categoria_id;
+        this.categoria = categoria;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -105,12 +121,20 @@ public class Produto implements Serializable{
         this.reservado = reservado;
     }
 
-    public Long getCategoriaId() {
-        return categoriaId;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setCategoriaId(Long categoriaId) {
-        this.categoriaId = categoriaId;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public List<Preco> getPrecos() {
+        return precos;
+    }
+
+    public void setPrecos(List<Preco> precos) {
+        this.precos = precos;
     }
 
     public GregorianCalendar getCreatedAt() {
@@ -136,16 +160,6 @@ public class Produto implements Serializable{
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
-    }
 
     @Override
     public int hashCode() {
@@ -157,7 +171,7 @@ public class Produto implements Serializable{
         hash = 17 * hash + Objects.hashCode(this.codigo);
         hash = 17 * hash + Objects.hashCode(this.estoque);
         hash = 17 * hash + Objects.hashCode(this.reservado);
-        hash = 17 * hash + Objects.hashCode(this.categoriaId);
+        hash = 17 * hash + Objects.hashCode(this.categoria);
         hash = 17 * hash + Objects.hashCode(this.createdAt);
         hash = 17 * hash + Objects.hashCode(this.updatedAt);
         hash = 17 * hash + (this.active ? 1 : 0);
@@ -200,7 +214,7 @@ public class Produto implements Serializable{
         if (!Objects.equals(this.reservado, other.reservado)) {
             return false;
         }
-        if (!Objects.equals(this.categoriaId, other.categoriaId)) {
+        if (!Objects.equals(this.categoria, other.categoria)) {
             return false;
         }
         if (!Objects.equals(this.createdAt, other.createdAt)) {
@@ -214,6 +228,6 @@ public class Produto implements Serializable{
 
     @Override
     public String toString() {
-        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria_id=" + categoriaId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

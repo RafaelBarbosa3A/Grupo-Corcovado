@@ -5,10 +5,18 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -17,26 +25,32 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "preco")
-public class Preco implements Serializable{
-    
+public class Preco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
-    @Column(name = "produto_id") private Long produtoId;
     @Column(name = "preco") private Double preco;
-    @Column(name = "nivel_id") private Long nivelId;
-    @Column(name = "created_at") private GregorianCalendar createdAt;
-    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "produto_id", foreignKey = @ForeignKey(name = "id")) 
+    private Produto produto;
+        
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nivel") private Nivel nivel;
+    
+    @Column(name = "created_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar createdAt;
+    @Column(name = "updated_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar updatedAt;
     @Column(name = "active") private boolean active;
 
     public Preco() {
         this.id = 0L;
+        this.active = true;
     }
 
-    public Preco(Long id, Long produto_id, Double preco, Long nivel_id, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Preco(Long id, Double preco, Produto produto, Nivel nivel, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
-        this.produtoId = produto_id;
         this.preco = preco;
-        this.nivelId = nivel_id;
+        this.produto = produto;
+        this.nivel = nivel;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -45,39 +59,34 @@ public class Preco implements Serializable{
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getProdutoId() {
-        return produtoId;
+    public Produto getProduto() {
+        return produto;
     }
-
-    public void setProdutoId(Long produtoId) {
-        this.produtoId = produtoId;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     public Double getPreco() {
         return preco;
     }
-
     public void setPreco(Double preco) {
         this.preco = preco;
     }
 
-    public Long getNivelId() {
-        return nivelId;
+    public Nivel getNivel() {
+        return nivel;
     }
-
-    public void setNivelId(Long nivelId) {
-        this.nivelId = nivelId;
+    public void setNivel(Nivel nivel) {
+        this.nivel = nivel;
     }
 
     public GregorianCalendar getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(GregorianCalendar createdAt) {
         this.createdAt = createdAt;
     }
@@ -85,7 +94,6 @@ public class Preco implements Serializable{
     public GregorianCalendar getUpdatedAt() {
         return updatedAt;
     }
-
     public void setUpdatedAt(GregorianCalendar updatedAt) {
         this.updatedAt = updatedAt;
     }
@@ -93,31 +101,20 @@ public class Preco implements Serializable{
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
-    }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        hash = 67 * hash + Objects.hashCode(this.produtoId);
-        hash = 67 * hash + Objects.hashCode(this.preco);
-        hash = 67 * hash + Objects.hashCode(this.nivelId);
-        hash = 67 * hash + Objects.hashCode(this.createdAt);
-        hash = 67 * hash + Objects.hashCode(this.updatedAt);
-        hash = 67 * hash + (this.active ? 1 : 0);
+        hash = 89 * hash + Objects.hashCode(this.id);
+        hash = 89 * hash + Objects.hashCode(this.preco);
+        hash = 89 * hash + Objects.hashCode(this.produto);
+        hash = 89 * hash + Objects.hashCode(this.nivel);
+        hash = 89 * hash + Objects.hashCode(this.createdAt);
+        hash = 89 * hash + Objects.hashCode(this.updatedAt);
+        hash = 89 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -139,13 +136,13 @@ public class Preco implements Serializable{
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.produtoId, other.produtoId)) {
-            return false;
-        }
         if (!Objects.equals(this.preco, other.preco)) {
             return false;
         }
-        if (!Objects.equals(this.nivelId, other.nivelId)) {
+        if (!Objects.equals(this.produto, other.produto)) {
+            return false;
+        }
+        if (this.nivel != other.nivel) {
             return false;
         }
         if (!Objects.equals(this.createdAt, other.createdAt)) {
@@ -159,6 +156,6 @@ public class Preco implements Serializable{
 
     @Override
     public String toString() {
-        return "Preco{" + "id=" + id + ", produto_id=" + produtoId + ", preco=" + preco + ", nivel_id=" + nivelId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Preco{" + "id=" + id + ", preco=" + preco + ", produto=" + produto + ", nivel=" + nivel + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

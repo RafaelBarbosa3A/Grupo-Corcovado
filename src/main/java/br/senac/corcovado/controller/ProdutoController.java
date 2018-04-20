@@ -1,12 +1,8 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Produto;
-import br.senac.corcovado.model.exception.ProdutoException;
 import br.senac.corcovado.model.repository.CategoriaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
-import br.senac.corcovado.model.validator.ProdutoValidador;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,17 +45,10 @@ public class ProdutoController {
     @PostMapping(path = "/produtos/create")
     public ModelAndView create(@ModelAttribute Produto produto) {
         Produto salvo;
-        try {
-            ProdutoValidador.validar(produto);
-            salvo = repository.save(produto);
-        } catch (ProdutoException ex) { 
-            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("produto", produto);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
 
+        //TODO implementar validador via @Valid
+        salvo = repository.save(produto);
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }
@@ -73,16 +62,10 @@ public class ProdutoController {
     @PostMapping(path = "/produtos/update")
     public ModelAndView update(@ModelAttribute Produto produto) {
         Produto salvo;
-        try {
-            ProdutoValidador.validar(produto);
-            salvo = repository.save(produto);
-        } catch (ProdutoException ex) { 
-            Logger.getLogger(ProdutoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(produto);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
 
+        //TODO implementar validador via @Valid
+        salvo = repository.save(produto);
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }

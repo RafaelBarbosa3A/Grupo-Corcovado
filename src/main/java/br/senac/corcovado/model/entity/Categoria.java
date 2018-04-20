@@ -5,10 +5,16 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -17,25 +23,27 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "categoria")
 public class Categoria implements Serializable {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")private Long id;
-    @Column(name = "nome")private String nome;
-    @Column(name = "descricao")private String descricao;
-    @Column(name = "departamento_id")private Long departamentoId;
-    @Column(name = "created_at")private GregorianCalendar createdAt;
-    @Column(name = "updated_at")private GregorianCalendar updatedAt;
-    @Column(name = "active")private boolean active;
+    @Column(name = "id") private Long id;
+    @Column(name = "nome") private String nome;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departamento_id", foreignKey = @ForeignKey(name = "id")) 
+    private Departamento departamento;
+    
+    @Column(name = "created_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar createdAt;
+    @Column(name = "updated_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar updatedAt;
+    @Column(name = "active") private boolean active;
 
     public Categoria() {
         this.id = 0L;
+        this.active = true;
     }
 
-    public Categoria(Long id, String nome, String descricao, Long departamento_id, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Categoria(Long id, String nome, Departamento departamento, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
-        this.descricao = descricao;
-        this.departamentoId = departamento_id;
+        this.departamento = departamento;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -57,20 +65,12 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Departamento getDepartamento() {
+        return departamento;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Long getDepartamentoId() {
-        return departamentoId;
-    }
-
-    public void setDepartamentoId(Long departamentoId) {
-        this.departamentoId = departamentoId;
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 
     public GregorianCalendar getCreatedAt() {
@@ -96,24 +96,13 @@ public class Categoria implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
-    }
 
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 97 * hash + Objects.hashCode(this.id);
         hash = 97 * hash + Objects.hashCode(this.nome);
-        hash = 97 * hash + Objects.hashCode(this.descricao);
-        hash = 97 * hash + Objects.hashCode(this.departamentoId);
+        hash = 97 * hash + Objects.hashCode(this.departamento);
         hash = 97 * hash + Objects.hashCode(this.createdAt);
         hash = 97 * hash + Objects.hashCode(this.updatedAt);
         hash = 97 * hash + (this.active ? 1 : 0);
@@ -138,13 +127,10 @@ public class Categoria implements Serializable {
         if (!Objects.equals(this.nome, other.nome)) {
             return false;
         }
-        if (!Objects.equals(this.descricao, other.descricao)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.departamentoId, other.departamentoId)) {
+        if (!Objects.equals(this.departamento, other.departamento)) {
             return false;
         }
         if (!Objects.equals(this.createdAt, other.createdAt)) {
@@ -158,6 +144,6 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "Categoria{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", departamento_id=" + departamentoId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Categoria{" + "id=" + id + ", nome=" + nome + ", departamento=" + departamento + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

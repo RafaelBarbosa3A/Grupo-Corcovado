@@ -2,12 +2,8 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Preco;
-import br.senac.corcovado.model.exception.PrecoException;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
-import br.senac.corcovado.model.validator.PrecoValidador;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,17 +48,10 @@ public class PrecoController {
     @PostMapping(path = "/precos/create")
     public ModelAndView create(@ModelAttribute Preco preco) {
         Preco salvo;
-        try {
-            PrecoValidador.validar(preco);
-            salvo = repository.save(preco);
-        } catch (PrecoException ex) { 
-            Logger.getLogger(PrecoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("preco", preco);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
-
+        
+        //TODO implementar validador via @Valid
+        salvo = repository.save(preco);
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }
@@ -76,15 +65,9 @@ public class PrecoController {
     @PostMapping(path = "/precos/update")
     public ModelAndView update(@ModelAttribute Preco preco) {
         Preco salvo;
-        try {
-            PrecoValidador.validar(preco);
-            salvo = repository.save(preco);
-        } catch (PrecoException ex) { 
-            Logger.getLogger(PrecoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(preco);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
+        
+        //TODO implementar validador via @Valid
+        salvo = repository.save(preco);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;

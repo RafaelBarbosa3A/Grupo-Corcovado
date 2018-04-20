@@ -74,8 +74,13 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="departamentoId">Departamento Id:</label>
-                    <input class="form-control" placeholder="Departamento Id" data-th-field="*{departamentoId}" />
+                    <label for="departamento">Departamento:</label>
+                    <select class="form-control" data-th-field="*{departamento}">
+                         <option value=""> -- </option>
+                         <option data-th-each="depto : ${departamentos}"
+                            data-th-value="${depto}"
+                            data-th-utext="${depto.nome}"/>
+                    </select>
                 </div>
                 
 
