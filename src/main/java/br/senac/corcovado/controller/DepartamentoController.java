@@ -30,7 +30,7 @@ public class DepartamentoController {
     @GetMapping("/departamentos/{id}")
     public ModelAndView show(@PathVariable("id") Long id) {
         ModelAndView mav = new ModelAndView("/departamento/departamento_show");
-        mav.addObject("departamento", repository.findById(id).get());
+        mav.addObject("departamento", repository.findDepartamentoById(id).get());
         return mav;
     }
     
@@ -53,7 +53,7 @@ public class DepartamentoController {
     
     @GetMapping({"/departamentos/{id}/edit", "/departamentos/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") Long id) {
-        ModelAndView mav = editForm(repository.findById(id).get());
+        ModelAndView mav = editForm(repository.findDepartamentoById(id).get());
         return mav;
     }
     

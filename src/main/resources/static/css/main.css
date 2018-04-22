@@ -3,14 +3,6 @@
     background-color: #f7f7f9;
 }
 
-.footer {
-    /*
-    position: relative;
-    bottom: 0;
-    */
-}
-
-
 .main {
     min-height: calc(100vh - 412px);
 }

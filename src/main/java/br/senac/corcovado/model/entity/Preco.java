@@ -1,22 +1,26 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  *
@@ -24,36 +28,35 @@ import javax.persistence.TemporalType;
  */
 
 @Entity
-@Table(name = "preco")
+@Table(name = "preco", uniqueConstraints={ @UniqueConstraint(columnNames = {"produto_id", "nivel"})} )
+/*
+@SQLDelete(sql = "UPDATE preco SET active = false WHERE id = ?")
+@Loader(namedQuery = "findPrecoById")
+@NamedQuery(name = "findPrecoById", query = "SELECT p FROM Preco p WHERE p.id = ?1")
+@Where(clause = "active = true")
+*/
 public class Preco implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
     @Column(name = "preco") private Double preco;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "produto_id", foreignKey = @ForeignKey(name = "id")) 
-    private Produto produto;
-        
-    @Enumerated(EnumType.STRING)
-    @Column(name = "nivel") private Nivel nivel;
-    
-    @Column(name = "created_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar createdAt;
-    @Column(name = "updated_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar updatedAt;
-    @Column(name = "active") private boolean active;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "produto_id", referencedColumnName = "id") private Produto produto;
+    @Enumerated(EnumType.STRING) @Column(name = "nivel") private Nivel nivel;
+    @Column(name = "created_at") private Long createdAt;
+    @Column(name = "updated_at") private Long updatedAt;
+    //@Column(name = "active") private boolean active;
 
     public Preco() {
         this.id = 0L;
-        this.active = true;
+        //this.active = true;
     }
 
-    public Preco(Long id, Double preco, Produto produto, Nivel nivel, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Preco(Long id, Double preco, Produto produto, Nivel nivel, Long createdAt, Long updatedAt /*, boolean active*/) {
         this.id = id;
         this.preco = preco;
         this.produto = produto;
         this.nivel = nivel;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.active = active;
+        //this.active = active;
     }
 
     public Long getId() {
@@ -84,26 +87,28 @@ public class Preco implements Serializable {
         this.nivel = nivel;
     }
 
-    public GregorianCalendar getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
+    /*
     public boolean isActive() {
         return active;
     }
     public void setActive(boolean active) {
         this.active = active;
     }
+    */
 
     @Override
     public int hashCode() {
@@ -114,7 +119,7 @@ public class Preco implements Serializable {
         hash = 89 * hash + Objects.hashCode(this.nivel);
         hash = 89 * hash + Objects.hashCode(this.createdAt);
         hash = 89 * hash + Objects.hashCode(this.updatedAt);
-        hash = 89 * hash + (this.active ? 1 : 0);
+        //hash = 89 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -130,9 +135,11 @@ public class Preco implements Serializable {
             return false;
         }
         final Preco other = (Preco) obj;
+        /*
         if (this.active != other.active) {
             return false;
         }
+        */
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -156,6 +163,26 @@ public class Preco implements Serializable {
 
     @Override
     public String toString() {
-        return "Preco{" + "id=" + id + ", preco=" + preco + ", produto=" + produto + ", nivel=" + nivel + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Preco{" + "id=" + id + ", preco=" + preco + ", produto=" + produto + ", nivel=" + nivel + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt /*+ ", active=" + active*/ + '}';
     }
+    
+    // === JPA Gambiarras ===
+    
+    @PrePersist
+    private void prePersist() {
+        this.createdAt = System.currentTimeMillis();
+        this.updatedAt = System.currentTimeMillis();
+    }
+    
+    @PreUpdate
+    private void preUpdate() {
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    /*
+    @PreRemove
+    private void preRemove() {
+        this.active = false;
+    }
+    */
 }

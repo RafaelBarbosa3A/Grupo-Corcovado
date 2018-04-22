@@ -1,9 +1,15 @@
 package br.senac.corcovado.controller;
 
+
 import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Preco;
+import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,84 +24,73 @@ import org.springframework.web.servlet.ModelAndView;
  * @author wesley
  */
 @Controller
-@RequestMapping("/precos")
+@RequestMapping
 public class PrecoController {
 
-    @Autowired 
-    private PrecoRepository repository;
-    private ProdutoRepository produtosRepository;
+    @Autowired private PrecoRepository precoRepo;
+    @Autowired private ProdutoRepository prodRepo;
     
-    @GetMapping("/precos")
-    public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("/preco/preco_list");
-        mav.addObject("precos", repository.findAll());
-        return mav;
-    }
-    
-    @GetMapping("/precos/{id}")
-    public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("/preco/preco_show");
-        mav.addObject("preco", repository.findById(Long.parseLong(usId)).get());
-        return mav;
-    }
-    
-    @GetMapping("/precos/new")
-    public ModelAndView new_() {
-        ModelAndView mav = newForm();
-        return mav;
-    }
-    
-    @PostMapping(path = "/precos/create")
-    public ModelAndView create(@ModelAttribute Preco preco) {
-        Preco salvo;
+    @GetMapping("/produtos/{produtoId}/precos")
+    public ModelAndView list(@PathVariable("produtoId") long produtoId) {
+        Produto produto = prodRepo.findById(produtoId).get();
         
-        //TODO implementar validador via @Valid
-        salvo = repository.save(preco);
-        
-        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
-        return redirect;
+        return new ModelAndView("/preco/preco_list")
+                .addObject("produto", produto)
+                .addObject("precos", precoRepo.findAllByProdutoId(produtoId))
+                .addObject("novoPreco", (Nivel.values().length > produto.getPrecos().size()));
     }
     
-    @GetMapping({"/precos/{id}/edit", "/precos/edit/{id}"})
-    public ModelAndView edit(@PathVariable("id") String usId) {
-        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
-        return mav;
+    @GetMapping("/produtos/precos/{id}")
+    public ModelAndView show(@PathVariable("id") long id) {
+        return new ModelAndView("/preco/preco_show")
+                .addObject("preco", precoRepo.findById(id).get());
     }
     
-    @PostMapping(path = "/precos/update")
-    public ModelAndView update(@ModelAttribute Preco preco) {
-        Preco salvo;
+    @GetMapping("/produtos/{produtoId}/precos/new")
+    public ModelAndView new_(@PathVariable("produtoId") long produtoId) {
+        Produto produto = prodRepo.findById(produtoId).get();
         
-        //TODO implementar validador via @Valid
-        salvo = repository.save(preco);
+        Preco preco = new Preco();
+        preco.setProduto(produto);
+        
+        //ArrayList<Nivel> niveis = Arrays.asList(Nivel.values());
+        ArrayList<Nivel> niveis = new ArrayList<>();
+        for (Nivel nivel : Nivel.values()) {
+            niveis.add(nivel);
+        }
+        
+        List<Nivel> niveisUtilizados = produto.getPrecos().stream().map(Preco::getNivel).collect(Collectors.toList());
+        niveis.removeAll(niveisUtilizados);
+        
+        return new ModelAndView("/preco/preco_form")
+                .addObject("preco", preco)
+                .addObject("action", "create")
+                .addObject("niveis", niveis);
+    }
 
-        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
-        return redirect;
+    @GetMapping({"/produtos/precos/{id}/edit", "/produtos/precos/edit/{id}"})
+    public ModelAndView edit(@PathVariable("id") long id) {
+        Preco preco = precoRepo.findById(id).get();
+        
+        return new ModelAndView("/preco/preco_form")
+                .addObject("preco", preco)
+                .addObject("action", "update");
+    }
+
+    @PostMapping(path = {"/produtos/precos/create", "/produtos/precos/update"})
+    public ModelAndView save(@ModelAttribute Preco preco) {
+        Preco salvo;
+        
+        //TODO implementar validador via @Valid
+        salvo = precoRepo.save(preco);
+        
+        return new ModelAndView("redirect:/produtos/precos/" + salvo.getId());
     }
     
-    @PostMapping(path = {"/precos/{id}/destroy", "/precos/destroy/{id}"})
-    public ModelAndView destroy(@PathVariable("id") String usId) {
-        repository.deleteById(Long.parseLong(usId));
-        ModelAndView redirect = new ModelAndView("redirect:/precos");
-        return redirect;
-    }
-    
-    
-    private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("/preco/preco_form");
-        modelAndView.addObject("action", "create");
-        modelAndView.addObject("preco", new Preco());
-        modelAndView.addObject("niveis", Nivel.values());
-        modelAndView.addObject("produtos", produtosRepository.findAll());
-        return modelAndView;
-    }
-    
-    private ModelAndView editForm(Preco preco) {
-        ModelAndView modelAndView = new ModelAndView("/preco/preco_form");
-        modelAndView.addObject("action", "update");
-        modelAndView.addObject("preco", preco);
-        modelAndView.addObject("niveis", Nivel.values());
-        modelAndView.addObject("produtos", produtosRepository.findAll());
-        return modelAndView;
+    @PostMapping(path = {"/produtos/precos/{id}/destroy", "/produtos/precos/destroy/{id}"})
+    public ModelAndView destroy(@PathVariable("id") Long id) {
+        Produto produto = precoRepo.findById(id).get().getProduto();
+        precoRepo.deleteById(id);
+        return new ModelAndView("redirect:/produtos/" + produto.getId() + "/precos");
     }
 }

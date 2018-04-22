@@ -61,16 +61,11 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Departamento' : 'Alterar Departamento'">Lero-lero</div>
             <form data-th-action="@{/departamentos/{act}(act = ${action})}" method="post" data-th-object="${departamento}">
                 <input type="hidden" data-th-field="*{id}" />
+                <input type="hidden" data-th-field="*{createdAt}" />
                 
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input placeholder="Nome" class="form-control" id="nome" data-th-field="*{nome}" />
-                
-                </div>
-                
-                <div class="form-group">
-                    <label for="descricao">Descrição:</label>
-                    <textarea placeholder="Descrição" class="form-control" rows="3" id="descricao" data-th-field="*{descricao}"></textarea>
                 </div>
                 
                 <div class="row justify-content-between align-items-center">

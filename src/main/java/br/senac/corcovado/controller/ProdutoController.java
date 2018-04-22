@@ -2,6 +2,7 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.repository.CategoriaRepository;
+import br.senac.corcovado.model.repository.DepartamentoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ProdutoController {
 
-    @Autowired 
-    private ProdutoRepository repository;
-    private CategoriaRepository categoriaRepository;
+    @Autowired private ProdutoRepository repository;
+    @Autowired private DepartamentoRepository deptoRepo;
+    
+    
     
     @GetMapping("/produtos")
     public ModelAndView list() {
@@ -32,7 +34,7 @@ public class ProdutoController {
     @GetMapping("/produtos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
         ModelAndView mav = new ModelAndView("/produto/produto_show");
-        mav.addObject("produto", repository.findById(Long.parseLong(usId)).get());
+        mav.addObject("produto", repository.findProdutoById(Long.parseLong(usId)).get());
         return mav;
     }
     
@@ -55,7 +57,7 @@ public class ProdutoController {
     
     @GetMapping({"/produtos/{id}/edit", "/produtos/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") String usId) {
-        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
+        ModelAndView mav = editForm(repository.findProdutoById(Long.parseLong(usId)).get());
         return mav;
     }
     
@@ -82,7 +84,8 @@ public class ProdutoController {
         ModelAndView modelAndView = new ModelAndView("/produto/produto_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("produto", new Produto());
-        modelAndView.addObject("categorias", categoriaRepository.findAll());
+        modelAndView.addObject("departamentos", deptoRepo.findAll());
+        //modelAndView.addObject("categorias", categoriaRepository.findAll());
         return modelAndView;
     }
     
@@ -90,7 +93,8 @@ public class ProdutoController {
         ModelAndView modelAndView = new ModelAndView("/produto/produto_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("produto", produto);
-        modelAndView.addObject("categorias", categoriaRepository.findAll());
+        modelAndView.addObject("departamentos", deptoRepo.findAll());
+        //modelAndView.addObject("categorias", categoriaRepository.findAll());
         return modelAndView;
     }
 }

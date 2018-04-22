@@ -1,23 +1,26 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  *
@@ -25,25 +28,22 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "produto")
+@SQLDelete(sql = "UPDATE produto SET active = false WHERE id = ?")
+@Loader(namedQuery = "findProdutoById")
+@NamedQuery(name = "findProdutoById", query = "SELECT p FROM Produto p WHERE p.id = ?1")
+@Where(clause = "active = true")
 public class Produto implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;
     @Column(name = "descricao") private String descricao;
     @Column(name = "fabricante") private String fabricante;
     @Column(name = "codigo") private String codigo;
     @Column(name = "estoque") private Integer estoque;
     @Column(name = "reservado") private Integer reservado;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "id")) 
-    private Categoria categoria;
-    
-    @OneToMany(mappedBy = "preco", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Preco> precos;
-    
-    @Column(name = "created_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar createdAt;
-    @Column(name = "updated_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar updatedAt;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
+    @Column(name = "created_at") private Long createdAt;
+    @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
 
     public Produto() {
@@ -51,7 +51,7 @@ public class Produto implements Serializable {
         this.active = true;
     }
 
-    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, Integer estoque, Integer reservado, Categoria categoria, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, Integer estoque, Integer reservado, Categoria categoria, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -68,7 +68,6 @@ public class Produto implements Serializable {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -76,7 +75,6 @@ public class Produto implements Serializable {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -84,7 +82,6 @@ public class Produto implements Serializable {
     public String getDescricao() {
         return descricao;
     }
-
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -92,7 +89,6 @@ public class Produto implements Serializable {
     public String getFabricante() {
         return fabricante;
     }
-
     public void setFabricante(String fabricante) {
         this.fabricante = fabricante;
     }
@@ -100,7 +96,6 @@ public class Produto implements Serializable {
     public String getCodigo() {
         return codigo;
     }
-
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
@@ -108,7 +103,6 @@ public class Produto implements Serializable {
     public Integer getEstoque() {
         return estoque;
     }
-
     public void setEstoque(Integer estoque) {
         this.estoque = estoque;
     }
@@ -116,7 +110,6 @@ public class Produto implements Serializable {
     public Integer getReservado() {
         return reservado;
     }
-
     public void setReservado(Integer reservado) {
         this.reservado = reservado;
     }
@@ -124,7 +117,6 @@ public class Produto implements Serializable {
     public Categoria getCategoria() {
         return categoria;
     }
-
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
@@ -132,31 +124,27 @@ public class Produto implements Serializable {
     public List<Preco> getPrecos() {
         return precos;
     }
-
     public void setPrecos(List<Preco> precos) {
         this.precos = precos;
     }
 
-    public GregorianCalendar getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
-
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -229,5 +217,23 @@ public class Produto implements Serializable {
     @Override
     public String toString() {
         return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    }
+    
+    // === JPA Gambiarras ===
+    
+    @PrePersist
+    private void prePersist() {
+        this.createdAt = System.currentTimeMillis();
+        this.updatedAt = System.currentTimeMillis();
+    }
+    
+    @PreUpdate
+    private void preUpdate() {
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    @PreRemove
+    private void preRemove() {
+        this.active = false;
     }
 }

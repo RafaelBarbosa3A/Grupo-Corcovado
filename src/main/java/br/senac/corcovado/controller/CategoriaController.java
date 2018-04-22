@@ -22,7 +22,7 @@ public class CategoriaController {
     private CategoriaRepository repository;
     
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private DepartamentoRepository deptoRepository;
     
     @GetMapping("/categorias")
     public ModelAndView list() {
@@ -34,7 +34,7 @@ public class CategoriaController {
     @GetMapping("/categorias/{id}")
     public ModelAndView show(@PathVariable("id") Long id) {
         ModelAndView mav = new ModelAndView("/categoria/categoria_show");
-        mav.addObject("categoria", repository.findById(id).get());
+        mav.addObject("categoria", repository.findCategoriaById(id).get());
         return mav;
     }
     
@@ -57,7 +57,7 @@ public class CategoriaController {
     
     @GetMapping({"/categorias/{id}/edit", "/categorias/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") Long id) {
-        ModelAndView mav = editForm(repository.findById(id).get());
+        ModelAndView mav = editForm(repository.findCategoriaById(id).get());
         return mav;
     }
     
@@ -83,7 +83,7 @@ public class CategoriaController {
         ModelAndView modelAndView = new ModelAndView("/categoria/categoria_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("categoria", new Categoria());
-        modelAndView.addObject("departamentos", departamentoRepository.findAll());
+        modelAndView.addObject("departamentos", deptoRepository.findAll());
         return modelAndView;
     }
     
@@ -91,7 +91,7 @@ public class CategoriaController {
         ModelAndView modelAndView = new ModelAndView("/categoria/categoria_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("categoria", categoria);
-        modelAndView.addObject("departamentos", departamentoRepository.findAll());        
+        modelAndView.addObject("departamentos", deptoRepository.findAll());
         return modelAndView;
     }
 }

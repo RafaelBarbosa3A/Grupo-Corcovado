@@ -1,20 +1,23 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  *
@@ -22,25 +25,30 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "categoria")
-public class Categoria implements Serializable {
+@SQLDelete(sql = "UPDATE categoria SET active = false WHERE id = ?")
+@Loader(namedQuery = "findCategoriaById")
+@NamedQuery(name = "findCategoriaById", query = "SELECT c FROM Categoria c WHERE c.id = ?1")
+@Where(clause = "active = true")
+public class Categoria implements Serializable {    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "departamento_id", foreignKey = @ForeignKey(name = "id")) 
+    @JoinColumn(name = "departamento_id", referencedColumnName = "id") 
     private Departamento departamento;
     
-    @Column(name = "created_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar createdAt;
-    @Column(name = "updated_at") @Temporal(TemporalType.TIMESTAMP) private GregorianCalendar updatedAt;
+    @Column(name = "created_at") private Long createdAt;
+    @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
-
+        
     public Categoria() {
         this.id = 0L;
+        this.createdAt = 0L;
         this.active = true;
     }
 
-    public Categoria(Long id, String nome, Departamento departamento, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Categoria(Long id, String nome, Departamento departamento, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.departamento = departamento;
@@ -52,7 +60,6 @@ public class Categoria implements Serializable {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -60,7 +67,6 @@ public class Categoria implements Serializable {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -68,37 +74,32 @@ public class Categoria implements Serializable {
     public Departamento getDepartamento() {
         return departamento;
     }
-
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
     }
-
-    public GregorianCalendar getCreatedAt() {
+    
+    public Long getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
-
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int hash = 5;
         hash = 97 * hash + Objects.hashCode(this.id);
         hash = 97 * hash + Objects.hashCode(this.nome);
@@ -109,8 +110,7 @@ public class Categoria implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    @Override public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -142,8 +142,25 @@ public class Categoria implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "Categoria{" + "id=" + id + ", nome=" + nome + ", departamento=" + departamento + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    }
+    
+    // === JPA Gambiarras ===
+    
+    @PrePersist
+    private void prePersist() {
+        this.createdAt = System.currentTimeMillis();
+        this.updatedAt = System.currentTimeMillis();
+    }
+    
+    @PreUpdate
+    private void preUpdate() {
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    @PreRemove
+    private void preRemove() {
+        this.active = false;
     }
 }

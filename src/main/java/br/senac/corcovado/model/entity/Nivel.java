@@ -12,13 +12,19 @@ public enum Nivel {
     PLATINUM("Platinum"),
     BLACK("Black");
     
-    private final String name;
+    private final String nome;
     
-    private Nivel(String name) {
-        this.name = name;
+    private Nivel(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
     }
     
+    /*
     @Override public String toString() {
-        return name;
+        return nome;
     }
+    */
 }

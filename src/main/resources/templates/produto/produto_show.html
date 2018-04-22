@@ -97,9 +97,19 @@
                 <span data-th-text="${produto.reservado}"></span>
             </p>
             
+            <div class="mt-3 mb-2">
+                <strong>Preços:</strong><br>
+                <ul>
+                    <li data-th-each="preco : ${produto.precos}">
+                        <span data-th-text="${preco.nivel.nome}"></span> - <span data-th-text="${preco.preco}"></span>
+                    </li>
+                </ul>
+                <a href="#" data-th-href="@{/produtos/{produtoId}/precos(produtoId = ${produto.id})}" class="btn btn-primary">Preços</a>
+            </div>
+            
             <p class="mt-3 mb-2">
-                <strong>Categoria Id:</strong><br>
-                <span data-th-text="${produto.categoriaId}"></span>
+                <strong>Categoria:</strong><br>
+                <span data-th-text="${produto.categoria.nome}"></span>
             </p>
             
             <a class="btn" href="#" data-th-href="@{/produtos}">Voltar</a>

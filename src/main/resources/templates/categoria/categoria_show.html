@@ -73,13 +73,8 @@
             </p>
             
             <p class="mt-3 mb-2">
-                <strong>Descrição:</strong><br>
-                <span data-th-text="${categoria.descricao}"></span>
-            </p>
-            
-            <p class="mt-3 mb-2">
-                <strong>Departamento Id:</strong><br>
-                <span data-th-text="${categoria.departamentoId}"></span>
+                <strong>Departamento:</strong><br>
+                <span data-th-text="${categoria.departamento.nome}"></span>
             </p>
             
             <a class="btn" href="#" data-th-href="@{/categorias}">Voltar</a>
