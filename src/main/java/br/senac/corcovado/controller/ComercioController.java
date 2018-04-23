@@ -36,7 +36,6 @@ public class ComercioController {
             Produto next = iterator.next();
             next.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(next.getId())));
         }
-        
         return new ModelAndView("/comercio/comercio").addObject("produtos", produtos);
     }
     
