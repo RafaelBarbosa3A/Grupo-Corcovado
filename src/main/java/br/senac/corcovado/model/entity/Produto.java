@@ -1,6 +1,7 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -39,8 +40,9 @@ public class Produto implements Serializable {
     @Column(name = "descricao") private String descricao;
     @Column(name = "fabricante") private String fabricante;
     @Column(name = "codigo") private String codigo;
-    @Column(name = "estoque") private Integer estoque;
-    @Column(name = "reservado") private Integer reservado;
+    @Column(name = "imagem") private String imagem;
+    @Column(name = "estoque") private int estoque;
+    @Column(name = "reservado") private int reservado;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
     @Transient @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
     @Column(name = "created_at") private Long createdAt;
@@ -49,18 +51,21 @@ public class Produto implements Serializable {
 
     public Produto() {
         this.id = 0L;
+        this.precos = new ArrayList();
         this.active = true;
     }
 
-    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, Integer estoque, Integer reservado, Categoria categoria, Long createdAt, Long updatedAt, boolean active) {
+    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, String imagem, int estoque, int reservado, Categoria categoria, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.fabricante = fabricante;
         this.codigo = codigo;
+        this.imagem = imagem;
         this.estoque = estoque;
         this.reservado = reservado;
         this.categoria = categoria;
+        this.precos = new ArrayList();
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -101,17 +106,24 @@ public class Produto implements Serializable {
         this.codigo = codigo;
     }
 
-    public Integer getEstoque() {
+    public String getImagem() {
+        return imagem;
+    }
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public int getEstoque() {
         return estoque;
     }
-    public void setEstoque(Integer estoque) {
+    public void setEstoque(int estoque) {
         this.estoque = estoque;
     }
 
-    public Integer getReservado() {
+    public int getReservado() {
         return reservado;
     }
-    public void setReservado(Integer reservado) {
+    public void setReservado(int reservado) {
         this.reservado = reservado;
     }
 
@@ -150,25 +162,25 @@ public class Produto implements Serializable {
         this.active = active;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.id);
-        hash = 17 * hash + Objects.hashCode(this.nome);
-        hash = 17 * hash + Objects.hashCode(this.descricao);
-        hash = 17 * hash + Objects.hashCode(this.fabricante);
-        hash = 17 * hash + Objects.hashCode(this.codigo);
-        hash = 17 * hash + Objects.hashCode(this.estoque);
-        hash = 17 * hash + Objects.hashCode(this.reservado);
-        hash = 17 * hash + Objects.hashCode(this.categoria);
-        hash = 17 * hash + Objects.hashCode(this.createdAt);
-        hash = 17 * hash + Objects.hashCode(this.updatedAt);
-        hash = 17 * hash + (this.active ? 1 : 0);
+    @Override public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.nome);
+        hash = 59 * hash + Objects.hashCode(this.descricao);
+        hash = 59 * hash + Objects.hashCode(this.fabricante);
+        hash = 59 * hash + Objects.hashCode(this.codigo);
+        hash = 59 * hash + Objects.hashCode(this.imagem);
+        hash = 59 * hash + Objects.hashCode(this.estoque);
+        hash = 59 * hash + Objects.hashCode(this.reservado);
+        hash = 59 * hash + Objects.hashCode(this.categoria);
+        hash = 59 * hash + Objects.hashCode(this.precos);
+        hash = 59 * hash + Objects.hashCode(this.createdAt);
+        hash = 59 * hash + Objects.hashCode(this.updatedAt);
+        hash = 59 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    @Override public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -179,45 +191,14 @@ public class Produto implements Serializable {
             return false;
         }
         final Produto other = (Produto) obj;
-        if (this.active != other.active) {
-            return false;
-        }
-        if (!Objects.equals(this.nome, other.nome)) {
-            return false;
-        }
-        if (!Objects.equals(this.descricao, other.descricao)) {
-            return false;
-        }
-        if (!Objects.equals(this.fabricante, other.fabricante)) {
-            return false;
-        }
-        if (!Objects.equals(this.codigo, other.codigo)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.estoque, other.estoque)) {
-            return false;
-        }
-        if (!Objects.equals(this.reservado, other.reservado)) {
-            return false;
-        }
-        if (!Objects.equals(this.categoria, other.categoria)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    @Override public String toString() {
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", imagem=" + imagem + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", precos=" + precos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
     
     // === JPA Gambiarras ===
