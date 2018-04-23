@@ -51,7 +51,7 @@ public class Produto implements Serializable {
 
     public Produto() {
         this.id = 0L;
-        this.precos = new ArrayList();
+        this.precos = new ArrayList<Preco>();
         this.active = true;
     }
 
@@ -65,7 +65,7 @@ public class Produto implements Serializable {
         this.estoque = estoque;
         this.reservado = reservado;
         this.categoria = categoria;
-        this.precos = new ArrayList();
+        this.precos = new ArrayList<Preco>();
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -200,15 +200,15 @@ public class Produto implements Serializable {
     @Override public String toString() {
         return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", imagem=" + imagem + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", precos=" + precos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
-    
+
     // === JPA Gambiarras ===
-    
+
     @PrePersist
     private void prePersist() {
         this.createdAt = System.currentTimeMillis();
         this.updatedAt = System.currentTimeMillis();
     }
-    
+
     @PreUpdate
     private void preUpdate() {
         this.updatedAt = System.currentTimeMillis();

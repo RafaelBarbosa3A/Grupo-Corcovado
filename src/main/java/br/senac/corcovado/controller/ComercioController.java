@@ -29,7 +29,7 @@ public class ComercioController {
     @Autowired private ProdutoVendidoRepository prodVendRepo;
     */
     @GetMapping("/comercio")
-    public ModelAndView list() {
+    public ModelAndView main() {
         // TODO adicionar paramtros de busca
         Iterable<Produto> produtos = prodRepo.findAll();
         for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
@@ -38,19 +38,19 @@ public class ComercioController {
         }
         return new ModelAndView("/comercio/comercio").addObject("produtos", produtos);
     }
-    
+
     /*
     @RequestMapping(value = "/comercio/addToCart", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Iterable<ProdutoVendido> addCart(@RequestParam("produtoId") Long produtoId, @RequestParam("quantidade") Integer quantidade) {
-        
+
         //TODO Se não for possivel montar na view montar um builder/factory para ProdutoVendido.class
-        Venda venda = vendaRepo.findById(1L).get(); 
-        
+        Venda venda = vendaRepo.findById(1L).get();
+
         Produto produto = produtoRepo.findById(produtoId).get();
         Iterable<Preco> precos = precoRepo.findAllByProdutoId(produtoId);
         Preco preco = precos.iterator().next(); // TODO selecionar o preço baseadno no perfil do usuário
-        
+
         if(quantidade == null) {
             quantidade = 1;
         }
@@ -59,17 +59,17 @@ public class ComercioController {
         if (prodVendRepo.existsByVendaIdAndProdutoId(venda.getId(), produtoId)) {
             prodVenda = prodVendRepo.findByVendaIdAndProdutoId(venda.getId(), produtoId).get();
             prodVenda.setQuantidade(prodVenda.getQuantidade() + quantidade);
-            
+
         } else {
             prodVenda = new ProdutoVendido();
             prodVenda.setVendaId(venda.getId());
             prodVenda.setProdutoId(produto.getId());
             prodVenda.setQuantidade(quantidade);
         }
-        
+
         prodVenda.setPrecoTotal(prodVenda.getQuantidade() * preco.getPreco());
         prodVendRepo.save(prodVenda);
-        
+
         return prodVendRepo.findByVendaId(venda.getId());
     }
     */
