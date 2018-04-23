@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Corcovado - Lista de Produtos</title>
+        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" data-th-href="@{/css/main.css}" />
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-md navbar-dark bg-corcovado">
+                <a class="navbar-brand" href="#">
+                    <img src="/images/corcovado.svg" data-th-src="@{/images/corcovado.svg}" width="36" height="30" class="d-inline-block align-top" alt="Logo Corcovado">
+                    Corcovado
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarsExample04">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departamentos </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown04">
+                                <a class="dropdown-item" href="#">Alimentos</a>
+                                <a class="dropdown-item" href="#">Bebidas</a>
+                                <a class="dropdown-item" href="#">Carnes</a>
+                                <a class="dropdown-item" href="#">Congelados</a>
+                                <a class="dropdown-item" href="#">Doces</a>
+                                <a class="dropdown-item" href="#">Feira</a>
+                                <a class="dropdown-item" href="#">Matinais</a>
+                                <a class="dropdown-item" href="#">Snacks</a>
+                                <a class="dropdown-item" href="#">Pet Shop</a>
+                                <a class="dropdown-item" href="#">Limpeza</a>
+                                <a class="dropdown-item" href="#">Bebês</a>
+                                <a class="dropdown-item" href="#">Perfumaria</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-user-circle"></i>&nbsp;Perfil&nbsp;&nbsp;</a>
+                        </li>
+                        <li class="nav-item">
+                            <form class="form-inline my-2 my-md-0">
+                                <input class="form-control" type="text" placeholder="Pesquisar">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container main">
+            <div class="row">
+                <!-- Resumo Carrinho -->
+                <div class="col-12 col-md-6 order-md-1 col-lg-3 order-lg-last col-xl-2 pt-3">
+                    <p class="d-flex justify-content-between align-items-center mb-3 h5">
+                        <span>Carrinho</span>
+                        <span class="badge badge-secondary badge-pill">3</span>
+                    </p>
+                    <ul class="list-group mb-3">
+                        <!--  TODO integrar carrinho
+                        <li class="list-group-item">
+                          <p class="h6 my-0">Primeiro produto </p>
+                          <div class="d-flex justify-content-between lh-condensed mt-2">
+                            <small class="text-muted">1x</small>
+                            <small class="text-muted">R$12,00</small>
+                          </div>
+                        </li>
+                        -->
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <strong>Total</strong>
+                            <strong>R$0,00</strong> <!-- TODO integrar carrinho -->
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Menu Filtro -->
+                <div class="col-12 col-md-6 order-md-0 col-lg-3 col-xl-2 pt-3">
+                    <form> <!-- TODO montar filtros dinamicos -->
+                        <p class="h5">Departamentos</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento1">
+                            <label class="form-check-label" for="checkDepartamento1">
+                                Alimentos
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento2">
+                            <label class="form-check-label" for="checkDepartamento2">
+                                Bebidas
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento3">
+                            <label class="form-check-label" for="checkDepartamento3">
+                                Carnes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento4">
+                            <label class="form-check-label" for="checkDepartamento4">
+                                Congelados
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento5">
+                            <label class="form-check-label" for="checkDepartamento5">
+                                Doces
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento6">
+                            <label class="form-check-label" for="checkDepartamento6">
+                                Feira
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento7">
+                            <label class="form-check-label" for="checkDepartamento7">
+                                Matinais
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento8">
+                            <label class="form-check-label" for="checkDepartamento8">
+                                Snacks
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento9">
+                            <label class="form-check-label" for="checkDepartamento9">
+                                Pet Shop
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento10">
+                            <label class="form-check-label" for="checkDepartamento10">
+                                Limpeza
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento11">
+                            <label class="form-check-label" for="checkDepartamento11">
+                                Bebês
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDepartamento12">
+                            <label class="form-check-label" for="checkDepartamento12">
+                                Perfumaria
+                            </label>
+                        </div>
+                        <hr />
+
+                        <p class="h5">Preço</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkPreco1">
+                            <label class="form-check-label" for="checkPreco1">
+                                Desconto
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkPreco2">
+                            <label class="form-check-label" for="checkPreco2">
+                                R$0 - R$25
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkPreco3">
+                            <label class="form-check-label" for="checkPreco3">
+                                R$26 - R$50
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkPreco4">
+                            <label class="form-check-label" for="checkPreco4">
+                                R$51 - R$75
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkPreco5">
+                            <label class="form-check-label" for="checkPreco5">
+                                R$76 - R$100
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkPreco6">
+                            <label class="form-check-label" for="checkPreco6">
+                                R$100+
+                            </label>
+                        </div>
+                        <hr />
+
+                        <p class="h5">Ordenação</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="" id="radioOrdem1">
+                            <label class="form-check-label" for="radioOrdem1">
+                                Crescente (A→Z)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="" id="radioOrdem2">
+                            <label class="form-check-label" for="radioOrdem2">
+                                Decrescente (Z→A)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="" id="radioOrdem3">
+                            <label class="form-check-label" for="radioOrdem3">
+                                Menor preço
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="" id="radioOrdem4">
+                            <label class="form-check-label" for="radioOrdem4">
+                                Maior preço
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+                    </form>
+                </div>
+
+                <!-- Lista principal de produtos -->
+                <div class="col-12 col-md-12 order-md-2 col-lg-6 col-xl-8 pt-3">
+                    <h1 class="h4 mb-3">Produtos</h1>
+
+                    <div class="row ">
+                        <div class="col-lg-6 col-xl-4 mb-3" data-th-each="produto : ${produtos}"> 
+                            <div class="card">
+                                <img class="card-img-top" src="https://picsum.photos/365/230?image=766" alt="Grãos de Café">
+                                <div class="card-body">
+                                    <p class="card-title h5" data-th-text="${produto.nome}">*Nome</p>
+                                    <p class="card-text" data-th-text="${produto.descricao}">*Descrição</p>
+                                    <p class="card-text h3">R$&nbsp;<span data-th-text="${produto.precos[0].preco}">51,90</span></p> <!-- TODO get the correct price -->
+                                    <a href="#" class="btn btn-info" data-th-href="@{/produtos/{id}(id=${produto.id})}">Detalhes</a>
+                                    <form class="comprarForm mt-2" method="post" data-th-action="@{/comercio/addToCart}">
+                                        <input type="hidden" name="produtoId" data-th-value="${produto.id}" />
+                                        <div class="input-group">
+                                            <input type="number" name="quantidade" class="form-control" min="1" max="100">
+                                            <div class="input-group-append">
+                                                <a href="#" class="btn btn-primary">Comprar</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+
+        <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">
+            <div class="row justify-content-center">
+                <div class="col-md-4 col-lg-3 mt-3">
+                    <p class="h6">Institucional</p>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Institucional</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Quem Somos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Formas de Pagamento</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Imprensa</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-lg-3 mt-3">
+                    <p class="h6">Ajuda</p>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Perguntas Frequentes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Política de Troca e Devolução</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Política de Privacidade</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Fale Conosco</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-lg-3 mt-3">
+                    <p class="h6">Cadastro</p>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Meus Pedidos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Alterar Cadastro</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Cancelar, trocar ou devolver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Trabalhe conosco</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-3">
+                <p>
+                    Grupo Corcovado - Grupo Corcovado Comércio Eletrônico S.A. - CNPJ: 12.345.678/0001-90 - Av. Brigadeiro Luís Antônio, 3000, CEP: 01402-901 -  São Paulo/SP
+                </p>
+                <p>
+                    Copyright &COPY; 1995-2018. Grupo Corcovado. Todos os direitos reservados.
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="/js/main.js" data-th-src="@{/js/main.js}"></script>
+    </body>
+</html>
