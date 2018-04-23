@@ -31,13 +31,20 @@ public class ComercioController {
     @GetMapping("/comercio")
     public ModelAndView main() {
         // TODO adicionar paramtros de busca
+        /*
         Iterable<Produto> produtos = prodRepo.findAll();
         for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
             Produto next = iterator.next();
             next.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(next.getId())));
-        }
-        return new ModelAndView("/comercio/comercio").addObject("produtos", produtos);
+        }*/
+        return new ModelAndView("/comercio/comercio")/*.addObject("produtos", produtos)*/;
     }
+    
+    @GetMapping("/comercio/list")
+    public ModelAndView list() {
+        return new ModelAndView("/comercio/_list");
+    }
+    
 
     /*
     @RequestMapping(value = "/comercio/addToCart", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

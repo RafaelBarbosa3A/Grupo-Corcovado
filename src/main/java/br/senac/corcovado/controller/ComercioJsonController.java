@@ -1,6 +1,6 @@
 package br.senac.corcovado.controller;
-import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.Utils;
+import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import java.util.List;
@@ -15,7 +15,7 @@ public class ComercioJsonController {
     @Autowired private PrecoRepository precoRepo;
 
 
-    @GetMapping("/comercio")
+    @GetMapping("/comercio_json")
     public List<Produto> list() {
         List<Produto> lista = Utils.asList(prodRepo.findAll());
         for(Produto p: lista) {
@@ -24,5 +24,7 @@ public class ComercioJsonController {
 
         return lista;
     }
+    
+    
 
 }

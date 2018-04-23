@@ -1,0 +1,202 @@
+<div class="row" ng-controller="list">
+    <!-- Resumo Carrinho -->
+    <div class="col-12 col-md-6 order-md-1 col-lg-3 order-lg-last col-xl-2 pt-3">
+        <p class="d-flex justify-content-between align-items-center mb-3 h5">
+            <span>Carrinho</span>
+            <span class="badge badge-secondary badge-pill">3</span>
+        </p>
+        <ul class="list-group mb-3">
+            <!--  TODO integrar carrinho
+            <li class="list-group-item">
+                <p class="h6 my-0">Primeiro produto </p>
+                <div class="d-flex justify-content-between lh-condensed mt-2">
+                <small class="text-muted">1x</small>
+                <small class="text-muted">R$12,00</small>
+                </div>
+            </li>
+            -->
+            <li class="list-group-item d-flex justify-content-between bg-light">
+                <strong>Total</strong>
+                <strong>R$0,00</strong> <!-- TODO integrar carrinho -->
+            </li>
+        </ul>
+    </div>
+
+    <!-- Menu Filtro -->
+    <div class="col-12 col-md-6 order-md-0 col-lg-3 col-xl-2 pt-3">
+        <form> <!-- TODO montar filtros dinamicos -->
+            <p class="h5">Departamentos</p>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento1">
+                <label class="form-check-label" for="checkDepartamento1">
+                    Alimentos
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento2">
+                <label class="form-check-label" for="checkDepartamento2">
+                    Bebidas
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento3">
+                <label class="form-check-label" for="checkDepartamento3">
+                    Carnes
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento4">
+                <label class="form-check-label" for="checkDepartamento4">
+                    Congelados
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento5">
+                <label class="form-check-label" for="checkDepartamento5">
+                    Doces
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento6">
+                <label class="form-check-label" for="checkDepartamento6">
+                    Feira
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento7">
+                <label class="form-check-label" for="checkDepartamento7">
+                    Matinais
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento8">
+                <label class="form-check-label" for="checkDepartamento8">
+                    Snacks
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento9">
+                <label class="form-check-label" for="checkDepartamento9">
+                    Pet Shop
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento10">
+                <label class="form-check-label" for="checkDepartamento10">
+                    Limpeza
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento11">
+                <label class="form-check-label" for="checkDepartamento11">
+                    Bebês
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDepartamento12">
+                <label class="form-check-label" for="checkDepartamento12">
+                    Perfumaria
+                </label>
+            </div>
+            <hr />
+
+            <p class="h5">Preço</p>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkPreco1">
+                <label class="form-check-label" for="checkPreco1">
+                    Desconto
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkPreco2">
+                <label class="form-check-label" for="checkPreco2">
+                    R$0 - R$25
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkPreco3">
+                <label class="form-check-label" for="checkPreco3">
+                    R$26 - R$50
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkPreco4">
+                <label class="form-check-label" for="checkPreco4">
+                    R$51 - R$75
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkPreco5">
+                <label class="form-check-label" for="checkPreco5">
+                    R$76 - R$100
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkPreco6">
+                <label class="form-check-label" for="checkPreco6">
+                    R$100+
+                </label>
+            </div>
+            <hr />
+
+            <p class="h5">Ordenação</p>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="" id="radioOrdem1">
+                <label class="form-check-label" for="radioOrdem1">
+                    Crescente (A→Z)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="" id="radioOrdem2">
+                <label class="form-check-label" for="radioOrdem2">
+                    Decrescente (Z→A)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="" id="radioOrdem3">
+                <label class="form-check-label" for="radioOrdem3">
+                    Menor preço
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="" id="radioOrdem4">
+                <label class="form-check-label" for="radioOrdem4">
+                    Maior preço
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+        </form>
+    </div>
+
+    <!-- Lista principal de produtos -->
+    <div class="col-12 col-md-12 order-md-2 col-lg-6 col-xl-8 pt-3">
+        <h1 class="h4 mb-3">Produtos</h1>
+
+        <div class="row">
+            <div class="col-lg-6 col-xl-4 mb-3" ng-repeat="produto in produtos"> 
+                <div class="card">
+                    <img class="card-img-top" src="https://picsum.photos/365/230?image=766" alt="Imagem {{produto.nome}}">
+                    <div class="card-body">
+                        <p class="card-title h5">{{produto.nome}}</p>
+                        <p class="card-text">{{produto.descricao}}</p>
+                        <p class="card-text h3">{{produto.precos[0].preco | currency}}</p>
+                        <a href="#" class="btn btn-info" ui-sref="show({id: {{produto.id}} })">Detalhes</a>
+                        <!--
+                        <form class="comprarForm mt-2" method="post" data-th-action="@{/comercio/addToCart}">
+                            <input type="hidden" name="produtoId" data-th-value="${produto.id}" />
+                            <div class="input-group">
+                                <input type="number" name="quantidade" class="form-control" min="1" max="100">
+                                <div class="input-group-append">
+                                    <a href="#" class="btn btn-primary">Comprar</a>
+                                </div>
+                            </div>
+                        </form>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

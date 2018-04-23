@@ -1,6 +1,7 @@
 {
     "elements": {},
     "attributes": {
-        "integrity": {}
+        "integrity": {},
+        "ui-view": {}
     }
 }
