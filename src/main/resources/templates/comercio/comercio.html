@@ -56,7 +56,7 @@
             </nav>
         </header>
 
-        <main class="container main">
+        <main class="container-fluid main">
             <div class="row">
                 <!-- Resumo Carrinho -->
                 <div class="col-12 col-md-6 order-md-1 col-lg-3 order-lg-last col-xl-2 pt-3">
@@ -239,7 +239,7 @@
                                 <div class="card-body">
                                     <p class="card-title h5" data-th-text="${produto.nome}">*Nome</p>
                                     <p class="card-text" data-th-text="${produto.descricao}">*Descrição</p>
-                                    <p class="card-text h3">R$&nbsp;51<small>,90</small></p> <!-- TODO get the correct price -->
+                                    <p class="card-text h3">R$&nbsp;<span data-th-text="${produto.precos[0].preco}">51,90</span></p> <!-- TODO get the correct price -->
                                     <a href="#" class="btn btn-info" data-th-href="@{/produtos/{id}(id=${produto.id})}">Detalhes</a>
                                     <form class="comprarForm mt-2" method="post" data-th-action="@{/comercio/addToCart}">
                                         <input type="hidden" name="produtoId" data-th-value="${produto.id}" />
@@ -329,6 +329,5 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="/js/main.js" data-th-src="@{/js/main.js}"></script>
-        <script src="/js/side_cart.js" data-th-src="@{/js/side_cart.js}"></script>
     </body>
 </html>

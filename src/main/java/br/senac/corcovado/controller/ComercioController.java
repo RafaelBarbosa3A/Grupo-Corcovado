@@ -6,26 +6,15 @@
 package br.senac.corcovado.controller;
 
 
-import br.senac.corcovado.model.entity.Preco;
+import br.senac.corcovado.Utils;
 import br.senac.corcovado.model.entity.Produto;
-import br.senac.corcovado.model.entity.ProdutoVendido;
-import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
-import br.senac.corcovado.model.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import java.util.Iterator;
-import java.util.Objects;
-import java.util.function.Consumer;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -33,29 +22,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class ComercioController {
-    @Autowired 
-    private ProdutoRepository produtoRepo;
-    @Autowired 
-    private PrecoRepository precoRepo;
-    @Autowired 
-    private VendaRepository vendaRepo;
-    @Autowired 
-    private ProdutoVendidoRepository prodVendRepo;
-    
+    @Autowired private ProdutoRepository prodRepo;
+    @Autowired private PrecoRepository precoRepo;
+    /*
+    @Autowired private VendaRepository vendaRepo;
+    @Autowired private ProdutoVendidoRepository prodVendRepo;
+    */
     @GetMapping("/comercio")
     public ModelAndView list() {
         // TODO adicionar paramtros de busca
-        return new ModelAndView("/comercio/produto_list").addObject("produtos", produtoRepo.findAll());
+        Iterable<Produto> produtos = prodRepo.findAll();
+        for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
+            Produto next = iterator.next();
+            next.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(next.getId())));
+        }
+        
+        return new ModelAndView("/comercio/comercio").addObject("produtos", produtos);
     }
     
-    @RequestMapping(value = "/comercio/addToCart", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    /*
+    @RequestMapping(value = "/comercio/addToCart", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Iterable<ProdutoVendido> addCart(@RequestParam("produtoId") Long produtoId, 
-            @RequestParam("quantidade") Integer quantidade) {
+    public Iterable<ProdutoVendido> addCart(@RequestParam("produtoId") Long produtoId, @RequestParam("quantidade") Integer quantidade) {
         
         //TODO Se não for possivel montar na view montar um builder/factory para ProdutoVendido.class
-        Venda venda = vendaRepo.findById(1L).get(); /* TODO encotrar uma venda baseada no usuário logado, depende de Spring security QUE O TSUDA AINDA NÃO PASSOU!!! */
+        Venda venda = vendaRepo.findById(1L).get(); 
         
         Produto produto = produtoRepo.findById(produtoId).get();
         Iterable<Preco> precos = precoRepo.findAllByProdutoId(produtoId);
@@ -64,7 +55,7 @@ public class ComercioController {
         if(quantidade == null) {
             quantidade = 1;
         }
-        /* Cria ou modifica ProdutoVendido */
+        /* Cria ou modifica ProdutoVendido * /
         ProdutoVendido prodVenda;
         if (prodVendRepo.existsByVendaIdAndProdutoId(venda.getId(), produtoId)) {
             prodVenda = prodVendRepo.findByVendaIdAndProdutoId(venda.getId(), produtoId).get();
@@ -82,4 +73,5 @@ public class ComercioController {
         
         return prodVendRepo.findByVendaId(venda.getId());
     }
+    */
 }
