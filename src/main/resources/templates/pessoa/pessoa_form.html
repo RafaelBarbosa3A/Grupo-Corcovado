@@ -61,6 +61,7 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Pessoa' : 'Alterar Pessoa'"></div>
             <form data-th-action="@{/pessoas/{act}(act = ${action})}" method="post" data-th-object="${pessoa}">
                 <input type="hidden" data-th-field="*{id}" />
+                <input type="hidden" data-th-field="*{createdAt}" />
 
                 
                 <div class="form-group">
@@ -84,15 +85,19 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="nivelId">Nível Id:</label>
-                    <input class="form-control" placeholder="Nível Id" data-th-field="*{nivelId}" />
+                    <label for="nivel">Nível:</label>
+                    <select class="form-control" data-th-field="*{nivel}">
+                        <option data-th-each="nivel : ${niveis}" data-th-value="${nivel}" data-th-text="${nivel.nome}"></option>
+                    </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="cargoId">Cargo Id:</label>
-                    <input class="form-control" placeholder="Cargo Id" data-th-field="*{cargoId}" />
+                    <label for="cargo">Cargo:</label>
+                    <select class="form-control" data-th-field="*{cargo}">
+                        <option data-th-each="cargo : ${cargos}" data-th-value="${cargo}" data-th-text="${cargo.nome}"></option>
+                    </select>
                 </div>
-                
+              
 
                 <div class="row justify-content-between align-items-center">
                     <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${pessoa.id}">

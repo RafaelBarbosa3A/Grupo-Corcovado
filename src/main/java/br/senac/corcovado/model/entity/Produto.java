@@ -18,6 +18,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -41,7 +42,7 @@ public class Produto implements Serializable {
     @Column(name = "estoque") private Integer estoque;
     @Column(name = "reservado") private Integer reservado;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
+    @Transient @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;

@@ -4,34 +4,18 @@ package br.senac.corcovado.model.entity;
  *
  * @author wesley
  */
-public enum Cargo{
+public enum Cargo {
+    OPERACIONAL("Operacional"),
+    GERENTE("Gerente"),
+    DIRETOR("Diretor");
     
-    DIRETOR(1, "Diretor"),
-    GERENTE(2, "Gerente"),
-    OPERACIONAL(3, "Operacional");
+    private final String nome;
     
-    private final int id;
-    private final String name;
-    
-    private Cargo(int id, String name){
-        this.id = id;
-        this.name = name;
+    private Cargo(String nome) {
+        this.nome = nome;
     }
     
-    public int getId() {
-        return id;
-    }
-    
-    @Override public String toString() {
-        return name;
-    }
-
-    public static Cargo valueOf(int id) {
-        switch (id) {
-            case (1): return DIRETOR;
-            case (2): return GERENTE;
-            case (3): return OPERACIONAL;
-            default: return null;
-        }
+    public String getNome() {
+        return nome;
     }
 }

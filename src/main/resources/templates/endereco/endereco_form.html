@@ -59,9 +59,15 @@
         <main class="container main">
             <h1 class="h3 mt-3">Formulário de Endereço</h1>
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Endereço' : 'Alterar Endereço'"></div>
-            <form data-th-action="@{/enderecos/{act}(act = ${action})}" method="post" data-th-object="${endereco}">
+            <form data-th-action="@{/pessoas/enderecos/{act}(act = ${action})}" method="post" data-th-object="${endereco}">
                 <input type="hidden" data-th-field="*{id}" />
-
+                <input type="hidden" data-th-field="*{createdAt}" />
+                
+                <div class="form-group">
+                    <label>Pessoa:</label>
+                    <input class="form-control" data-th-value="${endereco.pessoa.nome}" disabled/>
+                    <input type="hidden" data-th-field="*{pessoa.id}" />
+                </div>
                 
                 <div class="form-group">
                     <label for="rua">Rua:</label>
@@ -99,20 +105,16 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="principal">Principal:</label>
-                    <input class="form-control" placeholder="Principal" data-th-field="*{principal}" />
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" data-th-field="*{principal}" />
+                        <label class="form-check-label" for="principal">Principal</label>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="clienteId">Cliente Id:</label>
-                    <input class="form-control" placeholder="Cliente Id" data-th-field="*{clienteId}" />
-                </div>
-                
 
                 <div class="row justify-content-between align-items-center">
                     <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${endereco.id}">
-                        <a class="btn" data-th-case="0" href="#" data-th-href="@{/enderecos}">Voltar</a>
-                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/enderecos/{id}(id = ${endereco.id})}">Voltar</a>
+                        <a class="btn" data-th-case="0" href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos(pessoaId = ${endereco.pessoa.id})}">Voltar</a>
+                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/pessoas/enderecos/{id}(id = ${endereco.id})}">Voltar</a>
                     </span>
                     <div class="col-12 order-first col-md-4 order-md-last text-right">
                         <button class="btn btn-success" type="submit">Salvar</button>

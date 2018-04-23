@@ -19,9 +19,8 @@ public class Boot {
         SpringApplication.run(Boot.class, args);
     }
 
-    @Bean public CommandLineRunner populateDB(DepartamentoRepository deptoRepo, 
-            CategoriaRepository cateRepo,
-            ProdutoRepository prodRepo) {
+    @Bean 
+    public CommandLineRunner populateDB(DepartamentoRepository deptoRepo, CategoriaRepository cateRepo, ProdutoRepository prodRepo) {
         return (String[] args) -> {
             deptoRepo.save(new Departamento(0L, "Alimentos", new ArrayList(), System.currentTimeMillis(), System.currentTimeMillis(), true));
             cateRepo.save(new Categoria(0L, "Básicos", deptoRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
@@ -60,5 +59,4 @@ public class Boot {
             prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", 987, 0, cateRepo.findById(15L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
         };
     }
-;
 }

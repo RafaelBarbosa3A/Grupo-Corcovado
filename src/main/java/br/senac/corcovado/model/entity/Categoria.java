@@ -34,9 +34,7 @@ public class Categoria implements Serializable {
     @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "departamento_id", referencedColumnName = "id") 
-    private Departamento departamento;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "departamento_id", referencedColumnName = "id") private Departamento departamento;
     
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;

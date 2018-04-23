@@ -61,6 +61,7 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Preço' : 'Alterar Preço'"></div>
             <form data-th-action="@{/produtos/precos/{act}(act = ${action})}" method="post" data-th-object="${preco}">
                 <input type="hidden" data-th-field="*{id}" />
+                <input type="hidden" data-th-field="*{createdAt}" />
 
                 
                 <div class="form-group">

@@ -21,10 +21,4 @@ public enum Nivel {
     public String getNome() {
         return nome;
     }
-    
-    /*
-    @Override public String toString() {
-        return nome;
-    }
-    */
 }

@@ -61,9 +61,11 @@
                 <div class="row no-gutters justify-content-between mx-3 pt-1 pb-2 mb-0">
                     <h1 class="h4 col-12 col-md-10">Lista de Endereços</h1>
                     <div class="col-12 col-md-2 text-right">
-                      <a href="#" data-th-href="@{/enderecos/new}" class="btn btn-outline-info" >Novo</a>
+                      <a href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos/new(pessoaId = ${pessoa.id})}" class="btn btn-outline-info" >Novo</a>
                     </div>
                 </div>
+                
+                <p class="lead text-muted px-3" data-th-text="${pessoa.nome}"></p>
 
                 <div class="pb-2 mx-3" data-th-each="endereco : ${enderecos}">
                     <div class="row no-gutters border-top border-gray pt-3 pb-1 mb-0">
@@ -72,7 +74,7 @@
                             <span class="text-muted" data-th-text="${endereco.numero}"></span>
                         </div>
                         <div class="col-12 col-md-2 text-right">
-                          <a class="btn" href="#" data-th-href="@{/enderecos/{id}(id=${endereco.id})}">Detalhes</a>
+                          <a class="btn" href="#" data-th-href="@{/pessoas/enderecos/{id}(id=${endereco.id})}">Detalhes</a>
                         </div>
                     </div>
                 </div>

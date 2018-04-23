@@ -1,12 +1,9 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Endereco;
-import br.senac.corcovado.model.exception.EnderecoException;
+import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.repository.EnderecoRepository;
 import br.senac.corcovado.model.repository.PessoaRepository;
-import br.senac.corcovado.model.validator.EnderecoValidador;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,84 +18,69 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class EnderecoController {
-
-    @Autowired 
-    private EnderecoRepository repository;
-    private PessoaRepository pessoaRepository;
+    @Autowired private EnderecoRepository endRepo;
+    @Autowired private PessoaRepository pesRepo;
     
-    @GetMapping("/enderecos")
-    public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("/endereco/endereco_list");
-        mav.addObject("enderecos", repository.findAll());
+    @GetMapping("/pessoas/{pessoaId}/enderecos")
+    public ModelAndView list(@PathVariable("pessoaId") long pessoaId) {
+        return new ModelAndView("/endereco/endereco_list")
+                .addObject("pessoa", pesRepo.findById(pessoaId).get())
+                .addObject("enderecos", endRepo.findAllByPessoaId(pessoaId));
+    }
+    
+    @GetMapping("/pessoas/enderecos/{id}")
+    public ModelAndView show(@PathVariable("id") long id) {
+        ModelAndView mav = new ModelAndView("/endereco/endereco_show")
+                .addObject("endereco", endRepo.findById(id).get());
         return mav;
     }
     
-    @GetMapping("/enderecos/{id}")
-    public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("/endereco/endereco_show");
-        mav.addObject("endereco", repository.findById(Long.parseLong(usId)).get());
+    @GetMapping("/pessoas/{pessoaId}/enderecos/new")
+    public ModelAndView new_(@PathVariable("pessoaId") long pessoaId) {
+        ModelAndView mav = newForm(pesRepo.findById(pessoaId).get());
         return mav;
     }
     
-    @GetMapping("/enderecos/new")
-    public ModelAndView new_() {
-        ModelAndView mav = newForm();
-        return mav;
-    }
-    
-    @PostMapping(path = "/enderecos/create")
+    @PostMapping(path = "/pessoas/enderecos/create")
     public ModelAndView create(@ModelAttribute Endereco endereco) {
         Endereco salvo;
-        try {
-            EnderecoValidador.validar(endereco);
-            salvo = repository.save(endereco);
-        } catch (EnderecoException ex) { 
-            Logger.getLogger(EnderecoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("endereco", endereco);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
-
-        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        salvo = endRepo.save(endereco);
+        
+        ModelAndView redirect = new ModelAndView("redirect:/pessoas/enderecos/" + salvo.getId());
         return redirect;
     }
     
-    @GetMapping({"/enderecos/{id}/edit", "/enderecos/edit/{id}"})
-    public ModelAndView edit(@PathVariable("id") String usId) {
-        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
+    @GetMapping({"/pessoas/enderecos/{id}/edit", "/pessoas/enderecos/edit/{id}"})
+    public ModelAndView edit(@PathVariable("id") long id) {
+        ModelAndView mav = editForm(endRepo.findById(id).get());
         return mav;
     }
     
-    @PostMapping(path = "/enderecos/update")
+    @PostMapping(path = "/pessoas/enderecos/update")
     public ModelAndView update(@ModelAttribute Endereco endereco) {
         Endereco salvo;
-        try {
-            EnderecoValidador.validar(endereco);
-            salvo = repository.save(endereco);
-        } catch (EnderecoException ex) { 
-            Logger.getLogger(EnderecoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(endereco);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
+        salvo = endRepo.save(endereco);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }
     
-    @PostMapping(path = {"/enderecos/{id}/destroy", "/enderecos/destroy/{id}"})
-    public ModelAndView destroy(@PathVariable("id") String usId) {
-        repository.deleteById(Long.parseLong(usId));
-        ModelAndView redirect = new ModelAndView("redirect:/enderecos");
+    @PostMapping(path = {"/pessoas/enderecos/{id}/destroy", "/pessoas/enderecos/destroy/{id}"})
+    public ModelAndView destroy(@PathVariable("id") long id) {
+        Pessoa pessoa = endRepo.findById(id).get().getPessoa();
+        
+        endRepo.deleteById(id);
+        ModelAndView redirect = new ModelAndView("redirect:/pessoas/" + pessoa.getId() + "/enderecos");
         return redirect;
     }
     
-    private ModelAndView newForm() {
+    private ModelAndView newForm(Pessoa pessoa) {
+        Endereco endereco = new Endereco();
+        endereco.setPessoa(pessoa);
+        
         ModelAndView modelAndView = new ModelAndView("/endereco/endereco_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("endereco", new Endereco());
-        modelAndView.addObject("pessoas", pessoaRepository.findAll());
+        modelAndView.addObject("endereco", endereco);
         return modelAndView;
     }
     
@@ -106,7 +88,6 @@ public class EnderecoController {
         ModelAndView modelAndView = new ModelAndView("/endereco/endereco_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("endereco", endereco);
-        modelAndView.addObject("pessoas", pessoaRepository.findAll());
         return modelAndView;
     }
 }

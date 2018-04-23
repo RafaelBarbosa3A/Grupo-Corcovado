@@ -1,15 +1,16 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 /**
  *
  * @author wesley
@@ -17,8 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "endereco")
-public class Endereco implements Serializable{
-    
+public class Endereco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     @Column(name = "rua") private String rua;
@@ -28,17 +28,17 @@ public class Endereco implements Serializable{
     @Column(name = "estado") private String estado;
     @Column(name = "cep") private String cep;
     @Column(name = "complemento") private String complemento;
-    @Column(name = "principal") private String principal;
-    @Column(name = "cliente_id") private Long clienteId;
-    @Column(name = "created_at") private GregorianCalendar createdAt;
-    @Column(name = "updated_at") private GregorianCalendar updatedAt;
-    @Column(name = "active") private boolean active;
+    @Column(name = "principal") private boolean principal;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "pessoa_id", referencedColumnName = "id") private Pessoa pessoa;
+    
+    @Column(name = "created_at") private Long createdAt;
+    @Column(name = "updated_at") private Long updatedAt;
     
     public Endereco() {
         this.id = 0L;
     }
 
-    public Endereco(Long id, String rua, int numero, String bairro, String cidade, String estado, String cep, String complemento, String principal, Long clienteId, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Endereco(Long id, String rua, int numero, String bairro, String cidade, String estado, String cep, String complemento, boolean principal, Pessoa pessoa, Long createdAt, Long updatedAt) {
         this.id = id;
         this.rua = rua;
         this.numero = numero;
@@ -48,16 +48,14 @@ public class Endereco implements Serializable{
         this.cep = cep;
         this.complemento = complemento;
         this.principal = principal;
-        this.clienteId = clienteId;
+        this.pessoa = pessoa;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.active = active;
     }
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -65,7 +63,6 @@ public class Endereco implements Serializable{
     public String getRua() {
         return rua;
     }
-
     public void setRua(String rua) {
         this.rua = rua;
     }
@@ -73,7 +70,6 @@ public class Endereco implements Serializable{
     public int getNumero() {
         return numero;
     }
-
     public void setNumero(int numero) {
         this.numero = numero;
     }
@@ -81,7 +77,6 @@ public class Endereco implements Serializable{
     public String getBairro() {
         return bairro;
     }
-
     public void setBairro(String bairro) {
         this.bairro = bairro;
     }
@@ -89,7 +84,6 @@ public class Endereco implements Serializable{
     public String getCidade() {
         return cidade;
     }
-
     public void setCidade(String cidade) {
         this.cidade = cidade;
     }
@@ -97,7 +91,6 @@ public class Endereco implements Serializable{
     public String getEstado() {
         return estado;
     }
-
     public void setEstado(String estado) {
         this.estado = estado;
     }
@@ -105,7 +98,6 @@ public class Endereco implements Serializable{
     public String getCep() {
         return cep;
     }
-
     public void setCep(String cep) {
         this.cep = cep;
     }
@@ -113,82 +105,56 @@ public class Endereco implements Serializable{
     public String getComplemento() {
         return complemento;
     }
-
     public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
 
-    public String getPrincipal() {
-        return principal;
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
-    public void setPrincipal(String principal) {
+    public boolean isPrincipal() {
+        return principal;
+    }
+    public void setPrincipal(boolean principal) {
         this.principal = principal;
     }
 
-    public Long getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
-
-    public GregorianCalendar getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
-
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + Objects.hashCode(this.id);
-        hash = 17 * hash + Objects.hashCode(this.rua);
-        hash = 17 * hash + this.numero;
-        hash = 17 * hash + Objects.hashCode(this.bairro);
-        hash = 17 * hash + Objects.hashCode(this.cidade);
-        hash = 17 * hash + Objects.hashCode(this.estado);
-        hash = 17 * hash + Objects.hashCode(this.cep);
-        hash = 17 * hash + Objects.hashCode(this.complemento);
-        hash = 17 * hash + Objects.hashCode(this.principal);
-        hash = 17 * hash + Objects.hashCode(this.clienteId);
-        hash = 17 * hash + Objects.hashCode(this.createdAt);
-        hash = 17 * hash + Objects.hashCode(this.updatedAt);
-        hash = 17 * hash + (this.active ? 1 : 0);
+    @Override public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.rua);
+        hash = 79 * hash + this.numero;
+        hash = 79 * hash + Objects.hashCode(this.bairro);
+        hash = 79 * hash + Objects.hashCode(this.cidade);
+        hash = 79 * hash + Objects.hashCode(this.estado);
+        hash = 79 * hash + Objects.hashCode(this.cep);
+        hash = 79 * hash + Objects.hashCode(this.complemento);
+        hash = 79 * hash + (this.principal ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.pessoa);
+        hash = 79 * hash + Objects.hashCode(this.createdAt);
+        hash = 79 * hash + Objects.hashCode(this.updatedAt);
         return hash;
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    @Override public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -202,7 +168,7 @@ public class Endereco implements Serializable{
         if (this.numero != other.numero) {
             return false;
         }
-        if (this.active != other.active) {
+        if (this.principal != other.principal) {
             return false;
         }
         if (!Objects.equals(this.rua, other.rua)) {
@@ -223,13 +189,10 @@ public class Endereco implements Serializable{
         if (!Objects.equals(this.complemento, other.complemento)) {
             return false;
         }
-        if (!Objects.equals(this.principal, other.principal)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.clienteId, other.clienteId)) {
+        if (!Objects.equals(this.pessoa, other.pessoa)) {
             return false;
         }
         if (!Objects.equals(this.createdAt, other.createdAt)) {
@@ -241,8 +204,7 @@ public class Endereco implements Serializable{
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", principal=" + principal + ", clienteId=" + clienteId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    @Override public String toString() {
+        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", principal=" + principal + ", pessoa=" + pessoa + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }

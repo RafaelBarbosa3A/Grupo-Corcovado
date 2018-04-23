@@ -60,12 +60,22 @@
             <div class="row align-items-center justify-content-between">
                 <h1 class="h2 mt-4 col-12 col-md-9" >Endereço</h1>
                 <div class="col-12 col-md-3 text-right">
-                    <form class="d-inline-block" action="#" data-th-action="@{/enderecos/{id}/destroy(id = ${endereco.id})}" method="post">
+                    <form class="d-inline-block" action="#" data-th-action="@{/pessoas/enderecos/{id}/destroy(id = ${endereco.id})}" method="post">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
-                    <a href="#" data-th-href="@{/enderecos/{id}/edit(id = ${endereco.id})}" class="btn btn-secondary">Edit</a>
+                    <a href="#" data-th-href="@{/pessoas/enderecos/{id}/edit(id = ${endereco.id})}" class="btn btn-secondary">Edit</a>
                 </div>
             </div>
+            
+            <p class="mt-3 mb-2 text-muted">
+                <strong>Nome da Pessoa:</strong><br>
+                <span data-th-text="${endereco.pessoa.nome}"></span>
+            </p>
+            
+            <p class="mt-3 mb-2 text-muted">
+                <strong>Documento da Pessoa:</strong><br>
+                <span data-th-text="${endereco.pessoa.documento}"></span>
+            </p>
             
             <p class="mt-3 mb-2">
                 <strong>Rua:</strong><br>
@@ -106,13 +116,8 @@
                 <strong>Principal:</strong><br>
                 <span data-th-text="${endereco.principal}"></span>
             </p>
-            
-            <p class="mt-3 mb-2">
-                <strong>Cliente Id:</strong><br>
-                <span data-th-text="${endereco.clienteId}"></span>
-            </p>
-            
-            <a class="btn" href="#" data-th-href="@{/enderecos}">Voltar</a>
+                       
+            <a class="btn" href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos(pessoaId = ${endereco.pessoa.id})}">Voltar</a>
         </main>
 
         <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">

@@ -16,6 +16,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -34,8 +35,9 @@ import org.hibernate.annotations.Where;
 public class Departamento implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
-    @Column(name = "nome") private String nome;   
-    @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL, orphanRemoval = true) private List<Categoria> categorias;
+    @Column(name = "nome") private String nome;
+    @Transient @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL, orphanRemoval = true) private List<Categoria> categorias;
+    
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;

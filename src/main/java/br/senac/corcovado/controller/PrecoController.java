@@ -1,13 +1,13 @@
 package br.senac.corcovado.controller;
 
 
+import br.senac.corcovado.Utils;
 import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Preco;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +26,18 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping
 public class PrecoController {
-
     @Autowired private PrecoRepository precoRepo;
     @Autowired private ProdutoRepository prodRepo;
     
     @GetMapping("/produtos/{produtoId}/precos")
     public ModelAndView list(@PathVariable("produtoId") long produtoId) {
         Produto produto = prodRepo.findById(produtoId).get();
+        produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produtoId)));
         
         return new ModelAndView("/preco/preco_list")
                 .addObject("produto", produto)
-                .addObject("precos", precoRepo.findAllByProdutoId(produtoId))
-                .addObject("novoPreco", (Nivel.values().length > produto.getPrecos().size()));
+                .addObject("precos", produto.getPrecos())
+                .addObject("novoPreco", Nivel.values().length > produto.getPrecos().size());
     }
     
     @GetMapping("/produtos/precos/{id}")
@@ -49,22 +49,24 @@ public class PrecoController {
     @GetMapping("/produtos/{produtoId}/precos/new")
     public ModelAndView new_(@PathVariable("produtoId") long produtoId) {
         Produto produto = prodRepo.findById(produtoId).get();
+        List<Preco> precos = Utils.asList(precoRepo.findAllByProdutoId(produtoId));
         
         Preco preco = new Preco();
         preco.setProduto(produto);
         
-        //ArrayList<Nivel> niveis = Arrays.asList(Nivel.values());
-        ArrayList<Nivel> niveis = new ArrayList<>();
+        ArrayList<Nivel> niveis = Utils.asList(Nivel.values());
+        /*ArrayList<Nivel> niveis = new ArrayList<>();
         for (Nivel nivel : Nivel.values()) {
             niveis.add(nivel);
         }
+        */
         
-        List<Nivel> niveisUtilizados = produto.getPrecos().stream().map(Preco::getNivel).collect(Collectors.toList());
+        List<Nivel> niveisUtilizados = precos.stream().map(Preco::getNivel).collect(Collectors.toList());
         niveis.removeAll(niveisUtilizados);
         
         return new ModelAndView("/preco/preco_form")
-                .addObject("preco", preco)
                 .addObject("action", "create")
+                .addObject("preco", preco)
                 .addObject("niveis", niveis);
     }
 
