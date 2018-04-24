@@ -1,3 +1,4 @@
+
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
@@ -26,6 +28,8 @@ import org.hibernate.annotations.Where;
 @Loader(namedQuery = "findCategoriaById")
 @NamedQuery(name = "findCategoriaById", query = "SELECT c FROM Categoria c WHERE c.id = ?1")
 @Where(clause = "active = true")
+//Gambiarraaaaaaaaa
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

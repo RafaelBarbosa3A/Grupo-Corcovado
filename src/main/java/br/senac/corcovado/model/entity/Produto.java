@@ -24,6 +24,8 @@ import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  *
  * @author wesley
@@ -34,6 +36,8 @@ import org.hibernate.annotations.Where;
 @Loader(namedQuery = "findProdutoById")
 @NamedQuery(name = "findProdutoById", query = "SELECT p FROM Produto p WHERE p.id = ?1")
 @Where(clause = "active = true")
+//Gambiarraaaaaaaaa
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Produto implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;

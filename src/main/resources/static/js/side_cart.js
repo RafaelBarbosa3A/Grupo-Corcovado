@@ -6,14 +6,13 @@ corcovado.config(($stateProvider, $urlRouterProvider) => {
         templateUrl: 'comercio/list',
         controller: 'list'
     });
-    
-/*
+
     $stateProvider.state('show', {
         url: '/produtos/:id',
-        templateUrl: 'comercio/_show.html',
+        templateUrl: 'comercio/show',
         controller: 'show'
     });
-    
+/*
     $stateProvider.state('cart', {
         url: '/carrinho',
         templateUrl: 'comercio/_cart.html',
@@ -24,9 +23,9 @@ corcovado.config(($stateProvider, $urlRouterProvider) => {
 });
 
 corcovado.controller('list', function($scope, $loader) {
-    
-    $scope.produtos = [];   
-   
+
+    $scope.produtos = [];
+
     $loader.loadProducts().then((p) => {
         $scope.produtos = p;
     });
@@ -35,7 +34,7 @@ corcovado.controller('list', function($scope, $loader) {
 corcovado.factory('$loader', function ($http, $q) {
     var produtos = [];
 
-    return { 
+    return {
         loadProdutos: function() {
             return $q((resolve, reject) => {
                 $http.get('/comercio_json').then((response) => {
@@ -57,4 +56,3 @@ corcovado.factory('$loader', function ($http, $q) {
         }
      };
 });
-

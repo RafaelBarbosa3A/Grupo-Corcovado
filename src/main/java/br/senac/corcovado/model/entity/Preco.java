@@ -17,6 +17,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  *
  * @author wesley
@@ -30,6 +32,8 @@ import javax.persistence.UniqueConstraint;
 @NamedQuery(name = "findPrecoById", query = "SELECT p FROM Preco p WHERE p.id = ?1")
 @Where(clause = "active = true")
 */
+//Gambiarraaaaaaaaa
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "produto"})
 public class Preco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
     @Column(name = "preco") private Double preco;

@@ -14,17 +14,13 @@ public class ComercioJsonController {
     @Autowired private ProdutoRepository prodRepo;
     @Autowired private PrecoRepository precoRepo;
 
-
     @GetMapping("/comercio_json")
     public List<Produto> list() {
-        List<Produto> lista = Utils.asList(prodRepo.findAll());
-        for(Produto p: lista) {
-            p.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(p.getId())));
+        List<Produto> produtos = Utils.asList(prodRepo.findAll());
+        for(Produto produto: produtos) {
+            produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produto.getId())));
         }
 
-        return lista;
+        return produtos;
     }
-    
-    
-
 }
