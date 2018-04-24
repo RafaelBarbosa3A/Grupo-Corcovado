@@ -62,6 +62,7 @@ public class PessoaController {
 
     @PostMapping(path = "/pessoas/update")
     public ModelAndView update(@ModelAttribute Pessoa pessoa) {
+    	pessoa.setEnderecos(Utils.asList(endRepo.findAllByPessoaId(pessoa.getId())));
         Pessoa salvo;
         salvo = pessRepo.save(pessoa);
 

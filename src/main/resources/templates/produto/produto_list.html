@@ -69,7 +69,7 @@
                     <div class="row no-gutters border-top border-gray pt-3 pb-1 mb-0">
                         <div class="col-12 col-md-10">
                             <div data-th-text="${produto.nome}"></div>
-                            <span class="text-muted" data-th-text="${#strings.lenght(produto.descricao) => 99} ${#strings.subtring(produto.descricao, 0, 98)…} : ${produto.descricao}"></span>
+                            <span class="text-muted" data-th-text="${produto.descricao}"></span>
                         </div>
                         <div class="col-12 col-md-2 text-right">
                           <a class="btn" href="#" data-th-href="@{/produtos/{id}(id=${produto.id})}">Detalhes</a>

@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProdutoController {
     @Autowired private ProdutoRepository prodRepo;
     // @Autowired private DepartamentoRepository deptoRepo;
-    // @Autowired private PrecoRepository precoRepo;
+    @Autowired private PrecoRepository precoRepo;
     @Autowired private CategoriaRepository cateRepo;
 
     @GetMapping("/produtos")
@@ -68,7 +68,7 @@ public class ProdutoController {
 
     @PostMapping(path = "/produtos/update")
     public ModelAndView update(@ModelAttribute Produto produto) {
-        // produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(id)));
+        produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produto.getId())));
         Produto salvo;
 
         //TODO implementar validador via @Valid
