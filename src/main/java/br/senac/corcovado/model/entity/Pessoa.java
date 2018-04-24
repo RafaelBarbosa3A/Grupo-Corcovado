@@ -42,8 +42,8 @@ public class Pessoa implements Serializable {
     @Column(name = "senha") private String senha;
     @Enumerated(EnumType.STRING) @Column(name = "nivel") private Nivel nivel;
     @Enumerated(EnumType.STRING) @Column(name = "cargo") private Cargo cargo;
-    @Transient @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) private List<Endereco> enderecos;
-    
+    /*@Transient*/ @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) private List<Endereco> enderecos;
+
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
@@ -121,7 +121,7 @@ public class Pessoa implements Serializable {
     public void setEnderecos(List<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
-    
+
     public Long getCreatedAt() {
         return createdAt;
     }
@@ -208,15 +208,15 @@ public class Pessoa implements Serializable {
     public String toString() {
         return "Pessoa{" + "id=" + id + ", nome=" + nome + ", documento=" + documento + ", email=" + email + ", senha=" + senha + ", nivel=" + nivel + ", cargo=" + cargo + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
-    
+
     // === JPA Gambiarras ===
-    
+
     @PrePersist
     private void prePersist() {
         this.createdAt = System.currentTimeMillis();
         this.updatedAt = System.currentTimeMillis();
     }
-    
+
     @PreUpdate
     private void preUpdate() {
         this.updatedAt = System.currentTimeMillis();

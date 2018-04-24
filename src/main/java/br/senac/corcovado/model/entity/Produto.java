@@ -44,7 +44,7 @@ public class Produto implements Serializable {
     @Column(name = "estoque") private int estoque;
     @Column(name = "reservado") private int reservado;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
-    @Transient @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
+    /*@Transient*/ @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;

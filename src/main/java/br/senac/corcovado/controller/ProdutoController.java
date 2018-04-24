@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProdutoController {
     @Autowired private ProdutoRepository prodRepo;
     // @Autowired private DepartamentoRepository deptoRepo;
-    @Autowired private PrecoRepository precoRepo;
+    // @Autowired private PrecoRepository precoRepo;
     @Autowired private CategoriaRepository cateRepo;
 
     @GetMapping("/produtos")
@@ -38,7 +38,7 @@ public class ProdutoController {
     @GetMapping("/produtos/{id}")
     public ModelAndView show(@PathVariable("id") long id) {
         Produto produto = prodRepo.findProdutoById(id).get();
-        produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(id)));
+        //produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(id)));
 
         return new ModelAndView("/produto/produto_show").addObject("produto", produto);
     }
@@ -68,6 +68,7 @@ public class ProdutoController {
 
     @PostMapping(path = "/produtos/update")
     public ModelAndView update(@ModelAttribute Produto produto) {
+        // produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(id)));
         Produto salvo;
 
         //TODO implementar validador via @Valid

@@ -18,8 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CategoriaController {
 
-    @Autowired
-    private CategoriaRepository repository;
+    @Autowired private CategoriaRepository repository;
 
     // @Autowired private DepartamentoRepository deptoRepository;
 

@@ -62,42 +62,42 @@
             <form data-th-action="@{/pessoas/{act}(act = ${action})}" method="post" data-th-object="${pessoa}">
                 <input type="hidden" data-th-field="*{id}" />
                 <input type="hidden" data-th-field="*{createdAt}" />
+                <input type="hidden" data-th-each="endereco, enderecoStat : ${produto.enderecos}" data-th-field="*{enderecos[__${enderecoStat.index}__].id}" />
 
-                
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input class="form-control" placeholder="Nome" data-th-field="*{nome}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="documento">Documento:</label>
                     <input class="form-control" placeholder="Documento" data-th-field="*{documento}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="email">E-Mail:</label>
                     <input class="form-control" placeholder="E-Mail" data-th-field="*{email}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="senha">Senha:</label>
                     <input class="form-control" placeholder="Senha" data-th-field="*{senha}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="nivel">Nível:</label>
                     <select class="form-control" data-th-field="*{nivel}">
                         <option data-th-each="nivel : ${niveis}" data-th-value="${nivel}" data-th-text="${nivel.nome}"></option>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="cargo">Cargo:</label>
                     <select class="form-control" data-th-field="*{cargo}">
                         <option data-th-each="cargo : ${cargos}" data-th-value="${cargo}" data-th-text="${cargo.nome}"></option>
                     </select>
                 </div>
-              
+
 
                 <div class="row justify-content-between align-items-center">
                     <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${pessoa.id}">

@@ -62,7 +62,7 @@
             <form data-th-action="@{/produtos/{act}(act = ${action})}" method="post" data-th-object="${produto}">
                 <input type="hidden" data-th-field="*{id}" />
                 <input type="hidden" data-th-field="*{createdAt}" />
-
+                <input type="hidden" data-th-each="preco, precoStat : ${produto.precos}" data-th-field="*{precos[__${precoStat.index}__].id}" />
 
                 <div class="form-group">
                     <label for="nome">Nome:</label>
