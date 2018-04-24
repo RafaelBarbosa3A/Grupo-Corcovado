@@ -1,6 +1,6 @@
 const corcovado = angular.module('corcovado', ['ui.router']);
 
-corcovado.config(($stateProvider, $urlRouterProvider) => {
+corcovado.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('list', {
         url: '/produtos',
         templateUrl: 'comercio/list',
@@ -23,21 +23,28 @@ corcovado.config(($stateProvider, $urlRouterProvider) => {
 });
 
 corcovado.controller('list', function($scope, $loader) {
-
     $scope.produtos = [];
 
-    $loader.loadProducts().then((p) => {
-        $scope.produtos = p;
+    /*
+    console.log($loader.batata);
+    
+    $loader.loadProducts.then(function(prods) {
+        $scope.produtos = prods;
     });
+    */
 });
 
 corcovado.factory('$loader', function ($http, $q) {
     var produtos = [];
 
     return {
+        produtos: produtos,
+        batata: "batata"
+        /*
         loadProdutos: function() {
-            return $q((resolve, reject) => {
-                $http.get('/comercio_json').then((response) => {
+            return $q(function(resolve, reject) {
+                $http.get('/comercio_json')
+                .then(function(response) {
                     produtos = response.data;
                     resolve(produtos);
                 });
@@ -54,5 +61,6 @@ corcovado.factory('$loader', function ($http, $q) {
             }
             return encontrado;
         }
+        */
      };
 });
