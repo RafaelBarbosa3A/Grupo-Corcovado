@@ -63,47 +63,45 @@
                 <input type="hidden" data-th-field="*{id}" />
                 <input type="hidden" data-th-field="*{createdAt}" />
 
-                
+
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input class="form-control" placeholder="Nome" data-th-field="*{nome}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="descricao">Descrição:</label>
                     <input class="form-control" placeholder="Descrição" data-th-field="*{descricao}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="fabricante">Fabricante:</label>
                     <input class="form-control" placeholder="Fabricante" data-th-field="*{fabricante}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="codigo">Código:</label>
                     <input class="form-control" placeholder="Código" data-th-field="*{codigo}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="estoque">Estoque:</label>
                     <input class="form-control" placeholder="Estoque" data-th-field="*{estoque}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="reservado">Reservado:</label>
                     <input class="form-control" placeholder="Reservado" data-th-field="*{reservado}" />
                 </div>
-                
+
                 <div class="form-group">
                     <label for="categoria">Categoria:</label>
                     <select class="form-control" data-th-field="*{categoria.id}">
                         <option data-th-value="NULL" data-th-text=" -- "></option>
-                        <optgroup label="departamento" data-th-each="depto : ${departamentos}" data-th-label="${depto.nome}">
-                            <option data-th-each="categoria : ${depto.categorias}" data-th-value="${categoria.id}" data-th-text="${categoria.nome}"></option>
-                        </optgroup>
+                        <option data-th-each="categoria : ${categorias}" data-th-value="${categoria.id}" data-th-text="${categoria.nome}"></option>
                     </select>
                 </div>
-                
+
                 <div class="row justify-content-between align-items-center">
                     <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${produto.id}">
                         <a class="btn" data-th-case="0" href="#" data-th-href="@{/produtos}">Voltar</a>

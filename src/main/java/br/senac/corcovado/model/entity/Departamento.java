@@ -1,3 +1,5 @@
+/*
+
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
@@ -21,10 +23,11 @@ import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-/**
+/ **
  *
  * @author wesley
- */
+ * /
+@Deprecated
 
 @Entity
 @Table(name = "departamento")
@@ -37,7 +40,7 @@ public class Departamento implements Serializable {
     @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;
     @Transient @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL, orphanRemoval = true) private List<Categoria> categorias;
-    
+
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
@@ -48,7 +51,7 @@ public class Departamento implements Serializable {
         this.createdAt = 0L;
         this.active = true;
     }
-    
+
     public Departamento(Long id, String nome, List<Categoria> categorias, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
@@ -154,13 +157,13 @@ public class Departamento implements Serializable {
     }
 
     // === JPA Gambiarras ===
-    
+
     @PrePersist
     private void prePersist() {
         this.createdAt = System.currentTimeMillis();
         this.updatedAt = System.currentTimeMillis();
     }
-    
+
     @PreUpdate
     private void preUpdate() {
         this.updatedAt = System.currentTimeMillis();
@@ -171,3 +174,4 @@ public class Departamento implements Serializable {
         this.active = false;
     }
 }
+*/
