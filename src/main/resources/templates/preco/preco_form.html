@@ -66,13 +66,15 @@
                 
                 <div class="form-group">
                     <label for="produto">Produto:</label>
-                    <input class="form-control" data-th-value="${preco.produto.nome}" disabled/>
+                    <input type="text" class="form-control" data-th-value="${preco.produto.nome}" disabled/>
+                    <p></p>
                     <input type="hidden" data-th-field="*{produto.id}" />
                 </div>
                 
                 <div class="form-group">
                     <label for="preco">Preço:</label>
-                    <input class="form-control" placeholder="Preço" data-th-field="*{preco}" />
+                    <input type="number" class="form-control" placeholder="Preço" data-th-field="*{preco}" />
+                    <p></p>
                 </div>
                 
                 <div class="form-group">
