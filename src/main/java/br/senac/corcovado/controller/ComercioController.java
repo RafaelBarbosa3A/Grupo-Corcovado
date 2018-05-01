@@ -41,4 +41,9 @@ public class ComercioController {
         return new ModelAndView("/comercio/_show");
     }
     
+    @GetMapping("/comercio/cart")
+    public ModelAndView cart() {
+        return new ModelAndView("/comercio/_cart");
+    }
+    
 }

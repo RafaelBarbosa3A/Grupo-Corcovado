@@ -1,4 +1,3 @@
-
 .nav-menu:hover {
     background-color: #f7f7f9;
 }
@@ -23,4 +22,8 @@ button.bg-footer:focus {
 
 .bg-corcovado {
     background-color: #6610f2 !important;
+}
+
+dt::after {
+    content: ":";
 }

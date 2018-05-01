@@ -1,13 +1,16 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -30,15 +33,21 @@ public class Venda implements Serializable {
     @Column(name = "comprovante") private String comprovante;
     @Column(name = "prazo_entrega") private String prazoEntrega;
     @Column(name = "codigo_rastreamento") private String codigoRastreamento;
-    @Column(name = "created_at") private GregorianCalendar createdAt;
-    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    private Set<ProdutoVendido> produtoVendidos;
+    
+    @Column(name = "created_at") private Long createdAt;
+    @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
 
     public Venda() {
         this.id = 0L;
+        this.total = 0D;
+        this.produtoVendidos = new HashSet<>();
     }
 
-    public Venda(Long id, Long clienteId, Long enderecoId, Long descontoId, int statusId, Double total, String pagamento, String comprovante, String prazoEntrega, String codigoRastreamento, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Venda(Long id, Long clienteId, Long enderecoId, Long descontoId, int statusId, Double total, String pagamento, String comprovante, String prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.clienteId = clienteId;
         this.enderecoId = enderecoId;
@@ -49,6 +58,7 @@ public class Venda implements Serializable {
         this.comprovante = comprovante;
         this.prazoEntrega = prazoEntrega;
         this.codigoRastreamento = codigoRastreamento;
+        this.produtoVendidos = produtoVendidos;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -57,7 +67,6 @@ public class Venda implements Serializable {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -65,7 +74,6 @@ public class Venda implements Serializable {
     public Long getClienteId() {
         return clienteId;
     }
-
     public void setClienteId(Long clienteId) {
         this.clienteId = clienteId;
     }
@@ -73,7 +81,6 @@ public class Venda implements Serializable {
     public Long getEnderecoId() {
         return enderecoId;
     }
-
     public void setEnderecoId(Long enderecoId) {
         this.enderecoId = enderecoId;
     }
@@ -81,7 +88,6 @@ public class Venda implements Serializable {
     public Long getDescontoId() {
         return descontoId;
     }
-
     public void setDescontoId(Long descontoId) {
         this.descontoId = descontoId;
     }
@@ -89,7 +95,6 @@ public class Venda implements Serializable {
     public int getStatusId() {
         return statusId;
     }
-
     public void setStatusId(int statusId) {
         this.statusId = statusId;
     }
@@ -97,7 +102,6 @@ public class Venda implements Serializable {
     public Double getTotal() {
         return total;
     }
-
     public void setTotal(Double total) {
         this.total = total;
     }
@@ -105,7 +109,6 @@ public class Venda implements Serializable {
     public String getPagamento() {
         return pagamento;
     }
-
     public void setPagamento(String pagamento) {
         this.pagamento = pagamento;
     }
@@ -113,7 +116,6 @@ public class Venda implements Serializable {
     public String getComprovante() {
         return comprovante;
     }
-
     public void setComprovante(String comprovante) {
         this.comprovante = comprovante;
     }
@@ -121,7 +123,6 @@ public class Venda implements Serializable {
     public String getPrazoEntrega() {
         return prazoEntrega;
     }
-
     public void setPrazoEntrega(String prazoEntrega) {
         this.prazoEntrega = prazoEntrega;
     }
@@ -129,66 +130,59 @@ public class Venda implements Serializable {
     public String getCodigoRastreamento() {
         return codigoRastreamento;
     }
-
     public void setCodigoRastreamento(String codigoRastreamento) {
         this.codigoRastreamento = codigoRastreamento;
     }
 
-    public GregorianCalendar getCreatedAt() {
-        return createdAt;
+    public Set<ProdutoVendido> getProdutoVendidos() {
+        return produtoVendidos;
     }
 
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setProdutoVendidos(Set<ProdutoVendido> produtoVendidos) {
+        this.produtoVendidos = produtoVendidos;
+    }
+    
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
-
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
-    }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.id);
-        hash = 29 * hash + Objects.hashCode(this.clienteId);
-        hash = 29 * hash + Objects.hashCode(this.enderecoId);
-        hash = 29 * hash + Objects.hashCode(this.descontoId);
-        hash = 29 * hash + this.statusId;
-        hash = 29 * hash + Objects.hashCode(this.total);
-        hash = 29 * hash + Objects.hashCode(this.pagamento);
-        hash = 29 * hash + Objects.hashCode(this.comprovante);
-        hash = 29 * hash + Objects.hashCode(this.prazoEntrega);
-        hash = 29 * hash + Objects.hashCode(this.codigoRastreamento);
-        hash = 29 * hash + Objects.hashCode(this.createdAt);
-        hash = 29 * hash + Objects.hashCode(this.updatedAt);
-        hash = 29 * hash + (this.active ? 1 : 0);
+    @Override public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.id);
+        hash = 71 * hash + Objects.hashCode(this.clienteId);
+        hash = 71 * hash + Objects.hashCode(this.enderecoId);
+        hash = 71 * hash + Objects.hashCode(this.descontoId);
+        hash = 71 * hash + this.statusId;
+        hash = 71 * hash + Objects.hashCode(this.total);
+        hash = 71 * hash + Objects.hashCode(this.pagamento);
+        hash = 71 * hash + Objects.hashCode(this.comprovante);
+        hash = 71 * hash + Objects.hashCode(this.prazoEntrega);
+        hash = 71 * hash + Objects.hashCode(this.codigoRastreamento);
+        hash = 71 * hash + Objects.hashCode(this.produtoVendidos);
+        hash = 71 * hash + Objects.hashCode(this.createdAt);
+        hash = 71 * hash + Objects.hashCode(this.updatedAt);
+        hash = 71 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    @Override public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -199,50 +193,13 @@ public class Venda implements Serializable {
             return false;
         }
         final Venda other = (Venda) obj;
-        if (this.statusId != other.statusId) {
-            return false;
-        }
-        if (this.active != other.active) {
-            return false;
-        }
-        if (!Objects.equals(this.pagamento, other.pagamento)) {
-            return false;
-        }
-        if (!Objects.equals(this.comprovante, other.comprovante)) {
-            return false;
-        }
-        if (!Objects.equals(this.prazoEntrega, other.prazoEntrega)) {
-            return false;
-        }
-        if (!Objects.equals(this.codigoRastreamento, other.codigoRastreamento)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.clienteId, other.clienteId)) {
-            return false;
-        }
-        if (!Objects.equals(this.enderecoId, other.enderecoId)) {
-            return false;
-        }
-        if (!Objects.equals(this.descontoId, other.descontoId)) {
-            return false;
-        }
-        if (!Objects.equals(this.total, other.total)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Venda{" + "id=" + id + ", clienteId=" + clienteId + ", enderecoId=" + enderecoId + ", descontoId=" + descontoId + ", statusId=" + statusId + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
-    }
+    @Override public String toString() {
+        return "Venda{" + "id=" + id + ", clienteId=" + clienteId + ", enderecoId=" + enderecoId + ", descontoId=" + descontoId + ", statusId=" + statusId + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    }    
 }

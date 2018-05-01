@@ -1,13 +1,14 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -23,22 +24,29 @@ public class ProdutoVendido implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
-    @Column(name = "produto_id") private Long produtoId;
-    @Column(name = "venda_id") private Long vendaId;
+    
+    @ManyToOne @JoinColumn(name = "produto_id")
+    private Produto produto;
+    //@Column(name = "produto_id") private Long produtoId;
+    
+    @ManyToOne @JoinColumn(name = "venda_id")
+    private Venda venda;
+    // @Column(name = "venda_id") private Long vendaId;
+    
     @Column(name = "quantidade") private Integer quantidade;
     @Column(name = "preco_total") private Double precoTotal;
-    @Column(name = "created_at") private GregorianCalendar createdAt;
-    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "created_at") private Long createdAt;
+    @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;    
 
     public ProdutoVendido() {
         this.id = 0L;
     }
 
-    public ProdutoVendido(Long id, Long produto_id, Long venda_id, Integer quantidade, Double precoTotal, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public ProdutoVendido(Long id, Produto produto, Venda venda, Integer quantidade, Double precoTotal, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
-        this.produtoId = produto_id;
-        this.vendaId = venda_id;
+        this.produto = produto;
+        this.venda = venda;
         this.quantidade = quantidade;
         this.precoTotal = precoTotal;
         this.createdAt = createdAt;
@@ -49,31 +57,28 @@ public class ProdutoVendido implements Serializable {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getProdutoId() {
-        return produtoId;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setProdutoId(Long produtoId) {
-        this.produtoId = produtoId;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
-    public Long getVendaId() {
-        return vendaId;
+    public Venda getVenda() {
+        return venda;
     }
-
-    public void setVendaId(Long vendaId) {
-        this.vendaId = vendaId;
+    public void setVenda(Venda venda) {
+        this.venda = venda;
     }
 
     public Integer getQuantidade() {
         return quantidade;
     }
-
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
@@ -81,56 +86,42 @@ public class ProdutoVendido implements Serializable {
     public Double getPrecoTotal() {
         return precoTotal;
     }
-
     public void setPrecoTotal(Double precoTotal) {
         this.precoTotal = precoTotal;
     }
 
-    public GregorianCalendar getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
-
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
-    }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.id);
-        hash = 29 * hash + Objects.hashCode(this.produtoId);
-        hash = 29 * hash + Objects.hashCode(this.vendaId);
-        hash = 29 * hash + Objects.hashCode(this.quantidade);
-        hash = 29 * hash + Objects.hashCode(this.precoTotal);
-        hash = 29 * hash + Objects.hashCode(this.createdAt);
-        hash = 29 * hash + Objects.hashCode(this.updatedAt);
-        hash = 29 * hash + (this.active ? 1 : 0);
+        hash = 73 * hash + Objects.hashCode(this.id);
+        hash = 73 * hash + Objects.hashCode(this.produto);
+        hash = 73 * hash + Objects.hashCode(this.venda);
+        hash = 73 * hash + Objects.hashCode(this.quantidade);
+        hash = 73 * hash + Objects.hashCode(this.precoTotal);
+        hash = 73 * hash + Objects.hashCode(this.createdAt);
+        hash = 73 * hash + Objects.hashCode(this.updatedAt);
+        hash = 73 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -146,28 +137,7 @@ public class ProdutoVendido implements Serializable {
             return false;
         }
         final ProdutoVendido other = (ProdutoVendido) obj;
-        if (this.active != other.active) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.produtoId, other.produtoId)) {
-            return false;
-        }
-        if (!Objects.equals(this.vendaId, other.vendaId)) {
-            return false;
-        }
-        if (!Objects.equals(this.quantidade, other.quantidade)) {
-            return false;
-        }
-        if (!Objects.equals(this.precoTotal, other.precoTotal)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -175,6 +145,6 @@ public class ProdutoVendido implements Serializable {
 
     @Override
     public String toString() {
-        return "Produto_Vendido{" + "id=" + id + ", produto_id=" + produtoId + ", venda_id=" + vendaId + ", quantidade=" + quantidade + ", preco_total=" + precoTotal + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "ProdutoVendido{" + "id=" + id + ", produto=" + produto + ", venda=" + venda + ", quantidade=" + quantidade + ", precoTotal=" + precoTotal + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

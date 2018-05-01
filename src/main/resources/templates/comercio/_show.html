@@ -1,5 +1,30 @@
-<div class="row" ng-controller="show">
-    <h1>Detalhes</h1>
-    <p>{{produto.nome}}</p>
+<div class="container">
+    <h1 class="h2">Detalhes</h1>
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <img class="img-fluid" src="{{ produto.imagem }}" alt="{{ produto.nome }}" />
+        </div>
+        <div class="col-12 col-md-8">
+            <dl>
+                <dt>Nome do produto</dt>
+                <dd>{{ produto.nome }}</dd>
+                
+                <dt>Descrição</dt>
+                <dd>{{ produto.descricao }}</dd>
+                
+                <dt>Fabricante</dt>
+                <dd>{{ produto.fabricante }}</dd>
+                
+                <dt>Código</dt>
+                <dd>{{ produto.codigo }}</dd>
+                
+                <dt>Categoria</dt>
+                <dd>{{ produto.categoria.nome }}</dd>
+                
+                <dt>Preço</dt>
+                <dd>{{ produto.precos[0].preco | currency }}</dd>
+            </dl>
+        </div>
+    </div>
 </div>
 

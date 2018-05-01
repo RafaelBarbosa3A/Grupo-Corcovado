@@ -25,6 +25,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Set;
 
 /**
  *
@@ -49,13 +50,18 @@ public class Produto implements Serializable {
     @Column(name = "reservado") private int reservado;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
     /*@Transient*/ @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
+    
+    // Mantem o preco selecionado (baseado no perfil do usuario.
+    @Transient private Double preco;
+    
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
+    
 
     public Produto() {
         this.id = 0L;
-        this.precos = new ArrayList<Preco>();
+        this.precos = new ArrayList<>();
         this.active = true;
     }
 
@@ -69,7 +75,7 @@ public class Produto implements Serializable {
         this.estoque = estoque;
         this.reservado = reservado;
         this.categoria = categoria;
-        this.precos = new ArrayList<Preco>();
+        this.precos = new ArrayList<>();
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -145,6 +151,13 @@ public class Produto implements Serializable {
         this.precos = precos;
     }
 
+    public Double getPreco() {
+        return preco;
+    }
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+    
     public Long getCreatedAt() {
         return createdAt;
     }
