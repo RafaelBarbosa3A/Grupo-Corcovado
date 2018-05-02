@@ -56,6 +56,9 @@ corcovado.controller('list', function($scope, $loader, $rootScope) {
     
     $rootScope.removeFromCart = function(item) {
         // $rootScope.cart = $rootScope.cart.filter(e => e !== item);
+        $loader.removeCart(item.produto).then(function(cart) {
+            $rootScope.carrinho = cart;
+        });
     };
     
     $rootScope.clearCart = function() {
@@ -112,6 +115,18 @@ corcovado.factory('$loader', function ($http, $q) {
                 });
         });
     }
+        
+    function removeCart(produto) {
+        return $q(function (resolve, reject) {
+            $http.post('/comercio/carrinho_json/remove', 
+                    { "produtoId": produto.id, 'quantidade': 0 },
+                    { headers: { 'Content-Type': 'application/json' } }
+                ).then(function (response) {
+                    carrinho = response.data;
+                    resolve(carrinho);
+                });
+        });
+    }
     
     function loadCart() {
         return $q(function (resolve, reject) {
@@ -122,5 +137,5 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
      
-    return { loadProdutos, getProduto, addCart, loadCart };
+    return { loadProdutos, getProduto, addCart, removeCart, loadCart };
 });

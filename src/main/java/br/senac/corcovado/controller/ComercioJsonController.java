@@ -74,4 +74,30 @@ public class ComercioJsonController {
         
         return vendaRepo.findById(1L).get();
     }
+    
+    @PostMapping(value = "/comercio/carrinho_json/remove", consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Venda removeCart(@RequestBody ItemCarrinho item) {
+        Venda venda = vendaRepo.findById(1L).get();
+        
+        Produto produto;
+        if(prodRepo.existsById(item.produtoId)) {
+            produto = prodRepo.findById(item.produtoId).get();
+            // TODO criar uma melhor seleção de preços
+            produto.setPreco( produto.getPrecos().get(0).getPreco() );
+        } else {
+            return vendaRepo.findById(1L).get();
+        }
+        
+        ProdutoVendido prodVend = venda.getProdutoVendidos().stream()
+                .filter((pv) -> pv.getProduto().equals(produto))
+                .findFirst().orElse(null);
+        
+        pvRepo.delete(prodVend);
+        
+        venda.getProdutoVendidos().remove(prodVend);
+        vendaRepo.save(venda);
+        
+        return vendaRepo.findById(1L).get();
+    }
 }

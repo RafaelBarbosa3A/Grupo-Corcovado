@@ -138,7 +138,6 @@ public class Venda implements Serializable {
     public Set<ProdutoVendido> getProdutoVendidos() {
         return produtoVendidos;
     }
-
     public void setProdutoVendidos(Set<ProdutoVendido> produtoVendidos) {
         this.produtoVendidos = produtoVendidos;
     }
