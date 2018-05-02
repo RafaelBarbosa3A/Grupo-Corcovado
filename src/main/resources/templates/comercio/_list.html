@@ -3,15 +3,15 @@
     <div class="col-12 col-md-6 order-md-1 col-lg-3 order-lg-last col-xl-2 pt-3">
         <p class="d-flex justify-content-between align-items-center mb-3 h5">
             <span>Carrinho</span>
-            <span class="badge badge-secondary badge-pill">{{ cart.length }}</span>
+            <span class="badge badge-secondary badge-pill">{{ carrinho.produtoVendidos.length }}</span>
         </p>
         <ul class="list-group mb-3">
             
-            <li class="list-group-item" ng-repeat="cart_prod in cart">
+            <li class="list-group-item" ng-repeat="cart_prod in carrinho.produtoVendidos">
                 <p class="h6 my-0">{{ cart_prod.produto.nome }}</p>
                 <div class="d-flex justify-content-between lh-condensed mt-2">
                     <small class="text-muted">({{ cart_prod.quantidade }})</small>
-                    <small class="text-muted">R{{ cart_prod.totalPreco() | currency }}</small>
+                    <small class="text-muted">R{{ cart_prod.precoTotal | currency }}</small>
                 </div>
             </li>
             

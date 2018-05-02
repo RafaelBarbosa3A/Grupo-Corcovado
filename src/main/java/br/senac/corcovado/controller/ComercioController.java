@@ -21,10 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ComercioController {
     @Autowired private ProdutoRepository prodRepo;
     @Autowired private PrecoRepository precoRepo;
-    /*
-    @Autowired private VendaRepository vendaRepo;
-    @Autowired private ProdutoVendidoRepository prodVendRepo;
-    */
+    
     @GetMapping("/comercio")
     public ModelAndView main() {
         // TODO adicionar paramtros de busca

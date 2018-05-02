@@ -24,14 +24,22 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
 
 corcovado.controller('list', function($scope, $loader, $rootScope) {
     $scope.produtos = [];
-    $rootScope.cart = [];
+    $rootScope.carrinho = {};
     
     $loader.loadProdutos().then(function(prods) {
         $scope.produtos = prods;
     });
     
+    $loader.loadCart().then(function(cart) {
+        $rootScope.carrinho = cart;
+    });
+    
     $rootScope.addToCart = function(produto, quantidade) {
-        if (quantidade >= 1 && quantidade <= (produto.estoque - produto.reservado)) {
+        if (quantidade >= 1 && quantidade <= (produto.estoque - produto.reservado)) {            
+            $loader.addCart(produto, quantidade).then(function(cart) {
+                $rootScope.carrinho = cart;
+            });
+            /*
             let found = $rootScope.cart.find((p) => { return p.produto === produto; });
             if(found) {
                 found.quantidade += quantidade;
@@ -42,19 +50,21 @@ corcovado.controller('list', function($scope, $loader, $rootScope) {
                     totalPreco: function() { return this.quantidade * this.produto.precos[0].preco; }
                 });
             }
+            */
         }
     };
     
     $rootScope.removeFromCart = function(item) {
-        $rootScope.cart = $rootScope.cart.filter(e => e !== item);
+        // $rootScope.cart = $rootScope.cart.filter(e => e !== item);
     };
     
     $rootScope.clearCart = function() {
-        $rootScope.cart = [];
+        // $rootScope.cart = [];
     };
     
     $rootScope.carrinhoTotalPreco = function() {
-       return $rootScope.cart.reduce((acc, prod) => { return acc + prod.totalPreco(); }, 0);
+        return 0;
+       // return $rootScope.cart.reduce((acc, prod) => { return acc + prod.totalPreco(); }, 0);
     };
 });
 
@@ -64,7 +74,7 @@ corcovado.controller('show', function ($scope, $stateParams, $loader) {
 
 corcovado.factory('$loader', function ($http, $q) {
     var produtos = [];
-    var carrinho = [];
+    var carrinho = {};
     
     function loadProdutos() {
         return $q(function (resolve, reject) {
@@ -91,18 +101,26 @@ corcovado.factory('$loader', function ($http, $q) {
         return encontrado;
     }
     
-    function loadCart() {
+    function addCart(produto, quantidade) {
         return $q(function (resolve, reject) {
-            if (produtos.length === 0) {
-                $http.get('/carrinho_json').then(function (response) {
+            $http.post('/comercio/carrinho_json/add', 
+                    { "produtoId": produto.id, 'quantidade': quantidade },
+                    { headers: { 'Content-Type': 'application/json' } }
+                ).then(function (response) {
                     carrinho = response.data;
                     resolve(carrinho);
                 });
-            } else {
+        });
+    }
+    
+    function loadCart() {
+        return $q(function (resolve, reject) {
+            $http.get('/comercio/carrinho_json').then(function (response) {
+                carrinho = response.data;
                 resolve(carrinho);
-            }
+            });
         });
     }
      
-    return { loadProdutos, getProduto, loadCart };
+    return { loadProdutos, getProduto, addCart, loadCart };
 });

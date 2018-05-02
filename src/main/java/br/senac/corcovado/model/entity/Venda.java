@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,7 @@ public class Venda implements Serializable {
     @Column(name = "prazo_entrega") private String prazoEntrega;
     @Column(name = "codigo_rastreamento") private String codigoRastreamento;
     
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProdutoVendido> produtoVendidos;
     
     @Column(name = "created_at") private Long createdAt;
@@ -163,26 +164,27 @@ public class Venda implements Serializable {
         this.active = active;
     }
 
-    @Override public int hashCode() {
-        int hash = 7;
-        hash = 71 * hash + Objects.hashCode(this.id);
-        hash = 71 * hash + Objects.hashCode(this.clienteId);
-        hash = 71 * hash + Objects.hashCode(this.enderecoId);
-        hash = 71 * hash + Objects.hashCode(this.descontoId);
-        hash = 71 * hash + this.statusId;
-        hash = 71 * hash + Objects.hashCode(this.total);
-        hash = 71 * hash + Objects.hashCode(this.pagamento);
-        hash = 71 * hash + Objects.hashCode(this.comprovante);
-        hash = 71 * hash + Objects.hashCode(this.prazoEntrega);
-        hash = 71 * hash + Objects.hashCode(this.codigoRastreamento);
-        hash = 71 * hash + Objects.hashCode(this.produtoVendidos);
-        hash = 71 * hash + Objects.hashCode(this.createdAt);
-        hash = 71 * hash + Objects.hashCode(this.updatedAt);
-        hash = 71 * hash + (this.active ? 1 : 0);
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.clienteId);
+        hash = 29 * hash + Objects.hashCode(this.enderecoId);
+        hash = 29 * hash + Objects.hashCode(this.descontoId);
+        hash = 29 * hash + this.statusId;
+        hash = 29 * hash + Objects.hashCode(this.total);
+        hash = 29 * hash + Objects.hashCode(this.pagamento);
+        hash = 29 * hash + Objects.hashCode(this.comprovante);
+        hash = 29 * hash + Objects.hashCode(this.prazoEntrega);
+        hash = 29 * hash + Objects.hashCode(this.codigoRastreamento);
+        hash = 29 * hash + Objects.hashCode(this.createdAt);
+        hash = 29 * hash + Objects.hashCode(this.updatedAt);
+        hash = 29 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -199,7 +201,8 @@ public class Venda implements Serializable {
         return true;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Venda{" + "id=" + id + ", clienteId=" + clienteId + ", enderecoId=" + enderecoId + ", descontoId=" + descontoId + ", statusId=" + statusId + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
-    }    
+    } 
 }

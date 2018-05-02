@@ -1,5 +1,6 @@
 package br.senac.corcovado.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "produto_vendido")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler",  "venda"})
 public class ProdutoVendido implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +31,7 @@ public class ProdutoVendido implements Serializable {
     private Produto produto;
     //@Column(name = "produto_id") private Long produtoId;
     
-    @ManyToOne @JoinColumn(name = "venda_id")
+    @ManyToOne @JoinColumn(name = "venda_id", referencedColumnName = "id")
     private Venda venda;
     // @Column(name = "venda_id") private Long vendaId;
     
