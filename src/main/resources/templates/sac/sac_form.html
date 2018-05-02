@@ -61,30 +61,32 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo SAC' : 'Alterar SAC'"></div>
             <form data-th-action="@{/sacs/{act}(act = ${action})}" method="post" data-th-object="${sac}">
                 <input type="hidden" data-th-field="*{id}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
 
                 
                 <div class="form-group">
                     <label for="clienteId">Cliente Id:</label>
                     <input type="number" class="form-control" placeholder="Cliente Id" data-th-field="*{clienteId}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('clienteId')}" th:errors="*{clienteId}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="contato">Contato:</label>
                     <input type="text" class="form-control" placeholder="Contato" data-th-field="*{contato}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('contato')}" th:errors="*{contato}"></p>
+                    
                 </div>
                 
                 <div class="form-group">
                     <label for="mensagem">Mensagem:</label>
                     <input type="text" class="form-control" placeholder="Mensagem" data-th-field="*{mensagem}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('mensagem')}" th:errors="*{mensagem}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="statusMensagemId">Status Mensagem Id:</label>
                     <input type="number" class="form-control" placeholder="Status Mensagem Id" data-th-field="*{statusMensagemId}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('statusMensagemId')}" th:errors="*{statusMensagemId}"></p>
                 </div>
                 
 

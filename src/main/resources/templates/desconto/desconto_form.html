@@ -61,24 +61,27 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Desconto' : 'Alterar Desconto'"></div>
             <form data-th-action="@{/descontos/{act}(act = ${action})}" method="post" data-th-object="${desconto}">
                 <input type="hidden" data-th-field="*{id}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
 
                 
                 <div class="form-group">
                     <label for="desconto">Desconto:</label>
                     <input type="text" class="form-control" placeholder="Desconto" data-th-field="*{desconto}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('desconto')}" th:errors="*{desconto}"></p>
+                    
                 </div>
                 
                 <div class="form-group">
                     <label for="percentual">Percentual:</label>
                     <input type="number" class="form-control" placeholder="Percentual" data-th-field="*{percentual}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('percentual')}" th:errors="*{percentual}"></p>
+                    
                 </div>
                 
                 <div class="form-group">
                     <label for="codigoCupom">Código Cupom:</label>
-                    <input type="number" class="form-control" placeholder="Código Cupom" data-th-field="*{codigoCupom}" />
-                    <p></p>
+                    <input type="text" class="form-control" placeholder="Código Cupom" data-th-field="*{codigoCupom}" />
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('codigoCupom')}" th:errors="*{codigoCupom}"></p>
                 </div>
                 
 

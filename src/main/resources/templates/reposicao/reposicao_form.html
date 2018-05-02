@@ -61,18 +61,19 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Reposição' : 'Alterar Reposição'"></div>
             <form data-th-action="@{/reposicaos/{act}(act = ${action})}" method="post" data-th-object="${reposicao}">
                 <input type="hidden" data-th-field="*{id}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
 
                 
                 <div class="form-group">
                     <label for="fornecedor">Fornecedor:</label>
                     <input type="text" class="form-control" placeholder="Fornecedor" data-th-field="*{fornecedor}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('fornecedor')}" th:errors="*{fornecedor}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="notaFiscal">Nota Fiscal:</label>
                     <input type="text" class="form-control" placeholder="Nota Fiscal" data-th-field="*{notaFiscal}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('notaFiscal')}" th:errors="*{notaFiscal}"></p>
                 </div>
                 
 
