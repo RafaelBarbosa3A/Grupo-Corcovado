@@ -25,6 +25,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Set;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -40,22 +43,39 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Produto implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
+    
+    @NotEmpty(message = "Favor digitar um nome")
+    @Size(min=1,max=255,message="Favor digitar um nome entre 1 á 255 letras")
     @Column(name = "nome") private String nome;
+    @NotEmpty(message = "Favor digitar uma descrição")
+    @Size(min=1,max=255,message="Favor digitar uma descrição entre 1 á 255 letras")
     @Column(name = "descricao") private String descricao;
+    @NotEmpty(message = "Favor digitar um nome de fabricante")
+    @Size(min=1,max=255,message="Favor digitar um nome de fabricante entre 1 á 255 letras")
     @Column(name = "fabricante") private String fabricante;
+    @NotEmpty(message = "Favor digitar um código")
+    @Size(min=1,max=255,message="Favor digitar um código entre 1 á 255 letras")
     @Column(name = "codigo") private String codigo;
+    @NotEmpty(message = "Favor inserir uma imagem")
     @Column(name = "imagem") private String imagem;
+    @NotEmpty(message = "Favor digitar uma quantidade em estoque")
     @Column(name = "estoque") private int estoque;
     @Column(name = "reservado") private int reservado;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
-    /*@Transient*/ @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) private List<Preco> precos;
+    
+    @OneToMany(mappedBy = "produto") private List<Preco> precos;
+    
+    // Mantem o preco selecionado (baseado no perfil do usuario.
+    @Transient private Double preco;
+    
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
+    
 
     public Produto() {
         this.id = 0L;
-        this.precos = new ArrayList<Preco>();
+        //this.precos = new ArrayList<>();
         this.active = true;
     }
 
@@ -69,7 +89,7 @@ public class Produto implements Serializable {
         this.estoque = estoque;
         this.reservado = reservado;
         this.categoria = categoria;
-        this.precos = new ArrayList<Preco>();
+        //this.precos = new ArrayList<>();
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -137,14 +157,21 @@ public class Produto implements Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-
+    
     public List<Preco> getPrecos() {
         return precos;
     }
     public void setPrecos(List<Preco> precos) {
         this.precos = precos;
     }
-
+    
+    public Double getPreco() {
+        return preco;
+    }
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+    
     public Long getCreatedAt() {
         return createdAt;
     }
@@ -177,7 +204,7 @@ public class Produto implements Serializable {
         hash = 59 * hash + Objects.hashCode(this.estoque);
         hash = 59 * hash + Objects.hashCode(this.reservado);
         hash = 59 * hash + Objects.hashCode(this.categoria);
-        hash = 59 * hash + Objects.hashCode(this.precos);
+       // hash = 59 * hash + Objects.hashCode(this.precos);
         hash = 59 * hash + Objects.hashCode(this.createdAt);
         hash = 59 * hash + Objects.hashCode(this.updatedAt);
         hash = 59 * hash + (this.active ? 1 : 0);
@@ -202,7 +229,7 @@ public class Produto implements Serializable {
     }
 
     @Override public String toString() {
-        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", imagem=" + imagem + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", precos=" + precos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", imagem=" + imagem + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + /*", precos=" + precos +*/ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 
     // === JPA Gambiarras ===

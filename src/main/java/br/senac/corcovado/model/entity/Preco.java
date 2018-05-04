@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -36,6 +38,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "produto"})
 public class Preco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
+    @NotEmpty(message = "Preço não pode estar vazio")
     @Column(name = "preco") private Double preco;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "produto_id", referencedColumnName = "id") private Produto produto;
     @Enumerated(EnumType.STRING) @Column(name = "nivel") private Nivel nivel;

@@ -5,6 +5,9 @@
  */
 package br.senac.corcovado.model.entity;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 /**
  *
  * @author Diego
@@ -16,6 +19,8 @@ public enum StatusMensagem {
     ENCERRADO(3, "Encerrado");
     
     private final int id;
+    @NotEmpty(message = "Favor digitar uma mensagem")
+    @Size(min=1,max=255,message="Favor digitar uma mensagem entre 1 á 255 letras")
     private final String name;
     
     private StatusMensagem(int id, String name) {

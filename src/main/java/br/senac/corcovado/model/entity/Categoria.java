@@ -17,6 +17,8 @@ import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -35,6 +37,8 @@ public class Categoria implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @NotEmpty(message = "Favor digitar um nome")
+    @Size(min=1,max=255,message="Favor digitar um nome entre 1 á 255 letras")
     @Column(name = "nome")
     private String nome;
 

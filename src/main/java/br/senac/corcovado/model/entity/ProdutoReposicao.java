@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -25,6 +27,7 @@ public class ProdutoReposicao implements Serializable {
     @Column(name = "id") private Long id;
     @Column(name = "reposicao_id") private Long reposicaoId;
     @Column(name = "produto_id") private Long produtoId;
+    @NotEmpty(message = "Favor digitar uma quantidade")
     @Column(name = "quantidade") private Integer quantidade;
     @Column(name = "created_at") private GregorianCalendar createdAt;
     @Column(name = "updated_at") private GregorianCalendar updatedAt;
