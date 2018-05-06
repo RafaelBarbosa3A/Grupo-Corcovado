@@ -27,11 +27,19 @@ public class ProdutoVendido implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     
-    @ManyToOne @JoinColumn(name = "produto_id")
+    @ManyToOne(targetEntity = Produto.class,
+            optional = false)
+    @JoinColumn(name = "produto_id", 
+            referencedColumnName = "id",
+            nullable = false)
     private Produto produto;
     //@Column(name = "produto_id") private Long produtoId;
     
-    @ManyToOne @JoinColumn(name = "venda_id", referencedColumnName = "id")
+    @ManyToOne(targetEntity = Venda.class,
+            optional = false)
+    @JoinColumn(name = "venda_id", 
+            referencedColumnName = "id",
+            nullable = false)
     private Venda venda;
     // @Column(name = "venda_id") private Long vendaId;
     

@@ -26,6 +26,7 @@ import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Set;
+import javax.persistence.PostLoad;
 
 /**
  *
@@ -38,7 +39,7 @@ import java.util.Set;
 @NamedQuery(name = "findProdutoById", query = "SELECT p FROM Produto p WHERE p.id = ?1")
 @Where(clause = "active = true")
 //Gambiarraaaaaaaaa
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "precos"})
 public class Produto implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
     @Column(name = "nome") private String nome;
@@ -48,8 +49,8 @@ public class Produto implements Serializable {
     @Column(name = "imagem") private String imagem;
     @Column(name = "estoque") private int estoque;
     @Column(name = "reservado") private int reservado;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
     
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;
     @OneToMany(mappedBy = "produto") private List<Preco> precos;
     
     // Mantem o preco selecionado (baseado no perfil do usuario.
@@ -232,6 +233,14 @@ public class Produto implements Serializable {
         this.updatedAt = System.currentTimeMillis();
     }
 
+    @PostLoad
+    private void loadPreco() {
+        this.preco = this.precos.stream()
+                .sorted().findFirst()
+                .orElse(new Preco(0L, 0D, this, Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()))
+                .getPreco();
+    }
+    
     @PreRemove
     private void preRemove() {
         this.active = false;

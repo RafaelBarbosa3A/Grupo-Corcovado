@@ -39,24 +39,17 @@ corcovado.controller('list', function($scope, $loader, $rootScope) {
             $loader.addCart(produto, quantidade).then(function(cart) {
                 $rootScope.carrinho = cart;
             });
-            /*
-            let found = $rootScope.cart.find((p) => { return p.produto === produto; });
-            if(found) {
-                found.quantidade += quantidade;
-            } else {
-                $rootScope.cart.push({
-                    produto: produto,
-                    quantidade: quantidade,
-                    totalPreco: function() { return this.quantidade * this.produto.precos[0].preco; }
-                });
-            }
-            */
         }
     };
     
     $rootScope.removeFromCart = function(item) {
-        // $rootScope.cart = $rootScope.cart.filter(e => e !== item);
         $loader.removeCart(item.produto).then(function(cart) {
+            $rootScope.carrinho = cart;
+        });
+    };
+
+    $rootScope.editFromCart = function(produto_id, quantidade) {
+        $loader.editCart(produto_id, quantidade).then(function(cart) {
             $rootScope.carrinho = cart;
         });
     };
@@ -104,10 +97,10 @@ corcovado.factory('$loader', function ($http, $q) {
         return encontrado;
     }
     
-    function addCart(produto, quantidade) {
+    function addCart(produto_id, quantidade) {
         return $q(function (resolve, reject) {
             $http.post('/comercio/carrinho_json/add', 
-                    { "produtoId": produto.id, 'quantidade': quantidade },
+                    { "produtoId": produto_id, 'quantidade': quantidade },
                     { headers: { 'Content-Type': 'application/json' } }
                 ).then(function (response) {
                     carrinho = response.data;
@@ -116,10 +109,22 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
         
-    function removeCart(produto) {
+    function removeCart(produto_id) {
         return $q(function (resolve, reject) {
             $http.post('/comercio/carrinho_json/remove', 
-                    { "produtoId": produto.id, 'quantidade': 0 },
+                    { "produtoId": produto_id, 'quantidade': 0 },
+                    { headers: { 'Content-Type': 'application/json' } }
+                ).then(function (response) {
+                    carrinho = response.data;
+                    resolve(carrinho);
+                });
+        });
+    }
+
+    function editCart(produto_id, quantidade) {
+        return $q(function (resolve, reject) {
+            $http.post('/comercio/carrinho_json/edit', 
+                    { "produtoId": produto_id, 'quantidade': quantidade },
                     { headers: { 'Content-Type': 'application/json' } }
                 ).then(function (response) {
                     carrinho = response.data;

@@ -5,11 +5,13 @@
  */
 package br.senac.corcovado.controller.adapter;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Diego
  */
-public class ItemCarrinho {
+public class ItemCarrinho implements Serializable {
     public long produtoId;
     public int quantidade;
 }

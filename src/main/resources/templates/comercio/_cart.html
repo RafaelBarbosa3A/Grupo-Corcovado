@@ -13,10 +13,11 @@
         <div class="col-2 text-center">{{ item.quantidade }}</div>
         <div class="col-4 text-right">R{{ item.precoTotal | currency }}</div>
         <a href="#!/carrinho" class="col-1 btn text-danger" ng-click="removeFromCart(item)"><i class="fas fa-times"></i></a>
+        <!-- <button type="button" class="col-1 btn text-danger" data-toggle="modal" data-target="#carrinhoModal" data-whatever="item"><i class="fas fa-times"></i></button> -->
     </div>
     
     <div class="row mt-3 mb-3">
-        <div class="col offset-1"><strong>Total</strong></div>
+        <div class="col"><strong>Total</strong></div>
         <div class="col text-right"><strong>R{{ carrinhoTotalPreco() | currency }}</strong></div>
         <div class="col-1"></div>
     </div>
@@ -31,6 +32,5 @@
             <a href="#!/carrinho" class="btn btn-block btn-success" ng-if="cart.length > 0" ng-click="clearCart()">Finalizar Compra</a>
             <a href="#!/carrinho" class="btn btn-block btn-success disabled" ng-if="cart.length <= 0">Finalizar Compra</a>
         </div>
-    </div>
-    
+    </div>    
 </div>

@@ -207,6 +207,9 @@
                         <form class="comprarForm mt-2" method="post" data-th-action="@{/comercio/addToCart}">
                             <!-- <input type="hidden" name="produtoId" data-th-value="${produto.id}" /> -->
                             <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">+</span>
+                                </div>
                                 <input type="number" class="form-control" min="1" max="{{ (produto.estoque - produto.reservado) }}" ng-model="qtd">
                                 <div class="input-group-append">
                                     <a href="#" class="btn btn-primary" ng-click="addToCart(produto, qtd || 1)">Comprar</a>
