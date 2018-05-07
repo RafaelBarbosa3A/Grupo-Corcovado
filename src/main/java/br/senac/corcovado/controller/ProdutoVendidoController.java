@@ -4,7 +4,6 @@ import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.exception.ProdutoVendidoException;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
-import br.senac.corcovado.model.validator.ProdutoVendidoValidador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +50,8 @@ public class ProdutoVendidoController {
     @PostMapping(path = "/produtos_vendidos/create")
     public ModelAndView create(@ModelAttribute ProdutoVendido produto_vendido) {
         ProdutoVendido salvo;
-        try {
-            ProdutoVendidoValidador.validar(produto_vendido);
             salvo = repository.save(produto_vendido);
-        } catch (ProdutoVendidoException ex) { 
-            Logger.getLogger(ProdutoVendidoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("produto_vendido", produto_vendido);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
+        
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
@@ -75,15 +66,8 @@ public class ProdutoVendidoController {
     @PostMapping(path = "/produtos_vendidos/update")
     public ModelAndView update(@ModelAttribute ProdutoVendido produto_vendido) {
         ProdutoVendido salvo;
-        try {
-            ProdutoVendidoValidador.validar(produto_vendido);
             salvo = repository.save(produto_vendido);
-        } catch (ProdutoVendidoException ex) { 
-            Logger.getLogger(ProdutoVendidoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(produto_vendido);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
+        
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;

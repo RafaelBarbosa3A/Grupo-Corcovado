@@ -56,9 +56,7 @@ public class Produto implements Serializable {
     @NotEmpty(message = "Favor digitar um código")
     @Size(min=1,max=255,message="Favor digitar um código entre 1 á 255 letras")
     @Column(name = "codigo") private String codigo;
-    @NotEmpty(message = "Favor inserir uma imagem")
     @Column(name = "imagem") private String imagem;
-    @NotEmpty(message = "Favor digitar uma quantidade em estoque")
     @Column(name = "estoque") private int estoque;
     @Column(name = "reservado") private int reservado;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") private Categoria categoria;

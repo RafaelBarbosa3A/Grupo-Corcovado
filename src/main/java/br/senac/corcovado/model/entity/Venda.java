@@ -31,7 +31,6 @@ public class Venda implements Serializable {
     @Column(name = "endereco_id") private Long enderecoId;
     @Column(name = "desconto_id") private Long descontoId;    
     @Column(name = "status_id") private int statusId;
-    @NotEmpty(message = "Total não pode estar vazio")
     @Column(name = "total") private Double total;
     @NotEmpty(message = "Escolher um tipo de pagamento")
     @Column(name = "pagamento") private String pagamento;

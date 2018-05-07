@@ -36,9 +36,7 @@ public class ProdutoVendido implements Serializable {
     @ManyToOne @JoinColumn(name = "venda_id", referencedColumnName = "id")
     private Venda venda;
     // @Column(name = "venda_id") private Long vendaId;
-    @NotEmpty(message = "Favor digitar uma quantidade")
     @Column(name = "quantidade") private Integer quantidade;
-    @NotEmpty(message = "Preço total não pode estar vazio")
     @Column(name = "preco_total") private Double precoTotal;
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
