@@ -30,7 +30,6 @@ public class ComercioJsonController {
         produtos.forEach((p) -> { p.setPreco(p.getPrecos().get(0).getPreco()); });
         return produtos;
     }
-    
 
     @GetMapping(value = "/comercio/carrinho_json")
     @ResponseBody
