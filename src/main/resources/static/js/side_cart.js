@@ -21,8 +21,9 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
 
     $stateProvider.state('finaliza', {
         url: '/finaliza',
-        templateUrl: 'comercio/finaliza'
-    })
+        templateUrl: 'comercio/finaliza',
+        controller: 'finaliza'
+    });
 
     $urlRouterProvider.otherwise('/produtos');
 });
@@ -78,6 +79,26 @@ corcovado.controller('list', function($scope, $loader, $rootScope) {
 
 corcovado.controller('show', function ($scope, $stateParams, $loader) {
     $scope.produto = $loader.getProduto($stateParams.id);
+});
+
+corcovado.controller('finaliza', function ($scope, $loader) {
+    $scope.pessoa = {};
+    $scope.frete = null;
+    
+    $loader.getPessoa().then(function(pess) {
+        $scope.pessoa = pess;
+    });
+    
+    $scope.calcFrete = function(endereco) {
+        /*
+        $loader.calcFrete(endereco).then(function(dist) {
+            $scope.frete = dist * 3.0;
+        });
+        */
+       $loader.calcFrete(endereco, function(dist) {
+            $scope.frete = dist * 3.0;
+       });
+    };
 });
 
 corcovado.factory('$loader', function ($http, $q) {
@@ -153,6 +174,48 @@ corcovado.factory('$loader', function ($http, $q) {
             });
         });
     }
+    
+    function getPessoa() {
+        return $q(function (resolve, reject) {
+            $http.get('/comercio/pessoa_json').then(function (response) {
+                resolve(response.data);
+            });
+        });
+    }
+    
+    function calcFrete(endereco, callback) {
+        /*
+        return $q(function (resolve, reject) {
+            $http({
+                method: 'JSONP',
+                url: "http://maps.googleapis.com/maps/api/directions/json?origin=Av.+Engenheiro+Eusebio+Stevaux,+823&destination=" + endereco.rua + ",+" + endereco.numero + "&units=metric"
+            }).then(function (response) {
+                resolve(response.data.routes[0].legs[0].distance.value);
+            });
+        });
+        */
+       
+        var myHeaders = new Headers({
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true
+        });
+    
+        fetch("http://maps.googleapis.com/maps/api/directions/json?origin=Av.+Engenheiro+Eusebio+Stevaux,+823&destination=" + endereco.rua + ",+" + endereco.numero + "&units=metric", 
+            { 
+                method: 'POST',
+                header: myHeaders
+            } 
+            ).then(function(response){
+                response.json().then(function(data) {
+                    callback(data /*.routes[0].legs[0].distance.value*/)
+                }).catch(function(err){
+                    console.error('Failed 2 retrieving information', err);
+                });
+            })
+            .catch(function(err){
+                console.error('Failed retrieving information', err);
+            });
+    }
      
-    return { loadProdutos, getProduto, addCart, removeCart, loadCart };
+    return { loadProdutos, getProduto, addCart, removeCart, loadCart, getPessoa, calcFrete };
 });

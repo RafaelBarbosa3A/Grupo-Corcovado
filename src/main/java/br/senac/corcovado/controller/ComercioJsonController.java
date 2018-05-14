@@ -1,9 +1,11 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
+import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Venda;
+import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
@@ -22,9 +24,9 @@ public class ComercioJsonController {
     @Autowired private ProdutoRepository prodRepo;
     @Autowired private VendaRepository vendaRepo;
     @Autowired private ProdutoVendidoRepository pvRepo;
+    @Autowired private PessoaRepository pessRepo;
     
     @GetMapping(value = "/comercio/produto_json")
-    @ResponseBody
     public Iterable<Produto> listProd() {
         Iterable<Produto> produtos = prodRepo.findAll();
         produtos.forEach((p) -> { p.setPreco(p.getPrecos().get(0).getPreco()); });
@@ -32,7 +34,6 @@ public class ComercioJsonController {
     }
 
     @GetMapping(value = "/comercio/carrinho_json")
-    @ResponseBody
     public Venda listCart() {        
         return vendaRepo.findById(1L).get();
     }
@@ -126,5 +127,11 @@ public class ComercioJsonController {
         pvRepo.save(prodVend);
         
         return new ModelAndView("redirect:/comercio/carrinho_json");
+    }
+    
+    
+    @GetMapping(value = "/comercio/pessoa_json")
+    public Pessoa getPessoa() {        
+        return pessRepo.findById(1L).get();
     }
 }

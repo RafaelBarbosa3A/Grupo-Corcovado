@@ -11,6 +11,7 @@ import br.senac.corcovado.model.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -46,5 +47,10 @@ public class ComercioController {
     @GetMapping("/comercio/finaliza")
     public ModelAndView finaliza() {
         return new ModelAndView("/comercio/_finaliza");
+    }
+    
+    @PostMapping("/comercio/entrega")
+    public ModelAndView checkout() {
+        return new ModelAndView("/comercio/entrega");
     }
 }

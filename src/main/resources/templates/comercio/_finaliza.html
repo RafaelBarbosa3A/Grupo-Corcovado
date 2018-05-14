@@ -1,4 +1,51 @@
 <div class="container">
-    <h1 class="h2">Finalize a Compra</h1>
+    <h1 class="h2 mt-4">Finalize a Compra</h1>
+    
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <h2 class="h4 mt-3">Endereço</h2>
+            <div class="form-group">
+                <label for="endereco">Selecione o endereço de entrega</label>
+                <select class="form-control form-control-lg" id="endereco" ng-model="ender" ng-options="endereco.rua for endereco in pessoa.enderecos" ng-change="calcFrete(ender)"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="frete">Frete</label>
+                <input type="text" readonly class="form-control form-control-lg" id="frete" ng-model="frete">
+            </div>
+
+            <h2 class="h4 mt-3">Pagamento</h2>
+            <div class="form-group">
+                <label for="pagamento">Selecione a forma de pagamento</label>
+                <select class="form-control form-control-lg" id="pagamento">
+                    <option>Cartão de crédito</option>
+                    <option>Cartão de débito</option>
+                    <option>Boleto</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cartao">Número do Cartão</label>
+                <input type="text" class="form-control form-control-lg" id="cartao" placeholder="Cartão">
+            </div>
+
+            <button type="button" class="btn btn-primary">Finalizar Compra</button>
+        </div>
+        
+        <div class="col-12 col-md-4">
+            <div class="card">
+                
+                <div class="card-body">
+                    <div class="card-title h4">
+                        Carrinho
+                    </div>
+                    <div class="card-text">
+                        Total: <span>R{{ carrinhoTotalPreco() | currency }}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
     
 </div>

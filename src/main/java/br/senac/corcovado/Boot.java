@@ -1,14 +1,19 @@
 
 package br.senac.corcovado;
 
+import br.senac.corcovado.model.entity.Cargo;
 import br.senac.corcovado.model.entity.Categoria;
+import br.senac.corcovado.model.entity.Endereco;
 // import br.senac.corcovado.model.entity.Departamento;
 import br.senac.corcovado.model.entity.Nivel;
+import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Preco;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.repository.CategoriaRepository;
+import br.senac.corcovado.model.repository.EnderecoRepository;
+import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
@@ -30,7 +35,9 @@ public class Boot {
             ProdutoRepository prodRepo, 
             PrecoRepository precoRepo, 
             VendaRepository vendaRepo,
-            ProdutoVendidoRepository pvRepo) {
+            ProdutoVendidoRepository pvRepo,
+            PessoaRepository pessRepo,
+            EnderecoRepository endeRepo) {
         return (String[] args) -> {
             cateRepo.save(new Categoria(0L, "Alimentos", System.currentTimeMillis(), System.currentTimeMillis(), true));
             cateRepo.save(new Categoria(0L, "Bebidas", System.currentTimeMillis(), System.currentTimeMillis(), true));
@@ -50,7 +57,13 @@ public class Boot {
             
             vendaRepo.save(new Venda());
             
-            //pvRepo.save(new ProdutoVendido(0L, prodRepo.findById(1L).get(), vendaRepo.findById(1L).get(), 3, 65.99*3, System.currentTimeMillis(), System.currentTimeMillis(), true));
+            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", "senha", Nivel.BASIC, null, System.currentTimeMillis(), System.currentTimeMillis(), true));
+            
+            
+            // Av. Paulista, 149 - Bela Vista, São Paulo - SP, 01311-200
+            endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", false, pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
+            // Rua dos Jequitibás - Jabaquara, São Paulo - SP, 04309-011
+            endeRepo.save(new Endereco(0L, "Rua dos Jequitibás", "190", "Jabaquara", "São Paulo", "SP", "04309-011", "", false, pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
         };
     }
 }
