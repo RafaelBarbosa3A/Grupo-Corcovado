@@ -90,14 +90,19 @@ corcovado.controller('finaliza', function ($scope, $loader) {
     });
     
     $scope.calcFrete = function(endereco) {
-        /*
         $loader.calcFrete(endereco).then(function(dist) {
             $scope.frete = dist * 3.0;
         });
-        */
-       $loader.calcFrete(endereco, function(dist) {
-            $scope.frete = dist * 3.0;
-       });
+    };
+    
+    $scope.finalizarCompra = function() {
+        if (!$scope.frete) {
+            $scope.calcFrete($scope.pessoa.enderecos[0]);
+        }
+        
+        
+        var form = document.getElementById("entrega");
+        form.submit();
     };
 });
 
@@ -183,38 +188,19 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
     
-    function calcFrete(endereco, callback) {
-        /*
+    function calcFrete(endereco) {
         return $q(function (resolve, reject) {
+            resolve(Math.floor((Math.random() * 51)));
+            /*
             $http({
-                method: 'JSONP',
+                method: 'GET',
+                withCredentials: true,
                 url: "http://maps.googleapis.com/maps/api/directions/json?origin=Av.+Engenheiro+Eusebio+Stevaux,+823&destination=" + endereco.rua + ",+" + endereco.numero + "&units=metric"
             }).then(function (response) {
                 resolve(response.data.routes[0].legs[0].distance.value);
             });
+            */
         });
-        */
-       
-        var myHeaders = new Headers({
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': true
-        });
-    
-        fetch("http://maps.googleapis.com/maps/api/directions/json?origin=Av.+Engenheiro+Eusebio+Stevaux,+823&destination=" + endereco.rua + ",+" + endereco.numero + "&units=metric", 
-            { 
-                method: 'POST',
-                header: myHeaders
-            } 
-            ).then(function(response){
-                response.json().then(function(data) {
-                    callback(data /*.routes[0].legs[0].distance.value*/)
-                }).catch(function(err){
-                    console.error('Failed 2 retrieving information', err);
-                });
-            })
-            .catch(function(err){
-                console.error('Failed retrieving information', err);
-            });
     }
      
     return { loadProdutos, getProduto, addCart, removeCart, loadCart, getPessoa, calcFrete };
