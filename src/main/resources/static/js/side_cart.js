@@ -60,9 +60,11 @@ corcovado.controller('list', function($scope, $loader, $rootScope) {
         });
     };
     
+    /*
     $rootScope.clearCart = function() {
         // $rootScope.cart = [];
     };
+    */
     
     $rootScope.carrinhoTotalPreco = function() {
         if ($rootScope != null && $rootScope.carrinho != null && $rootScope.carrinho.produtoVendidos != null) {

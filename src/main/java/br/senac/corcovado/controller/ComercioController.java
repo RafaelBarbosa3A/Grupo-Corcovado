@@ -6,12 +6,16 @@
 package br.senac.corcovado.controller;
 
 
+import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
+import br.senac.corcovado.model.repository.VendaRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -22,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ComercioController {
     @Autowired private ProdutoRepository prodRepo;
     @Autowired private PrecoRepository precoRepo;
+    @Autowired private VendaRepository vendaRepo;
     
     @GetMapping("/comercio")
     public ModelAndView main() {
@@ -50,7 +55,18 @@ public class ComercioController {
     }
     
     @PostMapping("/comercio/entrega")
-    public ModelAndView checkout() {
+    public ModelAndView checkout (@RequestParam("cartId") long cartId,
+    		@RequestParam("enderecoId") long enderecoId, 
+    		@RequestParam("frete") double frete,
+    		@RequestParam("pagamento") String pagamento,
+    		@RequestParam("cartao") String cartao) {
+    	Venda venda = vendaRepo.findById(cartId).get();
+    	
+    	//TODO centralize methods for calculate the fields in venda entity
+    	//TODO add frete attribute
+    	//TODO insert pagamento into venda
+    	
+    	vendaRepo.save(venda);    	
         return new ModelAndView("/comercio/entrega");
     }
 }
