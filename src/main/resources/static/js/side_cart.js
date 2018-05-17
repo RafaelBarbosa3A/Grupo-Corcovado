@@ -102,7 +102,6 @@ corcovado.controller('finaliza', function ($scope, $loader) {
             $scope.calcFrete($scope.pessoa.enderecos[0]);
         }
         
-        
         var form = document.getElementById("entrega");
         form.submit();
     };

@@ -51,6 +51,8 @@ public class ProdutoVendido implements Serializable {
 
     public ProdutoVendido() {
         this.id = 0L;
+        this.quantidade = 0;
+        this.active = true;
     }
 
     public ProdutoVendido(Long id, Produto produto, Venda venda, Integer quantidade, Double precoTotal, Long createdAt, Long updatedAt, boolean active) {
