@@ -59,12 +59,14 @@ public class ComercioController {
     }
     
     @PostMapping("/comercio/entrega")
-    public ModelAndView checkout(@RequestParam("cartId") long cartId,
-                @RequestParam("pessoaId") long pessoaId,
+    public ModelAndView checkout(
+            @RequestParam("cartId") long cartId,
+            @RequestParam("pessoaId") long pessoaId,
     		@RequestParam("enderecoId") long enderecoId, 
     		@RequestParam("frete") double frete,
     		@RequestParam("pagamento") String pagamento,
-    		@RequestParam(name = "cartao", required = false) String cartao) {
+    		@RequestParam(name = "cartao", required = false) String cartao
+    ) {
     	Venda venda = vendaRepo.findById(cartId).get();
         venda.setPessoa(pessRepo.findById(pessoaId).get());
         venda.setFrete(frete);

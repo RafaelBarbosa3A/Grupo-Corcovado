@@ -51,9 +51,11 @@
                         Carrinho
                     </div>
                     <div class="card-text">
-                        Total: <span>R{{ carrinhoTotalPreco() | currency }}</span>
+                        Frete: <span>{{ frete | currency:"R$":2 }}</span>
                     </div>
-                    
+                    <div class="card-text">
+                        Total: <span>{{ carrinhoTotalPreco() + frete | currency:"R$":2 }}</span>
+                    </div>
                 </div>
             </div>
         </div>

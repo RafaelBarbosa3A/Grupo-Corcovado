@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,8 +44,6 @@ public class ComercioJsonController {
         Produto produto;
         if(prodRepo.existsById(item.produtoId)) {
             produto = prodRepo.findById(item.produtoId).get();
-            // TODO criar uma melhor seleção de preços
-            // produto.setPreco( produto.getPrecos().get(0).getPreco() );
         } else {
             return new ModelAndView("redirect:/comercio/carrinho_json");
         }
@@ -79,8 +76,6 @@ public class ComercioJsonController {
         Produto produto;
         if(prodRepo.existsById(item.produtoId)) {
             produto = prodRepo.findById(item.produtoId).get();
-            // TODO criar uma melhor seleção de preços
-            // produto.setPreco( produto.getPrecos().get(0).getPreco() );
         } else {
             return new ModelAndView("redirect:/comercio/carrinho_json");
         }
@@ -90,7 +85,6 @@ public class ComercioJsonController {
                 .findFirst().orElse(null);
         
         pvRepo.delete(prodVend);
-        venda = null; // just to lose any reference
         
         return new ModelAndView("redirect:/comercio/carrinho_json");
     }
@@ -102,8 +96,6 @@ public class ComercioJsonController {
         Produto produto;
         if(prodRepo.existsById(item.produtoId)) {
             produto = prodRepo.findById(item.produtoId).get();
-            // TODO criar uma melhor seleção de preços
-            // produto.setPreco( produto.getPrecos().get(0).getPreco() );
         } else {
             return new ModelAndView("redirect:/comercio/carrinho_json");
         }

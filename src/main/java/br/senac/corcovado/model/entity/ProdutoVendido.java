@@ -45,6 +45,7 @@ public class ProdutoVendido implements Serializable {
     
     @Column(name = "quantidade") private Integer quantidade;
     @Column(name = "preco_total") private Double precoTotal;
+    
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;    

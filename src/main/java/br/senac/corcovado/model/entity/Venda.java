@@ -36,7 +36,7 @@ public class Venda implements Serializable {
     
     //@Column(name = "cliente_id") private Long clienteId; /*pessoa*/
     @Column(name = "endereco_id") private Long enderecoId;
-    @Column(name = "desconto_id") private Long descontoId;    
+    @Column(name = "desconto_id") private Long descontoId; //to remove
     @Column(name = "status_id") private int statusId;
     @Column(name = "frete") private Double frete;
     @Column(name = "total") private Double total;

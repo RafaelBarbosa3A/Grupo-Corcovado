@@ -1,37 +1,45 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous" />
 
         <title>Nota Fiscal</title>
     </head>
     <body>
         <main class="container">
-            <div class="card mt-4 mx-3 shadow">
-                <h1 class="card-title ml-3 mt-4">Nota Fiscal</h1>
-                <div class="card-body">
+            <!-- <div class="card mt-4 p-3 shadow"> -->
+                <h1 class="mt-4 mb-1">Nota Fiscal</h1>
+                <!-- <div class="card-body">-->
                     <div class="row">
                         <strong class="col-6">Produto</strong>
-                        <strong class="col text-right">Preco Un.</strong>
+                        <strong class="col text-right">Preço Un.</strong>
                         <strong class="col text-right">Quantidade</strong>
                         <strong class="col text-right">Preço</strong>
                     </div>
-                    <hr>
+                    
+                    <hr />
                     <div class="row" data-th-each="pv : ${venda.produtoVendidos}">
                         <span class="col-6" data-th-text="${pv.produto.nome}"></span>
-                        <span class="col text-right" data-th-text="${#numbers.formatDecimal(pv.produto.preco,1,'POINT',2,'COMMA')}"></span>
+                        <span class="col text-right">R$<span data-th-text="${#numbers.formatDecimal(pv.precoTotal/pv.quantidade, 1, 'POINT', 2, 'COMMA')}"></span></span>
                         <span class="col text-right" data-th-text="${pv.quantidade}"></span>
-                        <span class="col text-right" data-th-text="${#numbers.formatDecimal(pv.precoTotal,1,'POINT',2,'COMMA')}"></span>
+                        <span class="col text-right">R$<span data-th-text="${#numbers.formatDecimal(pv.precoTotal, 1, 'POINT', 2, 'COMMA')}"></span></span>
                     </div>
-                    <hr>
+                    
+                    <hr />
+                    <div class="row">
+                        <span class="col-6">Frete</span>
+                        <span class="col text-right">R$<span data-th-text="${#numbers.formatDecimal(venda.frete, 1, 'POINT', 2, 'COMMA')}"></span></span>
+                    </div>
+                    
+                    <hr />
                     <div class="row">
                         <strong class="col-6">Total</strong>
-                        <strong class="col text-right" data-th-text="${#numbers.formatDecimal(venda.total,1,'POINT',2,'COMMA')}"></strong>
+                        <strong class="col text-right">R$<span data-th-text="${#numbers.formatDecimal(venda.total, 1, 'POINT', 2, 'COMMA')}"></span></strong>
                     </div>
-                </div>
-            </div>
+                <!-- </div> -->
+            <!-- </div> -->
         </main>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
