@@ -1,4 +1,4 @@
-<div class="row" ng-controller="list">
+<div class="row">
     <!-- Resumo Carrinho -->
     <div class="col-12 col-md-6 order-md-1 col-lg-3 order-lg-last col-xl-2 pt-3">
         <p class="d-flex justify-content-between align-items-center mb-3 h5">
@@ -7,17 +7,17 @@
         </p>
         <ul class="list-group mb-3">
             
-            <li class="list-group-item" ng-repeat="cart_prod in carrinho.produtoVendidos">
-                <p class="h6 my-0">{{ cart_prod.produto.nome }}</p>
+            <li class="list-group-item" ng-repeat="item in carrinho.itens">
+                <p class="h6 my-0">{{ item.produto.nome }}</p>
                 <div class="d-flex justify-content-between lh-condensed mt-2">
-                    <small class="text-muted">({{ cart_prod.quantidade }})</small>
-                    <small class="text-muted">R{{ cart_prod.precoTotal | currency }}</small>
+                    <small class="text-muted">({{ item.quantidade }})</small>
+                    <small class="text-muted">{{ item.total() | currency:'R$':2 }}</small>
                 </div>
             </li>
             
             <li class="list-group-item d-flex justify-content-between bg-light">
                 <strong>Total</strong>
-                <strong>R{{ carrinhoTotalPreco() | currency }}</strong> <!-- TODO integrar carrinho -->
+                <strong>{{ carrinho.total() | currency:'R$':2 }}</strong> <!-- TODO integrar carrinho -->
             </li>
         </ul>
     </div>
@@ -198,19 +198,18 @@
         <div class="row">
             <div class="col-lg-6 col-xl-4 mb-3" ng-repeat="produto in produtos"> 
                 <div class="card">
-                    <img class="card-img-top" src="{{produto.imagem}}" alt="Imagem {{produto.nome}}">
+                    <img class="card-img-top" src="{{ produto.imagem }}" alt="Imagem {{ produto.nome }}">
                     <div class="card-body">
-                        <p class="card-title h5">{{produto.nome}}</p>
-                        <p class="card-text">{{produto.descricao}}</p>
-                        <p class="card-text h3">{{produto.preco | currency}}</p>
+                        <p class="card-title h5">{{ produto.nome }}</p>
+                        <p class="card-text">{{ produto.descricao }}</p>
+                        <p class="card-text h3">{{ produto.preco | currency:'R$':2 }}</p>
                         <a href="#" class="btn btn-info" ui-sref="show({ id:{{ produto.id }} })">Detalhes</a>
                         <form class="comprarForm mt-2" method="post" data-th-action="@{/comercio/addToCart}">
-                            <!-- <input type="hidden" name="produtoId" data-th-value="${produto.id}" /> -->
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">+</span>
                                 </div>
-                                <input type="number" class="form-control" ng-model="qtd" min="1" max="{{ (produto.estoque - produto.reservado) }}">
+                                <input type="number" class="form-control" ng-model="qtd" min="1" ng-min="1" max="{{ (produto.estoque - produto.reservado) }}" ng-max="{{ (produto.estoque - produto.reservado) }}">
                                 <div class="input-group-append">
                                     <a href="#" class="btn btn-primary" ng-click="addToCart(produto, qtd || 1)">Comprar</a>
                                 </div>

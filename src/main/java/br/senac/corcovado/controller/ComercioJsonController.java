@@ -1,5 +1,6 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
@@ -9,6 +10,7 @@ import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
+import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +34,56 @@ public class ComercioJsonController {
         return produtos;
     }
 
+    @GetMapping(value = "/comercio/carrinho_json/{id}")
+    public Venda getCart(@PathParam("id") long id) {
+        return vendaRepo.findById(id).get();
+    }
+    
     @GetMapping(value = "/comercio/carrinho_json")
-    public Venda listCart() {        
+    public Venda openCart() {
         return vendaRepo.findById(1L).get();
     }
     
+    @PostMapping(value = "/comercio/carrinho_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView addCart(@RequestBody Carrinho cart) {
+        Venda venda;
+        if (cart.vendaId == 0) {
+            venda = new Venda();
+        } else {
+            venda = vendaRepo.findById(cart.vendaId).get();
+        }
+        
+        for(ItemCarrinho item : cart.itens) {
+            ProdutoVendido prodVend = venda.getProdutoVendidos()
+                    .stream()
+                    .filter((pv) -> { return pv.getProduto().getId() == item.produtoId; })
+                    .findFirst().orElse(null);
+
+            if (prodVend != null) {
+                prodVend.setQuantidade(prodVend.getQuantidade() + item.quantidade);
+                prodVend.setPrecoTotal(prodVend.getPrecoTotal() + (item.quantidade * prodVend.getProduto().getPreco()));
+            } else {
+                Produto produto = prodRepo.findById(item.produtoId).get();
+                
+                prodVend = new ProdutoVendido();
+                prodVend.setProduto(produto);
+                prodVend.setVenda(venda);
+                prodVend.setQuantidade(item.quantidade);
+                prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
+            }
+        }
+        venda.calculaTotal();
+        Venda salvo = vendaRepo.save(venda);
+        
+        return new ModelAndView("redirect:/comercio/carrinho_json/" + salvo.getId());
+    }
+    
+    @GetMapping(value = "/comercio/pessoa_json")
+    public Pessoa getPessoa() {        
+        return pessRepo.findById(1L).get();
+    }
+    
+    /*
     @PostMapping(value = "/comercio/carrinho_json/add", consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addCart(@RequestBody ItemCarrinho item) {
         Venda venda = vendaRepo.findById(1L).get();
@@ -120,10 +167,5 @@ public class ComercioJsonController {
         
         return new ModelAndView("redirect:/comercio/carrinho_json");
     }
-    
-    
-    @GetMapping(value = "/comercio/pessoa_json")
-    public Pessoa getPessoa() {        
-        return pessRepo.findById(1L).get();
-    }
+    */
 }

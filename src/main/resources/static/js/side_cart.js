@@ -1,5 +1,23 @@
 var corcovado = angular.module('corcovado', ['ui.router']);
 
+function ItemCarrinho(produto, quantidade) {
+    this.produtoId = produto.id;
+    this.quantidade = quantidade;
+    
+    this.produto = produto;
+    this.total = function () {
+        return this.produto.preco * this.quantidade;
+    };
+}
+
+function Carrinho(vendaId, itens) {
+    this.vendaId = vendaId;
+    this.itens = itens ? itens : {};
+    this.total = function() {
+        return this.itens.reduce((acc, item) => { return acc + item.total(); }, 0);
+    };
+}
+
 corcovado.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('list', {
         url: '/produtos',
