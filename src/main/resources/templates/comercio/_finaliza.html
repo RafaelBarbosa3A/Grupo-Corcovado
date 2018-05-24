@@ -18,9 +18,9 @@
                 </div>
 
                 <div class="h4">
-                    <label for="frete">Frete</label>
-                    <strong>{{ frete | currency:"R$":2 }}</strong>
+                    <span>Frete</span>
                     <input type="hidden" value="{{frete}}" name="frete" id="frete">
+                    <strong>{{ frete | currency:"R$":2 }}</strong>
                 </div>
 
                 <h2 class="h4 mt-3">Pagamento</h2>
@@ -45,17 +45,22 @@
         
         <div class="col-12 col-md-4">
             <div class="card">
-                
+                <div class="card-header h5">Carrinho</div>
                 <div class="card-body">
-                    <div class="card-title h4">
-                        Carrinho
+                    <div class="d-flex justify-content-between">
+                        <span>Subtotal: </span>
+                        <span>{{ carrinho.total() | currency:"R$":2 }}</span>
                     </div>
-                    <div class="card-text">
-                        Frete: <span>{{ frete | currency:"R$":2 }}</span>
+                    <div class="d-flex justify-content-between">
+                        <span>Frete: </span>
+                        <span>{{ frete | currency:"R$":2 }}</span>
                     </div>
-                    <div class="card-text">
-                        Total: <span>{{ carrinhoTotalPreco() + frete | currency:"R$":2 }}</span>
-                    </div>
+                </div>
+                <div class="card-footer">
+                    <strong class="d-flex justify-content-between">
+                        <span>Total: </span>
+                        <span>{{ carrinho.total() + frete | currency:"R$":2 }}</span>
+                    </strong>
                 </div>
             </div>
         </div>
