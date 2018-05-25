@@ -58,6 +58,7 @@ public class Venda implements Serializable {
     public Venda() {
         this.id = 0L;
         this.total = 0D;
+        this.frete = 0D;
         this.produtoVendidos = new HashSet();
     }
 

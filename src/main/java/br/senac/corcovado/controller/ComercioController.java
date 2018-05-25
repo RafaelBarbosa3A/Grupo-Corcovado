@@ -58,6 +58,11 @@ public class ComercioController {
         return new ModelAndView("/comercio/_finaliza");
     }
     
+    @GetMapping("/comercio/recibo")
+    public ModelAndView recibo() {
+        return new ModelAndView("/comercio/_recibo");
+    }
+    /*
     @PostMapping("/comercio/entrega")
     public ModelAndView checkout(
             @RequestParam("cartId") long cartId,
@@ -79,10 +84,12 @@ public class ComercioController {
     	Venda salvo = vendaRepo.save(venda);
         return new ModelAndView("redirect:/comercio/recibo/" + salvo.getId());
     }
+
     
     @GetMapping("/comercio/recibo/{id}")
     public ModelAndView recibo(@PathVariable("id") long id) {
         return new ModelAndView("/comercio/recibo")
                 .addObject("venda", vendaRepo.findById(id).get());
     }
+    */
 }
