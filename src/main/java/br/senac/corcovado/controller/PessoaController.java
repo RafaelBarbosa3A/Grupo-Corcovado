@@ -32,7 +32,7 @@ public class PessoaController {
 
     @GetMapping("/pessoas/{id}")
     public ModelAndView show(@PathVariable("id") long id) {
-        Pessoa pessoa = pessRepo.findPessoaById(id).get();
+        Pessoa pessoa = pessRepo.findById(id).get();
         //pessoa.setEnderecos(Utils.asList(endRepo.findAllByPessoaId(id)));
 
         return new ModelAndView("/pessoa/pessoa_show")
@@ -56,7 +56,7 @@ public class PessoaController {
 
     @GetMapping({"/pessoas/{id}/edit", "/pessoas/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") long id) {
-        ModelAndView mav = editForm(pessRepo.findPessoaById(id).get());
+        ModelAndView mav = editForm(pessRepo.findById(id).get());
         return mav;
     }
 

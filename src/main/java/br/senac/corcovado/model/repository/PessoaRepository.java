@@ -13,5 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface PessoaRepository extends CrudRepository<Pessoa, Long> {
-    public Optional<Pessoa> findPessoaById(long id);
+    Optional<Pessoa> findByEmail(String email);
 }

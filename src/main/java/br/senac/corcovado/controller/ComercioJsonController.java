@@ -1,12 +1,15 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.SecurityConfig;
 import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.controller.adapter.Pedido;
+import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Venda;
+import br.senac.corcovado.model.repository.PapelRepository;
 import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
@@ -29,6 +32,7 @@ public class ComercioJsonController {
     @Autowired private VendaRepository vendaRepo;
     @Autowired private ProdutoVendidoRepository pvRepo;
     @Autowired private PessoaRepository pessRepo;
+    @Autowired private PapelRepository papelRepo;
     
     @GetMapping(value = "/comercio/produto_json")
     public Iterable<Produto> listProd() {
@@ -115,90 +119,18 @@ public class ComercioJsonController {
         return pessRepo.findById(1L).get();
     }
     
-    
-    /*
-    @PostMapping(value = "/comercio/carrinho_json/add", consumes =  MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView addCart(@RequestBody ItemCarrinho item) {
-        Venda venda = vendaRepo.findById(1L).get();
-        
-        Produto produto;
-        if(prodRepo.existsById(item.produtoId)) {
-            produto = prodRepo.findById(item.produtoId).get();
-        } else {
-            return new ModelAndView("redirect:/comercio/carrinho_json");
-        }
-        
-        ProdutoVendido prodVend = venda.getProdutoVendidos()
-                .stream()
-                .filter((pv) -> { return pv.getProduto().equals(produto); })
-                .findFirst().orElse(null);
-        
-        if (prodVend != null) {
-            prodVend.setQuantidade(prodVend.getQuantidade() + item.quantidade);
-            prodVend.setPrecoTotal(prodVend.getPrecoTotal() + (item.quantidade * produto.getPreco()));
-        } else {
-            prodVend = new ProdutoVendido();
-            prodVend.setProduto(produto);
-            prodVend.setVenda(venda);
-            prodVend.setQuantidade(item.quantidade);
-            prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
-        }
-        
-        pvRepo.save(prodVend);
-        
-        return new ModelAndView("redirect:/comercio/carrinho_json");
+    @GetMapping(value = "/comercio/pessoa_json/{id}")
+    public Pessoa getPessoa(@PathVariable("id") long id) {        
+        return pessRepo.findById(id).get();
     }
     
-    @PostMapping(value = "/comercio/carrinho_json/remove", consumes =  MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView removeCart(@RequestBody ItemCarrinho item) {
-        Venda venda = vendaRepo.findById(1L).get();
-        
-        Produto produto;
-        if(prodRepo.existsById(item.produtoId)) {
-            produto = prodRepo.findById(item.produtoId).get();
-        } else {
-            return new ModelAndView("redirect:/comercio/carrinho_json");
-        }
-        
-        ProdutoVendido prodVend = venda.getProdutoVendidos().stream()
-                .filter((pv) -> pv.getProduto().equals(produto))
-                .findFirst().orElse(null);
-        
-        pvRepo.delete(prodVend);
-        
-        return new ModelAndView("redirect:/comercio/carrinho_json");
+    @PostMapping(value = "/comercio/pessoa_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView addPessoa(@RequestBody Pessoa pessoa) {
+        pessoa.setNivel(Nivel.BASIC);
+        pessoa.getPapeis().add(papelRepo.findById(1L).get());
+        pessoa.setSenha(SecurityConfig.bcryptPasswordEncoder().encode(pessoa.getSenha()));
+                
+        Pessoa salvo = pessRepo.save(pessoa);
+        return new ModelAndView("redirect:/comercio/pessoa_json/" + salvo.getId());
     }
-    
-    @PostMapping(value = "/comercio/carrinho_json/edit", consumes =  MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView editCart(@RequestBody ItemCarrinho item) {
-        Venda venda = vendaRepo.findById(1L).get();
-        
-        Produto produto;
-        if(prodRepo.existsById(item.produtoId)) {
-            produto = prodRepo.findById(item.produtoId).get();
-        } else {
-            return new ModelAndView("redirect:/comercio/carrinho_json");
-        }
-        
-        ProdutoVendido prodVend = venda.getProdutoVendidos()
-                .stream()
-                .filter((pv) -> { return pv.getProduto().equals(produto); })
-                .findFirst().orElse(null);
-        
-        if (prodVend != null) {
-            prodVend.setQuantidade(item.quantidade);
-            prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
-        } else {
-            prodVend = new ProdutoVendido();
-            prodVend.setProduto(produto);
-            prodVend.setVenda(venda);
-            prodVend.setQuantidade(item.quantidade);
-            prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
-        }
-        
-        pvRepo.save(prodVend);
-        
-        return new ModelAndView("redirect:/comercio/carrinho_json");
-    }
-    */
 }

@@ -62,34 +62,14 @@ public class ComercioController {
     public ModelAndView recibo() {
         return new ModelAndView("/comercio/_recibo");
     }
-    /*
-    @PostMapping("/comercio/entrega")
-    public ModelAndView checkout(
-            @RequestParam("cartId") long cartId,
-            @RequestParam("pessoaId") long pessoaId,
-    		@RequestParam("enderecoId") long enderecoId, 
-    		@RequestParam("frete") double frete,
-    		@RequestParam("pagamento") String pagamento,
-    		@RequestParam(name = "cartao", required = false) String cartao
-    ) {
-    	Venda venda = vendaRepo.findById(cartId).get();
-        venda.setPessoa(pessRepo.findById(pessoaId).get());
-        venda.setFrete(frete);
-        venda.setPagamento(pagamento);
-        
-    	venda.setComprovante(RandomStringUtils.randomAlphanumeric(20));
-        venda.setCodigoRastreamento(RandomStringUtils.randomAlphanumeric(20));
-        
-        venda.calculaTotal();
-    	Venda salvo = vendaRepo.save(venda);
-        return new ModelAndView("redirect:/comercio/recibo/" + salvo.getId());
-    }
-
     
-    @GetMapping("/comercio/recibo/{id}")
-    public ModelAndView recibo(@PathVariable("id") long id) {
-        return new ModelAndView("/comercio/recibo")
-                .addObject("venda", vendaRepo.findById(id).get());
+    @GetMapping("/comercio/login")
+    public ModelAndView login() {
+        return new ModelAndView("/comercio/_login");
     }
-    */
+       
+    @GetMapping("/comercio/signup")
+    public ModelAndView signup() {
+        return new ModelAndView("/comercio/_signup");
+    }
 }

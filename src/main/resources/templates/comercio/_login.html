@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="card mx-auto mt-5">
+        <div class="card-header">
+            Login
+        </div>
+        
+        <form data-th-action="@{/login}" method="post">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="inputEmail">Email address</label>
+                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword">Senha</label>
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Senha" name="senha">
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </div>
+        </form>
+    </div>
+</div>

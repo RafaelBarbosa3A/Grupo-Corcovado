@@ -53,6 +53,17 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'comercio/cart'
     });
 
+    $stateProvider.state('login', {
+        url: '/login',
+        templateUrl: 'comercio/login'
+    })
+
+    $stateProvider.state('signup', {
+        url: '/signup',
+        templateUrl: 'comercio/signup',
+        controller: 'signup'
+    })
+
     $stateProvider.state('finaliza', {
         url: '/finaliza',
         templateUrl: 'comercio/finaliza',
@@ -63,7 +74,7 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
       url: '/recibo',
       templateUrl: 'comercio/recibo',
       controller: 'recibo'
-    })
+    });
 
     $urlRouterProvider.otherwise('/produtos');
 });
@@ -150,12 +161,21 @@ corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) 
 
 
 corcovado.controller('recibo', function ($scope, $loader) {
-  $loader.loadCarrinho().then(function(cart) {
-      $scope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => {return new ItemCarrinho(pv.produto, pv.quantidade);} ) );
-      $scope.pedido = new Pedido(cart.id, cart.pessoa.id, cart.frete, cart.pagamento, cart.cartao, cart.comprovante, cart.codigoRastreamento, cart.enderecoId);
-  });
+    $loader.loadCarrinho().then(function(cart) {
+        $scope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => {return new ItemCarrinho(pv.produto, pv.quantidade);} ) );
+        $scope.pedido = new Pedido(cart.id, cart.pessoa.id, cart.frete, cart.pagamento, cart.cartao, cart.comprovante, cart.codigoRastreamento, cart.enderecoId);
+    });
 });
 
+corcovado.controller('signup', function ($scope, $state, $loader) {
+
+    $scope.criaPessoa = function(pessoa) {
+        $loader.postPessoa(pessoa).then(function(pess) {
+            // $scope.pessoa = pess;
+            $state.go('login');
+        });
+    }
+});
 
 corcovado.factory('$loader', function ($http, $q) {
     var produtos = [];
@@ -212,5 +232,13 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
 
-    return { loadProdutos, getPessoa, calcFrete, loadCarrinho, postCarrinho, postFinaliza };
+    function postPessoa(pessoa) {
+        return $q(function (resolve, reject) {
+            $http.post('/comercio/pessoa_json/add', pessoa).then(function (response) {
+                resolve(response.data);
+            });
+        });
+    }
+
+    return { loadProdutos, getPessoa, postPessoa, calcFrete, loadCarrinho, postCarrinho, postFinaliza };
 });
