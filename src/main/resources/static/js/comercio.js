@@ -87,7 +87,10 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
                 } else {
                     $rootScope.carrinho.itens[index].quantidade += quantidade;
                 }
+            } else {
+                alert("Quantidade inadequada!");
             }
+
         };
 
         $rootScope.removeFromCart = function(produto) {

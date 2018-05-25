@@ -23,17 +23,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "venda")
 public class Venda implements Serializable {
-    
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
-    
-    
+
+
     @ManyToOne(targetEntity = Pessoa.class, optional = true)
-    @JoinColumn(name = "pessoa_id", 
+    @JoinColumn(name = "pessoa_id",
             referencedColumnName = "id",
             nullable = true)
     private Pessoa pessoa;
-    
+
     //@Column(name = "cliente_id") private Long clienteId; /*pessoa*/
     @Column(name = "endereco_id") private Long enderecoId;
     @Column(name = "desconto_id") private Long descontoId; //to remove
@@ -44,19 +44,29 @@ public class Venda implements Serializable {
     @Column(name = "comprovante") private String comprovante;
     @Column(name = "prazo_entrega") private String prazoEntrega;
     @Column(name = "codigo_rastreamento") private String codigoRastreamento;
-    
-    @OneToMany(targetEntity = ProdutoVendido.class, 
-            mappedBy = "venda", 
+
+    @OneToMany(targetEntity = ProdutoVendido.class,
+            mappedBy = "venda",
             fetch = FetchType.EAGER,
             orphanRemoval = true)
     private Set<ProdutoVendido> produtoVendidos;
-    
+
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
 
     public Venda() {
         this.id = 0L;
+        this.statusId = 1;
+        this.total = 0D;
+        this.frete = 0D;
+        this.produtoVendidos = new HashSet();
+    }
+
+    public Venda(Pessoa pessoa) {
+        this.id = 0L;
+        this.pessoa = pessoa;
+        this.statusId = 1;
         this.total = 0D;
         this.frete = 0D;
         this.produtoVendidos = new HashSet();
@@ -94,7 +104,7 @@ public class Venda implements Serializable {
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
-    
+
     public Long getEnderecoId() {
         return enderecoId;
     }
@@ -126,10 +136,10 @@ public class Venda implements Serializable {
     public void calculaTotal() {
         this.total = this.produtoVendidos.stream()
                 .map(ProdutoVendido::getPrecoTotal)
-                .reduce(0D,(acc, pv) -> acc + pv) 
+                .reduce(0D,(acc, pv) -> acc + pv)
                 + this.frete;
     }
-    
+
     public Double getTotal() {
         return total;
     }
@@ -171,7 +181,7 @@ public class Venda implements Serializable {
     public void setProdutoVendidos(Set<ProdutoVendido> produtoVendidos) {
         this.produtoVendidos = produtoVendidos;
     }
-    
+
     public Long getCreatedAt() {
         return createdAt;
     }
