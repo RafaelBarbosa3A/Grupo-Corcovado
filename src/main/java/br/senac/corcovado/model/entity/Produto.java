@@ -26,6 +26,9 @@ import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Set;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.util.Set;
 import javax.persistence.PostLoad;
 
 /**
@@ -42,9 +45,18 @@ import javax.persistence.PostLoad;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "precos"})
 public class Produto implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
+    
+    @NotEmpty(message = "Favor digitar um nome")
+    @Size(min=1,max=255,message="Favor digitar um nome entre 1 á 255 letras")
     @Column(name = "nome") private String nome;
+    @NotEmpty(message = "Favor digitar uma descrição")
+    @Size(min=1,max=255,message="Favor digitar uma descrição entre 1 á 255 letras")
     @Column(name = "descricao") private String descricao;
+    @NotEmpty(message = "Favor digitar um nome de fabricante")
+    @Size(min=1,max=255,message="Favor digitar um nome de fabricante entre 1 á 255 letras")
     @Column(name = "fabricante") private String fabricante;
+    @NotEmpty(message = "Favor digitar um código")
+    @Size(min=1,max=255,message="Favor digitar um código entre 1 á 255 letras")
     @Column(name = "codigo") private String codigo;
     @Column(name = "imagem") private String imagem;
     @Column(name = "estoque") private int estoque;

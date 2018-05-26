@@ -24,6 +24,8 @@ import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -44,9 +46,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class Pessoa implements UserDetails, Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
+    @NotEmpty(message = "Favor digitar um nome")
+    @Size(min=1,max=255,message="Favor digitar um nome entre 1 á 255 letras")
     @Column(name = "nome") private String nome;
+    @NotEmpty(message = "Favor digitar o número do documento")
     @Column(name = "documento") private String documento;
+    @NotEmpty(message = "Favor digitar um e-mail")
     @Column(name = "email") private String email;
+    @NotEmpty(message = "Favor digitar uma senha")
+    @Size(min=1,max=255,message="Favor digitar uma senha entre 1 á 15 letras")
     @Column(name = "senha") private String senha;
     @Enumerated(EnumType.STRING) @Column(name = "nivel") private Nivel nivel;
     // @Enumerated(EnumType.STRING) @Column(name = "cargo") private Cargo cargo;

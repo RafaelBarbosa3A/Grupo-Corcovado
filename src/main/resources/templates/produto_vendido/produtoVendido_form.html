@@ -61,30 +61,31 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Produto Vendido' : 'Alterar Produto Vendido'"></div>
             <form data-th-action="@{/produtoVendidos/{act}(act = ${action})}" method="post" data-th-object="${produtoVendido}">
                 <input type="hidden" data-th-field="*{id}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
 
                 
                 <div class="form-group">
                     <label for="produtoId">Produto Id:</label>
                     <input type="number" class="form-control" placeholder="Produto Id" data-th-field="*{produtoId}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('produtoId')}" th:errors="*{produtoId}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="vendaId">Venda Id:</label>
                     <input type="number" class="form-control" placeholder="Venda Id" data-th-field="*{vendaId}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('vendaId')}" th:errors="*{vendaId}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="quantidade">Quantidade:</label>
                     <input type="number" class="form-control" placeholder="Quantidade" data-th-field="*{quantidade}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="precoTotal">Preço Total:</label>
                     <input type="number" class="form-control" placeholder="Preço Total" data-th-field="*{precoTotal}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('precoTotal')}" th:errors="*{precoTotal}"></p>
                 </div>
                 
 

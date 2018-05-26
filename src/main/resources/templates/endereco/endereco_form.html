@@ -61,59 +61,63 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Endereço' : 'Alterar Endereço'"></div>
             <form data-th-action="@{/pessoas/enderecos/{act}(act = ${action})}" method="post" data-th-object="${endereco}">
                 <input type="hidden" data-th-field="*{id}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
                 <input type="hidden" data-th-field="*{createdAt}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></p>
                 
                 <div class="form-group">
                     <label>Pessoa:</label>
                     <input class="form-control" data-th-value="${endereco.pessoa.nome}" disabled/>
                     <input type="hidden" data-th-field="*{pessoa.id}" />
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('pessoa.id')}" th:errors="*{pessoa.id}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="rua">Rua:</label>
                     <input type="text" class="form-control" placeholder="Rua" data-th-field="*{rua}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('rua')}" th:errors="*{rua}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="numero">Número:</label>
                     <input type="number" class="form-control" placeholder="Número" data-th-field="*{numero}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="bairro">Bairro:</label>
                     <input type="text" class="form-control" placeholder="Bairro" data-th-field="*{bairro}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="cidade">Cidade:</label>
                     <input type="text" class="form-control" placeholder="Cidade" data-th-field="*{cidade}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('cidade')}" th:errors="*{cidade}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="estado">Estado:</label>
                     <input type="text" class="form-control" placeholder="Estado" data-th-field="*{estado}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="cep">CEP:</label>
                     <input type="number" class="form-control" placeholder="CEP" data-th-field="*{cep}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="complemento">Complemento:</label>
                     <input type="text" class="form-control" placeholder="Complemento" data-th-field="*{complemento}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('complemento')}" th:errors="*{complemento}"></p>
                 </div>
                 
                 <div class="form-group">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" data-th-field="*{principal}" />
+                        <p class="invalid-feedback" th:if="${#fields.hasErrors('principal')}" th:errors="*{principal}"></p>
                         <label class="form-check-label" for="principal">Principal</label>
                     </div>
                 </div>

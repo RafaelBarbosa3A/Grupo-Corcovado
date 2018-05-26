@@ -61,7 +61,7 @@ public class Boot {
             prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", "https://picsum.photos/300/200/?random", 987, 0, cateRepo.findById(3L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
             precoRepo.save(new Preco(0L, 65.99, prodRepo.findById(1L).get(), Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()));
             
-            vendaRepo.save(new Venda());
+            //vendaRepo.save(new Venda());
             
             papelRepo.save(new Papel("Usuário","ROLE_USER"));
             papelRepo.save(new Papel("Administrador","ROLE_ADMIN"));

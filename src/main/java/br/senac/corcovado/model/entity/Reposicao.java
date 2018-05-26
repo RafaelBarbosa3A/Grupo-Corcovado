@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -21,7 +23,10 @@ public class Reposicao implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
+    @NotEmpty(message = "Favor digitar um fornecedor")
+    @Size(min=1,max=255,message="Favor digitar um fornecedor entre 1 á 255 letras")
     @Column(name = "fornecedor") private String fornecedor;
+    @NotEmpty(message = "Favor digitar uma cidade")
     @Column(name = "nota_fiscal") private String notaFiscal;
     @Column(name = "created_at") private GregorianCalendar createdAt;
     @Column(name = "updated_at") private GregorianCalendar updatedAt;

@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 /**
  *
  * @author wesley
@@ -24,13 +26,26 @@ import javax.persistence.Table;
 public class Endereco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
+    @NotEmpty(message = "Favor digitar um endereço")
+    @Size(min=1,max=255,message="Favor digitar um endereço entre 1 á 255 letras")
     @Column(name = "rua") private String rua;
     @Column(name = "numero") private String numero;
+    @NotEmpty(message = "Favor digitar um número")
+    @Size(min=1,max=255,message="Favor digitar um número entre 1 á 10000 letras")
+    @NotEmpty(message = "Favor digitar um bairro")
+    @Size(min=1,max=255,message="Favor digitar um bairro entre 1 á 255 letras")
     @Column(name = "bairro") private String bairro;
+    @NotEmpty(message = "Favor digitar uma cidade")
+    @Size(min=1,max=255,message="Favor digitar uma cidade entre 1 á 255 letras")
     @Column(name = "cidade") private String cidade;
+    @NotEmpty(message = "Favor digitar um estado")
+    @Size(min=1,max=255,message="Favor digitar um estado entre 1 á 255 letras")
     @Column(name = "estado") private String estado;
+    @NotEmpty(message = "Favor digitar um cep")
+    @Size(min=1,max=255,message="Favor digitar um cep entre 1 á 8 letras")
     @Column(name = "cep") private String cep;
     @Column(name = "complemento") private String complemento;
+    @NotEmpty(message = "Favor digitar uma cidade")
     @Column(name = "principal") private boolean principal;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "pessoa_id", referencedColumnName = "id") private Pessoa pessoa;
     

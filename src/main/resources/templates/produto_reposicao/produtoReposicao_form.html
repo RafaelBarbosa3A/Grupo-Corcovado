@@ -61,24 +61,28 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Produto Reposição' : 'Alterar Produto Reposição'"></div>
             <form data-th-action="@{/produtoReposicaos/{act}(act = ${action})}" method="post" data-th-object="${produtoReposicao}">
                 <input type="hidden" data-th-field="*{id}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
 
                 
                 <div class="form-group">
                     <label for="reposicaoId">Reposição Id:</label>
                     <input type="number" class="form-control" placeholder="Reposição Id" data-th-field="*{reposicaoId}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('reposicaoId')}" th:errors="*{reposicaoId}"></p>
+                    
                 </div>
                 
                 <div class="form-group">
                     <label for="produtoId">Produto Id:</label>
                     <input type="number" class="form-control" placeholder="Produto Id" data-th-field="*{produtoId}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('produtoId')}" th:errors="*{produtoId}"></p>
+                    
                 </div>
                 
                 <div class="form-group">
                     <label for="quantidade">Quantidade:</label>
                     <input type="number" class="form-control" placeholder="Quantidade" data-th-field="*{quantidade}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></p>
+                    
                 </div>
                 
 

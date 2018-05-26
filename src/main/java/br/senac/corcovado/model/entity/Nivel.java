@@ -1,5 +1,8 @@
 package br.senac.corcovado.model.entity;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 /**
  *
  * @author wesley

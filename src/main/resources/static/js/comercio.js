@@ -25,14 +25,14 @@ class Carrinho {
 
 class Pedido {
     constructor (vendaId, pessoaId, frete, pagamento, cartao, comprovante, rastreamento, enderecoId) {
-        this.vendaId = vendaId
-        this.pessoaId = pessoaId
-        this.frete = frete
-        this.pagamento = pagamento
-        this.cartao = cartao
-        this.comprovante = comprovante
-        this.rastreamento = rastreamento
-        this.enderecoId = enderecoId
+        this.vendaId = vendaId;
+        this.pessoaId = pessoaId;
+        this.frete = frete;
+        this.pagamento = pagamento;
+        this.cartao = cartao;
+        this.comprovante = comprovante;
+        this.rastreamento = rastreamento;
+        this.enderecoId = enderecoId;
     }
 }
 
@@ -70,11 +70,13 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
         controller: 'finaliza'
     });
 
+    /*
     $stateProvider.state('recibo', {
       url: '/recibo',
       templateUrl: 'comercio/recibo',
       controller: 'recibo'
-    });
+    })
+     */
 
     $urlRouterProvider.otherwise('/produtos');
 });
@@ -98,7 +100,10 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
                 } else {
                     $rootScope.carrinho.itens[index].quantidade += quantidade;
                 }
+            } else {
+                alert("Quantidade inadequada!");
             }
+
         };
 
         $rootScope.removeFromCart = function(produto) {
@@ -108,8 +113,8 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
         $rootScope.saveCart = function() {
             $loader.postCarrinho($rootScope.carrinho).then((cart) => {
                 $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-                $state.go('finaliza')
-            })
+                $state.go('finaliza');
+            });
         };
     }
 
@@ -129,43 +134,49 @@ corcovado.controller('show', function ($scope, $rootScope, $stateParams) {
 });
 
 corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) {
-    $scope.pessoa = {};
-    $scope.frete = null;
-    $scope.enderecoId = 0;
+    if ($rootScope.carrinho.itens.length >= 1) {
+        $scope.pessoa = {};
+        $scope.frete = null;
+        $scope.enderecoId = 0;
 
-    $loader.getPessoa().then(function(pess) {
-        $scope.pessoa = pess;
-    });
-
-    $scope.calcFrete = function(endereco) {
-        $scope.enderecoId = endereco;
-        $loader.calcFrete(endereco).then(function(dist) {
-            $scope.frete = dist * 3.0;
+        $loader.getPessoa().then(function(pess) {
+            $scope.pessoa = pess;
         });
-    };
 
-    $scope.finalizarCompra = function() {
-        if (!$scope.frete) {
-            $scope.calcFrete($scope.pessoa.enderecos[0]);
-        }
+        $scope.calcFrete = function(endereco) {
+            $scope.enderecoId = endereco;
+            $loader.calcFrete(endereco).then(function(dist) {
+                $scope.frete = dist * 3.0;
+            });
+        };
 
-        let pedido = new Pedido($rootScope.carrinho.vendaId, $scope.pessoa.id, $scope.frete, $scope.pagamento, $scope.cartao, "", "", $scope.enderecoId);
+        $scope.finalizarCompra = function() {
+            if (!$scope.frete) {
+                $scope.calcFrete($scope.pessoa.enderecos[0]);
+            }
 
-        $loader.postFinaliza(pedido).then((cart) => {
-            $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-            $state.go('recibo')
-        })
+            let pedido = new Pedido($rootScope.carrinho.vendaId, $scope.pessoa.id, $scope.frete, $scope.pagamento, $scope.cartao, "", "", $scope.enderecoId);
 
-    };
+            $loader.postFinaliza(pedido).then((cart) => {
+                // $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
+                // $state.go('recibo')
+                window.location.assign("/comercio/recibo/" + cart.id);
+            });
+
+        };
+    } else {
+        $state.go("list");
+    }
 });
 
-
-corcovado.controller('recibo', function ($scope, $loader) {
-    $loader.loadCarrinho().then(function(cart) {
-        $scope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => {return new ItemCarrinho(pv.produto, pv.quantidade);} ) );
-        $scope.pedido = new Pedido(cart.id, cart.pessoa.id, cart.frete, cart.pagamento, cart.cartao, cart.comprovante, cart.codigoRastreamento, cart.enderecoId);
-    });
+/*
+corcovado.controller('recibo', function ($scope, $rootScope, $loader) {
+  $loader.loadCarrinho($rootScope.carrinho.vendaId).then(function(cart) {
+      $scope.cart = new Carrinho(cart.id, cart.produtoVendidos.map(pv => {return new ItemCarrinho(pv.produto, pv.quantidade);} ) );
+      $scope.pedido = new Pedido(cart.id, cart.pessoa.id, cart.frete, cart.pagamento, cart.cartao, cart.comprovante, cart.codigoRastreamento, cart.enderecoId);
+  });
 });
+*/
 
 corcovado.controller('signup', function ($scope, $state, $loader) {
 
@@ -208,11 +219,17 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
 
-    function loadCarrinho() {
+    function loadCarrinho(vendaId) {
         return $q(function (resolve, reject) {
-            $http.get('/comercio/carrinho_json').then(function (response) {
-                resolve(response.data);
-            });
+            if(vendaId) {
+                $http.get('/comercio/carrinho_json/' + vendaId).then(function (response) {
+                    resolve(response.data);
+                });
+            } else {
+                $http.get('/comercio/carrinho_json').then(function (response) {
+                    resolve(response.data);
+                });
+            }
         });
     }
 

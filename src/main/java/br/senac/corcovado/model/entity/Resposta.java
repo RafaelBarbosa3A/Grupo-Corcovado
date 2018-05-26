@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -22,6 +24,7 @@ public class Resposta implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     @Column(name = "sac_id") private Long sacId;
+    @NotEmpty(message = "Favor digitar uma mensagem")
     @Column(name = "mensagem") private String mensagem;
     @Column(name = "cliente_id") private Long clienteId;
     @Column(name = "created_at") private GregorianCalendar createdAt;

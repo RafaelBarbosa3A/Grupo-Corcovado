@@ -61,31 +61,36 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Pessoa' : 'Alterar Pessoa'"></div>
             <form data-th-action="@{/pessoas/{act}(act = ${action})}" method="post" data-th-object="${pessoa}">
                 <input type="hidden" data-th-field="*{id}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
                 <input type="hidden" data-th-field="*{createdAt}" />
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></p>
                 <!-- <input type="hidden" data-th-each="endereco, enderecoStat : ${produto.enderecos}" data-th-field="*{enderecos[__${enderecoStat.index}__].id}" /> -->
 
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input type="text" class="form-control" placeholder="Nome" data-th-field="*{nome}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+                    
                 </div>
 
                 <div class="form-group">
                     <label for="documento">Documento:</label>
                     <input type="number" class="form-control" placeholder="Documento" data-th-field="*{documento}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('documento')}" th:errors="*{documento}"></p>
+                    
                 </div>
 
                 <div class="form-group">
                     <label for="email">E-Mail:</label>
                     <input type="email" class="form-control" placeholder="E-Mail" data-th-field="*{email}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    
                 </div>
 
                 <div class="form-group">
                     <label for="senha">Senha:</label>
                     <input type="password" class="form-control" placeholder="Senha" data-th-field="*{senha}" />
-                    <p></p>
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></p>
                 </div>
 
                 <div class="form-group">

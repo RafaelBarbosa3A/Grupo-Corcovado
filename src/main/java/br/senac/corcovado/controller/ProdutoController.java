@@ -7,15 +7,19 @@ import br.senac.corcovado.model.repository.CategoriaRepository;
 //import br.senac.corcovado.model.repository.DepartamentoRepository;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
+import javax.validation.Valid;
 //import java.util.Iterator;
 //import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -50,14 +54,21 @@ public class ProdutoController {
     }
 
     @PostMapping(path = "/produtos/create")
-    public ModelAndView create(@ModelAttribute Produto produto) {
+    public ModelAndView create(@Valid @ModelAttribute Produto produto,
+            BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) {
         Produto salvo;
 
         //TODO implementar validador via @Valid
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("/produto/produto_form")
+                .addObject("action", "create");
+        }
+        
         salvo = prodRepo.save(produto);
 
-        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
-        return redirect;
+        redirectAttributes.addFlashAttribute("mensagem", "Produto cadastrado com sucesso!!!");
+        return new ModelAndView("redirect:" + salvo.getId());
     }
 
     @GetMapping({ "/produtos/{id}/edit", "/produtos/edit/{id}" })

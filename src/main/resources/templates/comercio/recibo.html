@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Corcovado - Formulário Desconto</title>
+        <title>Corcovado - Lista de Produtos</title>
         <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" data-th-href="@{/css/main.css}" />
@@ -12,7 +12,7 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-md navbar-dark bg-corcovado">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="#" data-th-href="@{/comercio}">
                     <img src="/images/corcovado.svg" data-th-src="@{/images/corcovado.svg}" width="36" height="30" class="d-inline-block align-top" alt="Logo Corcovado">
                     Corcovado
                 </a>
@@ -24,6 +24,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departamentos </a>
                             <div class="dropdown-menu" aria-labelledby="dropdown04">
+                                <!-- TODO popular departamentos dinamicamente -->
                                 <a class="dropdown-item" href="#">Alimentos</a>
                                 <a class="dropdown-item" href="#">Bebidas</a>
                                 <a class="dropdown-item" href="#">Carnes</a>
@@ -41,7 +42,7 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
+                            <a class="nav-link" href="#" data-th-href="@{/comercio#!/carrinho}"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-user-circle"></i>&nbsp;Perfil&nbsp;&nbsp;</a>
@@ -56,45 +57,55 @@
             </nav>
         </header>
 
-        <main class="container main">
-            <h1 class="h3 mt-3">Formulário de Desconto</h1>
-            <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Desconto' : 'Alterar Desconto'"></div>
-            <form data-th-action="@{/descontos/{act}(act = ${action})}" method="post" data-th-object="${desconto}">
-                <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+        <main class="container-fluid main">
+            <div class="container">
+                <h1 class="h2 mt-4">Recibo de Compra</h1>
 
-                
-                <div class="form-group">
-                    <label for="desconto">Desconto:</label>
-                    <input type="text" class="form-control" placeholder="Desconto" data-th-field="*{desconto}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('desconto')}" th:errors="*{desconto}"></p>
-                    
+                <div class="row border-bottom mt-5 pb-2">
+                    <div class="col"><strong>Nome</strong></div>
+                    <div class="col-2 text-center">
+                        <strong class="d-block d-md-none">Qtd</strong>
+                        <strong class="d-none d-md-block">Quantidade</strong>
+                    </div>
+                    <div class="col-4 text-right"><strong>Preço</strong></div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="percentual">Percentual:</label>
-                    <input type="number" class="form-control" placeholder="Percentual" data-th-field="*{percentual}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('percentual')}" th:errors="*{percentual}"></p>
-                    
-                </div>
-                
-                <div class="form-group">
-                    <label for="codigoCupom">Código Cupom:</label>
-                    <input type="text" class="form-control" placeholder="Código Cupom" data-th-field="*{codigoCupom}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('codigoCupom')}" th:errors="*{codigoCupom}"></p>
-                </div>
-                
 
-                <div class="row justify-content-between align-items-center">
-                    <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${desconto.id}">
-                        <a class="btn" data-th-case="0" href="#" data-th-href="@{/descontos}">Voltar</a>
-                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/descontos/{id}(id = ${desconto.id})}">Voltar</a>
-                    </span>
-                    <div class="col-12 order-first col-md-4 order-md-last text-right">
-                        <button class="btn btn-success" type="submit">Salvar</button>
+                <div class="row pt-3 pb-2 align-items-center" data-th-each="pv : ${venda.produtoVendidos}">
+                    <div class="col" data-th-text="${pv.produto.nome}"></div>
+                    <div class="col-2 text-center" data-th-text="${pv.quantidade}"></div>
+                    <div class="col-4 text-right">
+                        R$<span data-th-text="${#numbers.formatDecimal(pv.precoTotal, 1, 'POINT', 2, 'COMMA')}"></span>
                     </div>
                 </div>
-            </form>
+
+                <div class="row border-top border-bottom py-3 my-3">
+                    <div class="col">Frete</div>
+                    <div class="col text-right">
+                        R$<span data-th-text="${#numbers.formatDecimal(venda.frete, 1, 'POINT', 2, 'COMMA')}"></span>
+                    </div>
+                </div>
+
+                <div class="row mt-3 mb-3">
+                    <div class="col"><strong>Subtotal</strong></div>
+                    <div class="col text-right">
+                        <strong>
+                            R$<span data-th-text="${#numbers.formatDecimal(venda.total, 1, 'POINT', 2, 'COMMA')}"></span>
+                        </strong>
+                    </div>
+                </div>
+
+                <p>
+                    Forma de Pagamento: <span data-th-text="${venda.pagamento}"></span>
+                </p>
+
+                <p>
+                    Comprovante: <span data-th-text="${venda.comprovante}"></span>
+                </p>
+
+                <p>
+                    Código de Rastreamento: <span data-th-text="${venda.codigoRastreamento}"></span>
+                </p>
+            </div>
         </main>
 
         <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">
@@ -162,11 +173,13 @@
                 </p>
             </div>
         </footer>
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="/js/main.js" data-th-src="@{/js/main.js}"></script>
-
+        <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+        <script src="/js/side_cart.js" data-th-src="@{/js/comercio.js}"></script>
+        -->
     </body>
 </html>

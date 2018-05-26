@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -22,7 +24,10 @@ public class Sac implements Serializable{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     @Column(name = "cliente_id") private Long clienteId;
+    @NotEmpty(message = "Favor digitar um contato")
+    @Size(min=1,max=255,message="Favor digitar um contato entre 1 á 255 letras")
     @Column(name = "contato") private String contato;
+    @NotEmpty(message = "Favor digitar uma mensagem")
     @Column(name = "mensagem") private String mensagem;
     @Column(name = "status_mensagem") private int statusMensagemId;
     @Column(name = "created_at") private GregorianCalendar createdAt;
