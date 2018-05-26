@@ -1,5 +1,6 @@
 package br.senac.corcovado.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -20,15 +21,17 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "endereco")
+//Gambiarraaaaaaaaa
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pessoa"})
 public class Endereco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     @NotEmpty(message = "Favor digitar um endereço")
     @Size(min=1,max=255,message="Favor digitar um endereço entre 1 á 255 letras")
     @Column(name = "rua") private String rua;
+    @Column(name = "numero") private String numero;
     @NotEmpty(message = "Favor digitar um número")
     @Size(min=1,max=255,message="Favor digitar um número entre 1 á 10000 letras")
-    @Column(name = "numero") private int numero;
     @NotEmpty(message = "Favor digitar um bairro")
     @Size(min=1,max=255,message="Favor digitar um bairro entre 1 á 255 letras")
     @Column(name = "bairro") private String bairro;
@@ -53,7 +56,7 @@ public class Endereco implements Serializable {
         this.id = 0L;
     }
 
-    public Endereco(Long id, String rua, int numero, String bairro, String cidade, String estado, String cep, String complemento, boolean principal, Pessoa pessoa, Long createdAt, Long updatedAt) {
+    public Endereco(Long id, String rua, String numero, String bairro, String cidade, String estado, String cep, String complemento, boolean principal, Pessoa pessoa, Long createdAt, Long updatedAt) {
         this.id = id;
         this.rua = rua;
         this.numero = numero;
@@ -82,10 +85,10 @@ public class Endereco implements Serializable {
         this.rua = rua;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
@@ -154,18 +157,18 @@ public class Endereco implements Serializable {
 
     @Override public int hashCode() {
         int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Objects.hashCode(this.rua);
-        hash = 79 * hash + this.numero;
-        hash = 79 * hash + Objects.hashCode(this.bairro);
-        hash = 79 * hash + Objects.hashCode(this.cidade);
-        hash = 79 * hash + Objects.hashCode(this.estado);
-        hash = 79 * hash + Objects.hashCode(this.cep);
-        hash = 79 * hash + Objects.hashCode(this.complemento);
-        hash = 79 * hash + (this.principal ? 1 : 0);
-        hash = 79 * hash + Objects.hashCode(this.pessoa);
-        hash = 79 * hash + Objects.hashCode(this.createdAt);
-        hash = 79 * hash + Objects.hashCode(this.updatedAt);
+        hash = 89 * hash + Objects.hashCode(this.id);
+        hash = 89 * hash + Objects.hashCode(this.rua);
+        hash = 89 * hash + Objects.hashCode(this.numero);
+        hash = 89 * hash + Objects.hashCode(this.bairro);
+        hash = 89 * hash + Objects.hashCode(this.cidade);
+        hash = 89 * hash + Objects.hashCode(this.estado);
+        hash = 89 * hash + Objects.hashCode(this.cep);
+        hash = 89 * hash + Objects.hashCode(this.complemento);
+        hash = 89 * hash + (this.principal ? 1 : 0);
+        hash = 89 * hash + Objects.hashCode(this.pessoa);
+        hash = 89 * hash + Objects.hashCode(this.createdAt);
+        hash = 89 * hash + Objects.hashCode(this.updatedAt);
         return hash;
     }
 
@@ -180,40 +183,7 @@ public class Endereco implements Serializable {
             return false;
         }
         final Endereco other = (Endereco) obj;
-        if (this.numero != other.numero) {
-            return false;
-        }
-        if (this.principal != other.principal) {
-            return false;
-        }
-        if (!Objects.equals(this.rua, other.rua)) {
-            return false;
-        }
-        if (!Objects.equals(this.bairro, other.bairro)) {
-            return false;
-        }
-        if (!Objects.equals(this.cidade, other.cidade)) {
-            return false;
-        }
-        if (!Objects.equals(this.estado, other.estado)) {
-            return false;
-        }
-        if (!Objects.equals(this.cep, other.cep)) {
-            return false;
-        }
-        if (!Objects.equals(this.complemento, other.complemento)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.pessoa, other.pessoa)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;

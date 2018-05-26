@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -24,39 +25,63 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "venda")
 public class Venda implements Serializable {
-    
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
-    @Column(name = "cliente_id") private Long clienteId; /*pessoa*/
+
+
+    @ManyToOne(targetEntity = Pessoa.class, optional = true)
+    @JoinColumn(name = "pessoa_id",
+            referencedColumnName = "id",
+            nullable = true)
+    private Pessoa pessoa;
+
+    //@Column(name = "cliente_id") private Long clienteId; /*pessoa*/
     @Column(name = "endereco_id") private Long enderecoId;
-    @Column(name = "desconto_id") private Long descontoId;    
+    @Column(name = "desconto_id") private Long descontoId; //to remove
     @Column(name = "status_id") private int statusId;
+    @Column(name = "frete") private Double frete;
     @Column(name = "total") private Double total;
     @NotEmpty(message = "Escolher um tipo de pagamento")
     @Column(name = "pagamento") private String pagamento;
     @Column(name = "comprovante") private String comprovante;
     @Column(name = "prazo_entrega") private String prazoEntrega;
     @Column(name = "codigo_rastreamento") private String codigoRastreamento;
-    
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @OneToMany(targetEntity = ProdutoVendido.class,
+            mappedBy = "venda",
+            fetch = FetchType.EAGER,
+            orphanRemoval = true)
     private Set<ProdutoVendido> produtoVendidos;
-    
+
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
 
     public Venda() {
         this.id = 0L;
+        this.statusId = 1;
         this.total = 0D;
-        this.produtoVendidos = new HashSet<>();
+        this.frete = 0D;
+        this.produtoVendidos = new HashSet();
     }
 
-    public Venda(Long id, Long clienteId, Long enderecoId, Long descontoId, int statusId, Double total, String pagamento, String comprovante, String prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {
+    public Venda(Pessoa pessoa) {
+        this.id = 0L;
+        this.pessoa = pessoa;
+        this.statusId = 1;
+        this.total = 0D;
+        this.frete = 0D;
+        this.produtoVendidos = new HashSet();
+    }
+
+    public Venda(Long id, Pessoa pessoa, Long enderecoId, Long descontoId, int statusId, Double frete, Double total, String pagamento, String comprovante, String prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
-        this.clienteId = clienteId;
+        this.pessoa = pessoa;
         this.enderecoId = enderecoId;
         this.descontoId = descontoId;
         this.statusId = statusId;
+        this.frete = frete;
         this.total = total;
         this.pagamento = pagamento;
         this.comprovante = comprovante;
@@ -75,11 +100,12 @@ public class Venda implements Serializable {
         this.id = id;
     }
 
-    public Long getClienteId() {
-        return clienteId;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public Long getEnderecoId() {
@@ -101,6 +127,20 @@ public class Venda implements Serializable {
     }
     public void setStatusId(int statusId) {
         this.statusId = statusId;
+    }
+
+    public Double getFrete() {
+        return frete;
+    }
+    public void setFrete(Double frete) {
+        this.frete = frete;
+    }
+
+    public void calculaTotal() {
+        this.total = this.produtoVendidos.stream()
+                .map(ProdutoVendido::getPrecoTotal)
+                .reduce(0D,(acc, pv) -> acc + pv)
+                + this.frete;
     }
 
     public Double getTotal() {
@@ -144,7 +184,7 @@ public class Venda implements Serializable {
     public void setProdutoVendidos(Set<ProdutoVendido> produtoVendidos) {
         this.produtoVendidos = produtoVendidos;
     }
-    
+
     public Long getCreatedAt() {
         return createdAt;
     }
@@ -168,20 +208,20 @@ public class Venda implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.id);
-        hash = 29 * hash + Objects.hashCode(this.clienteId);
-        hash = 29 * hash + Objects.hashCode(this.enderecoId);
-        hash = 29 * hash + Objects.hashCode(this.descontoId);
-        hash = 29 * hash + this.statusId;
-        hash = 29 * hash + Objects.hashCode(this.total);
-        hash = 29 * hash + Objects.hashCode(this.pagamento);
-        hash = 29 * hash + Objects.hashCode(this.comprovante);
-        hash = 29 * hash + Objects.hashCode(this.prazoEntrega);
-        hash = 29 * hash + Objects.hashCode(this.codigoRastreamento);
-        hash = 29 * hash + Objects.hashCode(this.createdAt);
-        hash = 29 * hash + Objects.hashCode(this.updatedAt);
-        hash = 29 * hash + (this.active ? 1 : 0);
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.id);
+        hash = 37 * hash + Objects.hashCode(this.pessoa);
+        hash = 37 * hash + Objects.hashCode(this.enderecoId);
+        hash = 37 * hash + Objects.hashCode(this.descontoId);
+        hash = 37 * hash + this.statusId;
+        hash = 37 * hash + Objects.hashCode(this.total);
+        hash = 37 * hash + Objects.hashCode(this.pagamento);
+        hash = 37 * hash + Objects.hashCode(this.comprovante);
+        hash = 37 * hash + Objects.hashCode(this.prazoEntrega);
+        hash = 37 * hash + Objects.hashCode(this.codigoRastreamento);
+        hash = 37 * hash + Objects.hashCode(this.createdAt);
+        hash = 37 * hash + Objects.hashCode(this.updatedAt);
+        hash = 37 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -205,6 +245,6 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return "Venda{" + "id=" + id + ", clienteId=" + clienteId + ", enderecoId=" + enderecoId + ", descontoId=" + descontoId + ", statusId=" + statusId + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
-    } 
+        return "Venda{" + "id=" + id + ", pessoa=" + pessoa + ", enderecoId=" + enderecoId + ", descontoId=" + descontoId + ", statusId=" + statusId + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    }
 }

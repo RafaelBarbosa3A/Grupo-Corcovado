@@ -2,14 +2,10 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
-import br.senac.corcovado.model.exception.VendaException;
 import br.senac.corcovado.model.repository.DescontoRepository;
 import br.senac.corcovado.model.repository.EnderecoRepository;
 import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
-import br.senac.corcovado.model.validator.VendaValidador;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,21 +49,11 @@ public class VendaController {
     @PostMapping(path = "/vendas/create")
     public ModelAndView create(@ModelAttribute Venda venda) {
         Venda salvo;
-        try {
-            VendaValidador.validar(venda);
-            salvo = repository.save(venda);
-        } catch (VendaException ex) { 
-            Logger.getLogger(VendaController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("venda", venda);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
+        salvo = repository.save(venda);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }
-    
     
     @GetMapping({"/vendas/{id}/edit", "/vendas/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") String usId) {
@@ -78,15 +64,7 @@ public class VendaController {
     @PostMapping(path = "/vendas/update")
     public ModelAndView update(@ModelAttribute Venda venda) {
         Venda salvo;
-        try {
-            VendaValidador.validar(venda);
-            salvo = repository.save(venda);
-        } catch (VendaException ex) { 
-            Logger.getLogger(VendaController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(venda);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
+        salvo = repository.save(venda);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;

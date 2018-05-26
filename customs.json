@@ -2,6 +2,9 @@
     "elements": {},
     "attributes": {
         "integrity": {},
-        "ui-view": {}
+        "ui-view": {},
+        "ui-sref": {
+            "context": "a"
+        }
     }
 }

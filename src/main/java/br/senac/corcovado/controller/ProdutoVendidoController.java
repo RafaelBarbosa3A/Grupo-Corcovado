@@ -1,7 +1,6 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.ProdutoVendido;
-import br.senac.corcovado.model.exception.ProdutoVendidoException;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
 import java.util.logging.Level;
@@ -50,8 +49,7 @@ public class ProdutoVendidoController {
     @PostMapping(path = "/produtos_vendidos/create")
     public ModelAndView create(@ModelAttribute ProdutoVendido produto_vendido) {
         ProdutoVendido salvo;
-            salvo = repository.save(produto_vendido);
-        
+        salvo = repository.save(produto_vendido);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
@@ -66,8 +64,7 @@ public class ProdutoVendidoController {
     @PostMapping(path = "/produtos_vendidos/update")
     public ModelAndView update(@ModelAttribute ProdutoVendido produto_vendido) {
         ProdutoVendido salvo;
-            salvo = repository.save(produto_vendido);
-        
+        salvo = repository.save(produto_vendido);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;

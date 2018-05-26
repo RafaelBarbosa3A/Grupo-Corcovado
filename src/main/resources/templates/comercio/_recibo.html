@@ -1,0 +1,43 @@
+<div class="container">
+    <h1 class="h2 mt-4">Recibo de Compra</h1>
+
+    <div class="row border-bottom mt-5 pb-2">
+        <div class="col"><strong>Nome</strong></div>
+        <div class="col-2 text-center"><strong class="d-block d-md-none">Qtd</strong><strong class="d-none d-md-block">Quantidade</strong></div>
+        <div class="col-4 text-right"><strong>Preço</strong></div>
+    </div>
+
+    <div class="row border-bottom pt-3 pb-2 align-items-center" ng-repeat="item in carrinho.itens">
+        <div class="col">{{ item.produto.nome }}</div>
+        <div class="col-2 text-center">{{ item.quantidade }}</div>
+        <div class="col-4 text-right">{{ item.total() | currency:'R$':2 }}</div>
+    </div>
+
+    <div class="row mt-3 mb-3">
+        <div class="col">Subtotal</div>
+        <div class="col text-right">{{ carrinho.total() | currency:'R$':2 }}</div>
+    </div>
+
+    <div class="row border-bottom pb-2 mt-3 mb-3">
+        <div class="col">Frete</div>
+        <div class="col text-right">{{ pedido.frete | currency:'R$':2 }}</div>
+    </div>
+
+    <div class="row mt-3 mb-3">
+        <div class="col"><strong>Subtotal</strong></div>
+        <div class="col text-right"><strong>{{ carrinho.total() + pedido.frete | currency:'R$':2 }}</strong></div>
+    </div>
+
+    <p>
+        Forma de Pagamento: {{ pedido.pagamento }}
+    </p>
+
+    <p>
+        Comprovante: {{ pedido.comprovante }}
+    </p>
+
+    <p>
+        Código de Rastreamento: {{ pedido.rastreamento }}
+    </p>
+</div>
+        
