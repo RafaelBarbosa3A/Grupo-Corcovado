@@ -1,6 +1,7 @@
 package br.senac.corcovado.model.repository;
 
 import br.senac.corcovado.model.entity.Pessoa;
+import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
 
 import java.util.Optional;
@@ -15,5 +16,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface VendaRepository extends CrudRepository<Venda, Long>{
-    Optional<Venda> findByPessoaAndStatusId(Pessoa pessoa, int statusId);
+    Optional<Venda> findByPessoaAndStatus(Pessoa pessoa, Status status);
 }

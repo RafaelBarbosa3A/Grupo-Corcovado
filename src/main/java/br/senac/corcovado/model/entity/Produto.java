@@ -66,24 +66,20 @@ public class Produto implements Serializable {
     @Min(value = 0, message = "Reservado não pode ser negativo")
     @Column(name = "reservado") private int reservado;
 
-    @OneToMany(mappedBy = "produto") private List<Desconto> Desconto;
-    
-    
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id") 
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria categoria;
-    
-    // @OneToMany(mappedBy = "produto") private List<Preco> precos;
-    
+
     // Mantem o preco selecionado (baseado no perfil do usuario).
     // NOPE! NOOO!!! STUPID FUCKING IDEA!!!!!
     // replaced
+    // @OneToMany(mappedBy = "produto") private List<Preco> precos;
     // @Transient private Double preco;
-    
-    @NotEmpty(message = "Favor insira um preço")
-    @Min(0)
-    @Column(name = "preco")
-    private Double preco;
-    
+
+    @Min(value = 0, message = "Favor digitar um preço não negativo")
+    @Column(name = "preco") private Double preco;
+
+    @OneToMany(mappedBy = "produto") private List<Desconto> descontos;
+
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
     @Column(name = "active") private boolean active;
@@ -92,7 +88,124 @@ public class Produto implements Serializable {
         this.id = 0L;
         this.active = true;
     }
-    
+
+    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, String imagem, int estoque, int reservado, List<Desconto> descontos, Categoria categoria, Double preco, Long createdAt, Long updatedAt, boolean active) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.fabricante = fabricante;
+        this.codigo = codigo;
+        this.imagem = imagem;
+        this.estoque = estoque;
+        this.reservado = reservado;
+        this.descontos = descontos;
+        this.categoria = categoria;
+        this.preco = preco;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.active = active;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getFabricante() {
+        return fabricante;
+    }
+    public void setFabricante(String fabricante) {
+        this.fabricante = fabricante;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public int getEstoque() {
+        return estoque;
+    }
+    public void setEstoque(int estoque) {
+        this.estoque = estoque;
+    }
+
+    public int getReservado() {
+        return reservado;
+    }
+    public void setReservado(int reservado) {
+        this.reservado = reservado;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Double getPreco() {
+        return preco;
+    }
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+
+    public List<Desconto> getDescontos() {
+        return descontos;
+    }
+    public void setDescontos(List<Desconto> descontos) {
+        this.descontos = descontos;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    // TODO hashcode, equals and toString
+
     // === JPA Porco ===
 
     @PrePersist 
@@ -110,14 +223,4 @@ public class Produto implements Serializable {
     private void softDelete() {
         this.active = false;
     }
-
-    /*
-    @PostLoad
-    private void loadPreco() {
-        this.preco = this.precos.stream()
-                .sorted().findFirst()
-                .orElse(new Preco(0L, 0D, this, Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()))
-                .getPreco();
-    }
-    */
 }

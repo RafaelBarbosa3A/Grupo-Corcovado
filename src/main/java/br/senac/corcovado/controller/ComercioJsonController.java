@@ -37,7 +37,6 @@ public class ComercioJsonController {
     @GetMapping(value = "/comercio/produto_json")
     public Iterable<Produto> listProd() {
         Iterable<Produto> produtos = prodRepo.findAll();
-        // produtos.forEach((p) -> { p.setPreco(p.getPrecos().get(0).getPreco()); });
         return produtos;
     }
 
@@ -51,10 +50,8 @@ public class ComercioJsonController {
         // get from the session of Spring Security
         Pessoa pessoa = pessRepo.findById(1L).get();
 
-        //statusId = 1 => RASCUNHO
-        //TODO mudar para passar o enum RASCUNHO, e/ou método especifico que busca apenas rascunhos.
-        
-        Venda venda = vendaRepo.findByPessoaAndStatusId(pessoa, 1).orElse(new Venda());
+        //TODO método especifico que busca apenas rascunhos.
+        Venda venda = vendaRepo.findByPessoaAndStatus(pessoa, Status.RASCUNHO).orElse(new Venda());
         
         if(venda.getId() <= 0) {
             venda.setPessoa(pessoa);

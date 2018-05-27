@@ -2,13 +2,7 @@
 package br.senac.corcovado;
 
 
-import br.senac.corcovado.model.entity.Categoria;
-import br.senac.corcovado.model.entity.Endereco;
-import br.senac.corcovado.model.entity.Nivel;
-import br.senac.corcovado.model.entity.Papel;
-import br.senac.corcovado.model.entity.Pessoa;
-import br.senac.corcovado.model.entity.Preco;
-import br.senac.corcovado.model.entity.Produto;
+import br.senac.corcovado.model.entity.*;
 
 import br.senac.corcovado.model.repository.CategoriaRepository;
 import br.senac.corcovado.model.repository.EnderecoRepository;
@@ -18,6 +12,8 @@ import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -52,15 +48,13 @@ public class Boot {
             cateRepo.save(new Categoria(0L, "Bebês", System.currentTimeMillis(), System.currentTimeMillis(), true));
             cateRepo.save(new Categoria(0L, "Perfumaria", System.currentTimeMillis(), System.currentTimeMillis(), true));
 
-            prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", "https://picsum.photos/300/200/?random", 987, 0, cateRepo.findById(3L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
-            precoRepo.save(new Preco(0L, 65.99, prodRepo.findById(1L).get(), Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()));
-            
-            //vendaRepo.save(new Venda());
-            
+            prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", "https://picsum.photos/300/200/?random", 987, 0, new ArrayList<Desconto>(), cateRepo.findById(3L).get(), 35.0, System.currentTimeMillis(), System.currentTimeMillis(), true));
+            // precoRepo.save(new Preco(0L, 65.99, prodRepo.findById(1L).get(), Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()));
+
             papelRepo.save(new Papel("Usuário","ROLE_USER"));
             papelRepo.save(new Papel("Administrador","ROLE_ADMIN"));
             
-            Set<Papel> papeis = new HashSet<>(Arrays.asList(papelRepo.findById(1L).get()));
+            // Set<Papel> papeis = new HashSet<>(Arrays.asList(papelRepo.findById(1L).get()));
             
             pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", "senha", Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
             

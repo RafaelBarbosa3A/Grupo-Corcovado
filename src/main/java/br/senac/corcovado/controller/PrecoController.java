@@ -32,12 +32,13 @@ public class PrecoController {
     @GetMapping("/produtos/{produtoId}/precos")
     public ModelAndView list(@PathVariable("produtoId") long produtoId) {
         Produto produto = prodRepo.findById(produtoId).get();
-        produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produtoId)));
+        //produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produtoId)));
         
         return new ModelAndView("/preco/preco_list")
                 .addObject("produto", produto)
-                .addObject("precos", produto.getPrecos())
-                .addObject("novoPreco", Nivel.values().length > produto.getPrecos().size());
+                //.addObject("precos", produto.getPrecos())
+                //.addObject("novoPreco", Nivel.values().length > produto.getPrecos().size())
+        ;
     }
     
     @GetMapping("/produtos/precos/{id}")
@@ -49,21 +50,22 @@ public class PrecoController {
     @GetMapping("/produtos/{produtoId}/precos/new")
     public ModelAndView new_(@PathVariable("produtoId") long produtoId) {
         Produto produto = prodRepo.findById(produtoId).get();
-        List<Preco> precos = Utils.asList(precoRepo.findAllByProdutoId(produtoId));
+        //List<Preco> precos = Utils.asList(precoRepo.findAllByProdutoId(produtoId));
         
         Preco preco = new Preco();
         preco.setProduto(produto);
         
         ArrayList<Nivel> niveis = Utils.asList(Nivel.values());
-        /*ArrayList<Nivel> niveis = new ArrayList<>();
+        /*
+        ArrayList<Nivel> niveis = new ArrayList<>();
         for (Nivel nivel : Nivel.values()) {
             niveis.add(nivel);
         }
-        */
+        * /
         
         List<Nivel> niveisUtilizados = precos.stream().map(Preco::getNivel).collect(Collectors.toList());
         niveis.removeAll(niveisUtilizados);
-        
+        /**/
         return new ModelAndView("/preco/preco_form")
                 .addObject("action", "create")
                 .addObject("preco", preco)

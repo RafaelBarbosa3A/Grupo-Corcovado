@@ -59,15 +59,15 @@
         <main class="container main">
             <h1 class="h3 mt-3">Formulário de Desconto</h1>
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Desconto' : 'Alterar Desconto'"></div>
-            <form data-th-action="@{/descontos/{act}(act = ${action})}" method="post" data-th-object="${desconto}">
+            <form data-th-action="@{/descontos/{act}(act = ${action})}" method="post" data-th-object="${descontos}">
                 <input type="hidden" data-th-field="*{id}" />
                 <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
 
                 
                 <div class="form-group">
-                    <label for="desconto">Desconto:</label>
-                    <input type="text" class="form-control" placeholder="Desconto" data-th-field="*{desconto}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('desconto')}" th:errors="*{desconto}"></p>
+                    <label for="descontos">Desconto:</label>
+                    <input type="text" class="form-control" placeholder="Desconto" data-th-field="*{descontos}" />
+                    <p class="invalid-feedback" th:if="${#fields.hasErrors('descontos')}" th:errors="*{descontos}"></p>
                     
                 </div>
                 
@@ -86,9 +86,9 @@
                 
 
                 <div class="row justify-content-between align-items-center">
-                    <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${desconto.id}">
+                    <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${descontos.id}">
                         <a class="btn" data-th-case="0" href="#" data-th-href="@{/descontos}">Voltar</a>
-                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/descontos/{id}(id = ${desconto.id})}">Voltar</a>
+                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/descontos/{id}(id = ${descontos.id})}">Voltar</a>
                     </span>
                     <div class="col-12 order-first col-md-4 order-md-last text-right">
                         <button class="btn btn-success" type="submit">Salvar</button>

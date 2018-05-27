@@ -79,7 +79,7 @@ public class ProdutoController {
 
     @PostMapping(path = "/produtos/update")
     public ModelAndView update(@ModelAttribute Produto produto) {
-        produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produto.getId())));
+        //produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produto.getId())));
         Produto salvo;
 
         //TODO implementar validador via @Valid
