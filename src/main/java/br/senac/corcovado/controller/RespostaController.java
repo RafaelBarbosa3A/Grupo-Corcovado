@@ -1,13 +1,9 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Resposta;
-import br.senac.corcovado.model.exception.RespostaException;
 import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.RespostaRepository;
 import br.senac.corcovado.model.repository.SacRepository;
-import br.senac.corcovado.model.validator.RespostaValidador;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,17 +47,8 @@ public class RespostaController {
     @PostMapping(path = "/respostas/create")
     public ModelAndView create(@ModelAttribute Resposta resposta) {
         Resposta salvo;
-        try {
-            RespostaValidador.validar(resposta);
-            salvo = repository.save(resposta);
-        } catch (RespostaException ex) { 
-            Logger.getLogger(RespostaController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("resposta", resposta);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
-
+        salvo = repository.save(resposta);
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }
@@ -75,16 +62,8 @@ public class RespostaController {
     @PostMapping(path = "/respostas/update")
     public ModelAndView update(@ModelAttribute Resposta resposta) {
         Resposta salvo;
-        try {
-            RespostaValidador.validar(resposta);
-            salvo = repository.save(resposta);
-        } catch (RespostaException ex) { 
-            Logger.getLogger(RespostaController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(resposta);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
-
+        salvo = repository.save(resposta);
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }

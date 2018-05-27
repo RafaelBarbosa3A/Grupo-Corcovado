@@ -1,41 +1,26 @@
 package br.senac.corcovado.model.entity;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 /**
  *
  * @author wesley
  */
 public enum Status {
-    RASCUNHO(1, "Rascunho"),
-    PAGAMENTO(2, "Pagamento"),
-    ENTREGA(3, "Entrega"),
-    ENCERRADO(4, "Encerrado");
+    RASCUNHO("Rascunho"), // lista de produtos a ser comprados.
+    PAGAMENTO("Pagamento"), // compra encerrada, aguardando pagamento (ex: boleto).
+    ENTREGA("Entrega"), // pagamento encerrado, disponível para entrega.
+    ENCERRADO("Encerrado"); // entrega encerrada, processo encerrado.
 
-    private final int id;
-    private final String name;
-
-    private Status(int id, String name) {
-        this.id = id;
-        this.name = name;
+    private final String nome;
+    
+    private Status(String nome) {
+        this.nome = nome;
     }
 
-    public int getId() {
-        return id;
+    public String getNome() {
+        return nome;
     }
 
     @Override public String toString() {
-        return name;
-    }
-
-    public static Status valueOf(int id) {
-        switch (id) {
-            case (1): return RASCUNHO;
-            case (2): return PAGAMENTO;
-            case (3): return ENTREGA;
-            case (4): return ENCERRADO;
-            default: return null;
-        }
+        return nome;
     }
 }

@@ -1,7 +1,6 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -23,13 +22,11 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -44,26 +41,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NamedQuery(name = "findPessoaById", query = "SELECT p FROM Pessoa p WHERE p.id = ?1")
 @Where(clause = "active = true")
 public class Pessoa implements UserDetails, Serializable {
+    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
+    
     @NotEmpty(message = "Favor digitar um nome")
     @Size(min=1,max=255,message="Favor digitar um nome entre 1 á 255 letras")
     @Column(name = "nome") private String nome;
+    
     @NotEmpty(message = "Favor digitar o número do documento")
     @Column(name = "documento") private String documento;
+    
     @NotEmpty(message = "Favor digitar um e-mail")
     @Column(name = "email") private String email;
+    
     @NotEmpty(message = "Favor digitar uma senha")
     @Size(min=1,max=255,message="Favor digitar uma senha entre 1 á 15 letras")
     @Column(name = "senha") private String senha;
-    @Enumerated(EnumType.STRING) @Column(name = "nivel") private Nivel nivel;
-    // @Enumerated(EnumType.STRING) @Column(name = "cargo") private Cargo cargo;
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) private List<Endereco> enderecos;
+    
+    @Enumerated(EnumType.STRING) 
+    @Column(name = "nivel") private Nivel nivel;
+    
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) 
+    private Set<Endereco> enderecos;
     
     @ManyToMany
-    @JoinTable(name = "papel_pessoas",
-           joinColumns = { @JoinColumn(name = "pessoa_id") },
-           inverseJoinColumns = { @JoinColumn(name = "papel_id") })
+    @JoinTable(name = "papel_pessoas", joinColumns = {@JoinColumn(name = "pessoa_id")}, inverseJoinColumns = {@JoinColumn(name = "papel_id")})
     private Set<Papel> papeis;
     
     @Column(name = "created_at") private Long createdAt;
@@ -76,7 +79,7 @@ public class Pessoa implements UserDetails, Serializable {
         this.active = true;
     }
 
-    public Pessoa(Long id, String nome, String documento, String email, String senha, Nivel nivel, List<Endereco> enderecos, Set<Papel> papeis, Long createdAt, Long updatedAt, boolean active) {
+    public Pessoa(Long id, String nome, String documento, String email, String senha, Nivel nivel, Set<Endereco> enderecos, Set<Papel> papeis, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.documento = documento;
@@ -132,15 +135,6 @@ public class Pessoa implements UserDetails, Serializable {
         this.nivel = nivel;
     }
 
-    /*
-    public Cargo getCargo() {
-        return cargo;
-    }
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
-    }
-    */
-
     public Set<Papel> getPapeis() {
         return papeis;
     }
@@ -148,10 +142,10 @@ public class Pessoa implements UserDetails, Serializable {
         this.papeis = papeis;
     }
     
-    public List<Endereco> getEnderecos() {
+    public Set<Endereco> getEnderecos() {
         return enderecos;
     }
-    public void setEnderecos(List<Endereco> enderecos) {
+    public void setEnderecos(Set<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
 
@@ -218,22 +212,23 @@ public class Pessoa implements UserDetails, Serializable {
 
     // === JPA Gambiarras ===
 
-    @PrePersist
-    private void prePersist() {
+    @PrePersist 
+    private void beforeCreate() {
         this.createdAt = System.currentTimeMillis();
         this.updatedAt = System.currentTimeMillis();
     }
 
     @PreUpdate
-    private void preUpdate() {
+    private void beforeUpdate() {
         this.updatedAt = System.currentTimeMillis();
     }
-
+    
     @PreRemove
-    private void preRemove() {
+    private void softDelete() {
         this.active = false;
     }
 
+    // === Spring Security ===
     @Override
     public Set<Papel> getAuthorities() {
         return this.papeis;

@@ -1,7 +1,7 @@
 
 package br.senac.corcovado;
 
-import br.senac.corcovado.model.entity.Cargo;
+
 import br.senac.corcovado.model.entity.Categoria;
 import br.senac.corcovado.model.entity.Endereco;
 import br.senac.corcovado.model.entity.Nivel;
@@ -9,7 +9,7 @@ import br.senac.corcovado.model.entity.Papel;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Preco;
 import br.senac.corcovado.model.entity.Produto;
-import br.senac.corcovado.model.entity.Venda;
+
 import br.senac.corcovado.model.repository.CategoriaRepository;
 import br.senac.corcovado.model.repository.EnderecoRepository;
 import br.senac.corcovado.model.repository.PapelRepository;
@@ -18,10 +18,9 @@ import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
+
 import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -36,14 +35,9 @@ public class Boot {
     }
 
     @Bean
-    public CommandLineRunner populateDB(CategoriaRepository cateRepo, 
-            ProdutoRepository prodRepo, 
-            PrecoRepository precoRepo, 
-            VendaRepository vendaRepo,
-            ProdutoVendidoRepository pvRepo,
-            PapelRepository papelRepo,
-            PessoaRepository pessRepo,
-            EnderecoRepository endeRepo) {
+    public CommandLineRunner populateDB(CategoriaRepository cateRepo, ProdutoRepository prodRepo, PrecoRepository precoRepo, 
+            VendaRepository vendaRepo, ProdutoVendidoRepository pvRepo,
+            PapelRepository papelRepo, PessoaRepository pessRepo, EnderecoRepository endeRepo) {
         return (String[] args) -> {
             cateRepo.save(new Categoria(0L, "Alimentos", System.currentTimeMillis(), System.currentTimeMillis(), true));
             cateRepo.save(new Categoria(0L, "Bebidas", System.currentTimeMillis(), System.currentTimeMillis(), true));
@@ -68,12 +62,12 @@ public class Boot {
             
             Set<Papel> papeis = new HashSet<>(Arrays.asList(papelRepo.findById(1L).get()));
             
-            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", "senha", Nivel.BASIC, new ArrayList<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
+            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", "senha", Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
             
             // Av. Paulista, 149 - Bela Vista, São Paulo - SP, 01311-200
-            endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", false, pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
+            endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
             // Rua dos Jequitibás - Jabaquara, São Paulo - SP, 04309-011
-            endeRepo.save(new Endereco(0L, "Rua dos Jequitibás", "190", "Jabaquara", "São Paulo", "SP", "04309-011", "", false, pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
+            endeRepo.save(new Endereco(0L, "Rua dos Jequitibás", "190", "Jabaquara", "São Paulo", "SP", "04309-011", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
         };
     }
 }

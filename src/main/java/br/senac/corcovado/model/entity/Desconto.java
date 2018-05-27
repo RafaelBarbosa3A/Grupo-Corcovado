@@ -1,123 +1,122 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.senac.corcovado.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
- * @author wesley
+ * @author Diego
  */
-
 @Entity
 @Table(name = "desconto")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "produto"})
 public class Desconto implements Serializable {
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "id") private Long id;
-    @Column(name = "desconto") private String desconto;
-    @Column(name = "percentual") private double percentual;
-    @Column(name = "cod_cupom") private String codigoCupom;
-    @Column(name = "created_at") private GregorianCalendar createdAt;
-    @Column(name = "updated_at") private GregorianCalendar updatedAt;
-    @Column(name = "active" ) private boolean active;
+    
+    @Column(name = "preco") private Double preco;
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "produto_id", referencedColumnName = "id") private Produto produto;
+    
+    @Column(name = "inicio", nullable = false)
+    @Temporal(javax.persistence.TemporalType.DATE) private Date inicio;
+    
+    @Column(name = "fim", nullable = true)
+    @Temporal(javax.persistence.TemporalType.DATE) private Date fim;
+    
+    @Column(name = "created_at") private Long createdAt;
+    @Column(name = "updated_at") private Long updatedAt;
 
     public Desconto() {
-        this.id = 0L;
     }
 
-    public Desconto(Long id, String desconto, double percentual, String cod_cupom, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Desconto(Long id, Double preco, Produto produto, Date inicio, Date fim, Long createdAt, Long updatedAt) {
         this.id = id;
-        this.desconto = desconto;
-        this.percentual = percentual;
-        this.codigoCupom = cod_cupom;
+        this.preco = preco;
+        this.produto = produto;
+        this.inicio = inicio;
+        this.fim = fim;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.active = active;
     }
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getDesconto() {
-        return desconto;
+    public Double getPreco() {
+        return preco;
+    }
+    public void setPreco(Double preco) {
+        this.preco = preco;
     }
 
-    public void setDesconto(String desconto) {
-        this.desconto = desconto;
+    public Produto getProduto() {
+        return produto;
+    }
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
-    public double getPercentual() {
-        return percentual;
+    public Date getInicio() {
+        return inicio;
+    }
+    public void setInicio(Date inicio) {
+        this.inicio = inicio;
     }
 
-    public void setPercentual(double percentual) {
-        this.percentual = percentual;
+    public Date getFim() {
+        return fim;
+    }
+    public void setFim(Date fim) {
+        this.fim = fim;
     }
 
-    public String getCodigoCupom() {
-        return codigoCupom;
-    }
-
-    public void setCodigoCupom(String codigoCupom) {
-        this.codigoCupom = codigoCupom;
-    }
-
-    public GregorianCalendar getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
-
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        hash = 23 * hash + Objects.hashCode(this.desconto);
-        hash = 23 * hash + (int) (Double.doubleToLongBits(this.percentual) ^ (Double.doubleToLongBits(this.percentual) >>> 32));
-        hash = 23 * hash + Objects.hashCode(this.codigoCupom);
-        hash = 23 * hash + Objects.hashCode(this.createdAt);
-        hash = 23 * hash + Objects.hashCode(this.updatedAt);
-        hash = 23 * hash + (this.active ? 1 : 0);
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        hash = 47 * hash + Objects.hashCode(this.preco);
+        hash = 47 * hash + Objects.hashCode(this.produto);
+        hash = 47 * hash + Objects.hashCode(this.inicio);
+        hash = 47 * hash + Objects.hashCode(this.fim);
+        hash = 47 * hash + Objects.hashCode(this.createdAt);
+        hash = 47 * hash + Objects.hashCode(this.updatedAt);
         return hash;
     }
 
@@ -133,25 +132,7 @@ public class Desconto implements Serializable {
             return false;
         }
         final Desconto other = (Desconto) obj;
-        if (Double.doubleToLongBits(this.percentual) != Double.doubleToLongBits(other.percentual)) {
-            return false;
-        }
-        if (this.active != other.active) {
-            return false;
-        }
-        if (!Objects.equals(this.desconto, other.desconto)) {
-            return false;
-        }
-        if (!Objects.equals(this.codigoCupom, other.codigoCupom)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -159,6 +140,18 @@ public class Desconto implements Serializable {
 
     @Override
     public String toString() {
-        return "Desconto{" + "id=" + id + ", desconto=" + desconto + ", percentual=" + percentual + ", cod_cupom=" + codigoCupom + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Desconto{" + "id=" + id + ", preco=" + preco + ", produto=" + produto + ", inicio=" + inicio + ", fim=" + fim + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+    }
+        
+    // === JPA Gambiarras ===
+    @PrePersist 
+    private void beforeCreate() {
+        this.createdAt = System.currentTimeMillis();
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    @PreUpdate
+    private void beforeUpdate() {
+        this.updatedAt = System.currentTimeMillis();
     }
 }

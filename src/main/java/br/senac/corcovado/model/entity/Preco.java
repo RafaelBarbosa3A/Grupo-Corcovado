@@ -18,8 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -28,26 +26,23 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "preco", uniqueConstraints={ @UniqueConstraint(columnNames = {"produto_id", "nivel"})} )
-/*
-@SQLDelete(sql = "UPDATE preco SET active = false WHERE id = ?")
-@Loader(namedQuery = "findPrecoById")
-@NamedQuery(name = "findPrecoById", query = "SELECT p FROM Preco p WHERE p.id = ?1")
-@Where(clause = "active = true")
-*/
 //Gambiarraaaaaaaaa
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "produto"})
 public class Preco implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @Column(name = "id") private Long id;
+    
     @Column(name = "preco") private Double preco;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "produto_id", referencedColumnName = "id") private Produto produto;
-    @Enumerated(EnumType.STRING) @Column(name = "nivel") private Nivel nivel;
+    
+    @Enumerated(EnumType.STRING) 
+    @Column(name = "nivel") private Nivel nivel;
+    
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
-    //@Column(name = "active") private boolean active;
 
     public Preco() {
         this.id = 0L;
-        //this.active = true;
     }
 
     public Preco(Long id, Double preco, Produto produto, Nivel nivel, Long createdAt, Long updatedAt /*, boolean active*/) {
@@ -57,7 +52,6 @@ public class Preco implements Serializable {
         this.nivel = nivel;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        //this.active = active;
     }
 
     public Long getId() {
@@ -102,15 +96,6 @@ public class Preco implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    /*
-    public boolean isActive() {
-        return active;
-    }
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-    */
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -120,7 +105,6 @@ public class Preco implements Serializable {
         hash = 89 * hash + Objects.hashCode(this.nivel);
         hash = 89 * hash + Objects.hashCode(this.createdAt);
         hash = 89 * hash + Objects.hashCode(this.updatedAt);
-        //hash = 89 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -136,11 +120,7 @@ public class Preco implements Serializable {
             return false;
         }
         final Preco other = (Preco) obj;
-        /*
-        if (this.active != other.active) {
-            return false;
-        }
-        */
+        
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -169,21 +149,14 @@ public class Preco implements Serializable {
     
     // === JPA Gambiarras ===
     
-    @PrePersist
-    private void prePersist() {
+    @PrePersist 
+    private void beforeCreate() {
         this.createdAt = System.currentTimeMillis();
         this.updatedAt = System.currentTimeMillis();
     }
-    
+
     @PreUpdate
-    private void preUpdate() {
+    private void beforeUpdate() {
         this.updatedAt = System.currentTimeMillis();
     }
-
-    /*
-    @PreRemove
-    private void preRemove() {
-        this.active = false;
-    }
-    */
 }

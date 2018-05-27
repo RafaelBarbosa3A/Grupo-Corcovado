@@ -30,6 +30,7 @@ import javax.validation.constraints.Size;
 @Loader(namedQuery = "findCategoriaById")
 @NamedQuery(name = "findCategoriaById", query = "SELECT c FROM Categoria c WHERE c.id = ?1")
 @Where(clause = "active = true")
+
 //Gambiarraaaaaaaaa
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Categoria implements Serializable {
@@ -145,19 +146,19 @@ public class Categoria implements Serializable {
 
     // === JPA Gambiarras ===
 
-    @PrePersist
-    private void prePersist() {
+    @PrePersist 
+    private void beforeCreate() {
         this.createdAt = System.currentTimeMillis();
         this.updatedAt = System.currentTimeMillis();
     }
 
     @PreUpdate
-    private void preUpdate() {
+    private void beforeUpdate() {
         this.updatedAt = System.currentTimeMillis();
     }
-
+    
     @PreRemove
-    private void preRemove() {
+    private void softDelete() {
         this.active = false;
     }
 }

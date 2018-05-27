@@ -6,7 +6,10 @@
 package br.senac.corcovado;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  *
@@ -22,12 +25,16 @@ public class Utils {
         return asList;
     }
     
-    
     public static <T> ArrayList<T> asList(T[] array) {
-        ArrayList<T> asList = new ArrayList<>();
-        for (int i = 0; i < array.length; i++) {
-            asList.add(array[i]);
-        }
-        return asList;
+        return new ArrayList<>(Arrays.asList(array));
     }
+    
+    public static <T> Set<T> asSet(Iterable<T> iterable) {
+        HashSet<T> set = new HashSet<>();
+        for (Iterator<T> iterator = iterable.iterator(); iterator.hasNext();) {
+            set.add(iterator.next());
+        }
+        return set;
+    }
+    
 }

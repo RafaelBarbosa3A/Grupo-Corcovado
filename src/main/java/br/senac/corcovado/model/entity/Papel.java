@@ -5,6 +5,7 @@
  */
 package br.senac.corcovado.model.entity;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,5 +53,36 @@ public class Papel implements GrantedAuthority {
     public String getAuthority() {
         return this.cargo;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 31 * hash + Objects.hashCode(this.nome);
+        hash = 31 * hash + Objects.hashCode(this.cargo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Papel other = (Papel) obj;
+        if (!Objects.equals(this.cargo, other.cargo)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Papel{" + "id=" + id + ", nome=" + nome + ", cargo=" + cargo + '}';
+    }
 }

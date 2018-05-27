@@ -11,9 +11,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 /**
  *
  * @author wesley
@@ -21,42 +29,55 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "endereco")
+@SQLDelete(sql = "UPDATE endereco SET active = false WHERE id = ?")
+@Loader(namedQuery = "findEnderecoById")
+@NamedQuery(name = "findEnderecoById", query = "SELECT e FROM Endereco e WHERE e.id = ?1")
+@Where(clause = "active = true")
 //Gambiarraaaaaaaaa
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pessoa"})
 public class Endereco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "id") private Long id;
     @NotEmpty(message = "Favor digitar um endereço")
+    
     @Size(min=1,max=255,message="Favor digitar um endereço entre 1 á 255 letras")
     @Column(name = "rua") private String rua;
-    @Column(name = "numero") private String numero;
+    
     @NotEmpty(message = "Favor digitar um número")
-    @Size(min=1,max=255,message="Favor digitar um número entre 1 á 10000 letras")
+    @Column(name = "numero") private String numero;
+    
     @NotEmpty(message = "Favor digitar um bairro")
     @Size(min=1,max=255,message="Favor digitar um bairro entre 1 á 255 letras")
     @Column(name = "bairro") private String bairro;
+    
     @NotEmpty(message = "Favor digitar uma cidade")
     @Size(min=1,max=255,message="Favor digitar uma cidade entre 1 á 255 letras")
     @Column(name = "cidade") private String cidade;
+    
     @NotEmpty(message = "Favor digitar um estado")
     @Size(min=1,max=255,message="Favor digitar um estado entre 1 á 255 letras")
     @Column(name = "estado") private String estado;
+    
     @NotEmpty(message = "Favor digitar um cep")
     @Size(min=1,max=255,message="Favor digitar um cep entre 1 á 8 letras")
     @Column(name = "cep") private String cep;
+    
     @Column(name = "complemento") private String complemento;
-    @NotEmpty(message = "Favor digitar uma cidade")
-    @Column(name = "principal") private boolean principal;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "pessoa_id", referencedColumnName = "id") private Pessoa pessoa;
+    
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id") private Pessoa pessoa;
     
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
+    @Column(name = "active") private boolean active;
     
     public Endereco() {
         this.id = 0L;
+        this.active = true;
     }
 
-    public Endereco(Long id, String rua, String numero, String bairro, String cidade, String estado, String cep, String complemento, boolean principal, Pessoa pessoa, Long createdAt, Long updatedAt) {
+    public Endereco(Long id, String rua, String numero, String bairro, String cidade, String estado, String cep, String complemento, Pessoa pessoa, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.rua = rua;
         this.numero = numero;
@@ -65,10 +86,10 @@ public class Endereco implements Serializable {
         this.estado = estado;
         this.cep = cep;
         this.complemento = complemento;
-        this.principal = principal;
         this.pessoa = pessoa;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.active = active;
     }
 
     public Long getId() {
@@ -134,13 +155,6 @@ public class Endereco implements Serializable {
         this.pessoa = pessoa;
     }
 
-    public boolean isPrincipal() {
-        return principal;
-    }
-    public void setPrincipal(boolean principal) {
-        this.principal = principal;
-    }
-
     public Long getCreatedAt() {
         return createdAt;
     }
@@ -155,24 +169,33 @@ public class Endereco implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    @Override public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.id);
-        hash = 89 * hash + Objects.hashCode(this.rua);
-        hash = 89 * hash + Objects.hashCode(this.numero);
-        hash = 89 * hash + Objects.hashCode(this.bairro);
-        hash = 89 * hash + Objects.hashCode(this.cidade);
-        hash = 89 * hash + Objects.hashCode(this.estado);
-        hash = 89 * hash + Objects.hashCode(this.cep);
-        hash = 89 * hash + Objects.hashCode(this.complemento);
-        hash = 89 * hash + (this.principal ? 1 : 0);
-        hash = 89 * hash + Objects.hashCode(this.pessoa);
-        hash = 89 * hash + Objects.hashCode(this.createdAt);
-        hash = 89 * hash + Objects.hashCode(this.updatedAt);
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.rua);
+        hash = 83 * hash + Objects.hashCode(this.numero);
+        hash = 83 * hash + Objects.hashCode(this.bairro);
+        hash = 83 * hash + Objects.hashCode(this.cidade);
+        hash = 83 * hash + Objects.hashCode(this.estado);
+        hash = 83 * hash + Objects.hashCode(this.cep);
+        hash = 83 * hash + Objects.hashCode(this.complemento);
+        hash = 83 * hash + Objects.hashCode(this.pessoa);
+        hash = 83 * hash + Objects.hashCode(this.createdAt);
+        hash = 83 * hash + Objects.hashCode(this.updatedAt);
+        hash = 83 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -189,7 +212,26 @@ public class Endereco implements Serializable {
         return true;
     }
 
-    @Override public String toString() {
-        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", principal=" + principal + ", pessoa=" + pessoa + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+    @Override
+    public String toString() {
+        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", pessoa=" + pessoa + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    }
+    
+    // === JPA Porco ===
+
+    @PrePersist 
+    private void beforeCreate() {
+        this.createdAt = System.currentTimeMillis();
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    @PreUpdate
+    private void beforeUpdate() {
+        this.updatedAt = System.currentTimeMillis();
+    }
+    
+    @PreRemove
+    private void softDelete() {
+        this.active = false;
     }
 }

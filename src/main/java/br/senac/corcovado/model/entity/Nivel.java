@@ -1,8 +1,5 @@
 package br.senac.corcovado.model.entity;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 /**
  *
  * @author wesley
@@ -22,6 +19,10 @@ public enum Nivel {
     }
 
     public String getNome() {
+        return nome;
+    }
+
+    @Override public String toString() {
         return nome;
     }
 }

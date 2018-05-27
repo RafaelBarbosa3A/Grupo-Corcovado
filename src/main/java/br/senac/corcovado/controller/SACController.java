@@ -1,12 +1,8 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Sac;
-import br.senac.corcovado.model.exception.SACException;
 import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.SacRepository;
-import br.senac.corcovado.model.validator.SACValidador;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,16 +45,8 @@ public class SACController {
     @PostMapping(path = "/sac/create")
     public ModelAndView create(@ModelAttribute Sac sac) {
         Sac salvo;
-        try {
-            SACValidador.validar(sac);
-            salvo = repository.save(sac);
-        } catch (SACException ex) { 
-            Logger.getLogger(SACController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("sac", sac);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
+        salvo = repository.save(sac);
+        
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
@@ -73,16 +61,8 @@ public class SACController {
     @PostMapping(path = "/sac/update")
     public ModelAndView update(@ModelAttribute Sac sac) {
         Sac salvo;
-        try {
-            SACValidador.validar(sac);
-            salvo = repository.save(sac);
-        } catch (SACException ex) { 
-            Logger.getLogger(SACController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(sac);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
-
+        salvo = repository.save(sac);
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }

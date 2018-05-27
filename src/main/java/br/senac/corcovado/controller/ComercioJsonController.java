@@ -37,7 +37,7 @@ public class ComercioJsonController {
     @GetMapping(value = "/comercio/produto_json")
     public Iterable<Produto> listProd() {
         Iterable<Produto> produtos = prodRepo.findAll();
-        produtos.forEach((p) -> { p.setPreco(p.getPrecos().get(0).getPreco()); });
+        // produtos.forEach((p) -> { p.setPreco(p.getPrecos().get(0).getPreco()); });
         return produtos;
     }
 
@@ -120,7 +120,7 @@ public class ComercioJsonController {
 
         //TODO processar o pagamento (utilizar o campo pedido.cartao).
 
-        venda.setStatusId(Status.ENTREGA.getId());
+        venda.setStatus(Status.ENTREGA);
         
         venda.setComprovante(RandomStringUtils.randomAlphanumeric(20));
         venda.setCodigoRastreamento(RandomStringUtils.randomAlphanumeric(20));

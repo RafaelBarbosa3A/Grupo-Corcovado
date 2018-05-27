@@ -1,7 +1,6 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.Utils;
-import br.senac.corcovado.model.entity.Cargo;
 import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.repository.EnderecoRepository;
@@ -33,8 +32,7 @@ public class PessoaController {
     @GetMapping("/pessoas/{id}")
     public ModelAndView show(@PathVariable("id") long id) {
         Pessoa pessoa = pessRepo.findById(id).get();
-        //pessoa.setEnderecos(Utils.asList(endRepo.findAllByPessoaId(id)));
-
+        
         return new ModelAndView("/pessoa/pessoa_show")
                 .addObject("pessoa", pessoa);
     }
@@ -47,8 +45,7 @@ public class PessoaController {
 
     @PostMapping(path = "/pessoas/create")
     public ModelAndView create(@ModelAttribute Pessoa pessoa) {
-        Pessoa salvo;
-        salvo = pessRepo.save(pessoa);
+        Pessoa salvo = pessRepo.save(pessoa);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
@@ -62,9 +59,8 @@ public class PessoaController {
 
     @PostMapping(path = "/pessoas/update")
     public ModelAndView update(@ModelAttribute Pessoa pessoa) {
-    	pessoa.setEnderecos(Utils.asList(endRepo.findAllByPessoaId(pessoa.getId())));
-        Pessoa salvo;
-        salvo = pessRepo.save(pessoa);
+    	pessoa.setEnderecos(Utils.asSet(endRepo.findAllByPessoaId(pessoa.getId())));
+        Pessoa salvo = pessRepo.save(pessoa);
 
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
@@ -82,7 +78,6 @@ public class PessoaController {
         modelAndView.addObject("action", "create");
         modelAndView.addObject("pessoa", new Pessoa());
         modelAndView.addObject("niveis", Nivel.values());
-        modelAndView.addObject("cargos", Cargo.values());
         return modelAndView;
     }
 
@@ -91,7 +86,6 @@ public class PessoaController {
         modelAndView.addObject("action", "update");
         modelAndView.addObject("pessoa", pessoa);
         modelAndView.addObject("niveis", Nivel.values());
-        modelAndView.addObject("cargos", Cargo.values());
         return modelAndView;
     }
 }

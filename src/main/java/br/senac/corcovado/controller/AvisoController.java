@@ -1,11 +1,11 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.model.entity.Aviso;
-import br.senac.corcovado.model.exception.AvisoException;
+
 import br.senac.corcovado.model.repository.AvisoRepository;
 import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
-import br.senac.corcovado.model.validator.AvisoValidador;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,17 +51,8 @@ public class AvisoController {
     @PostMapping(path = "/avisos/create")
     public ModelAndView create(@ModelAttribute Aviso aviso) {
         Aviso salvo;
-        try {
-            AvisoValidador.validar(aviso);
-            salvo = repository.save(aviso);
-        } catch (AvisoException ex) { 
-            Logger.getLogger(AvisoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = newForm();
-            forward.addObject("aviso", aviso);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
-
+        salvo = repository.save(aviso);
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }
@@ -75,16 +66,8 @@ public class AvisoController {
     @PostMapping(path = "/avisos/update")
     public ModelAndView update(@ModelAttribute Aviso aviso) {
         Aviso salvo;
-        try {
-            AvisoValidador.validar(aviso);
-            salvo = repository.save(aviso); 
-        } catch (AvisoException ex) { 
-            Logger.getLogger(AvisoController.class.getName()).log(Level.SEVERE, null, ex);
-            ModelAndView forward = editForm(aviso);
-            forward.addObject("erros", ex.getErrors());
-            return forward;
-        }
-
+        salvo = repository.save(aviso); 
+        
         ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
         return redirect;
     }

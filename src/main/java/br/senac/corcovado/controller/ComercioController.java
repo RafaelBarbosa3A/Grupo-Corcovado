@@ -53,17 +53,12 @@ public class ComercioController {
         return new ModelAndView("/comercio/_finaliza");
     }
     
-    /*
-    @GetMapping("/comercio/recibo")
-    public ModelAndView recibo() {
-        return new ModelAndView("/comercio/_recibo");
-    }
-    */
-    
     @GetMapping("/comercio/recibo/{id}")
     public ModelAndView recibo(@PathVariable("id") long id) {
         // Apenas permitr ver os pedidos do usuário logado.
         return new ModelAndView("/comercio/recibo").addObject("venda", vendaRepo.findById(id).get());
+    }
+    
     @GetMapping("/comercio/login")
     public ModelAndView login() {
         return new ModelAndView("/comercio/_login");

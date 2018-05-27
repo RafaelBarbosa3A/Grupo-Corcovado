@@ -1,57 +1,64 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.persistence.Temporal;
+import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  *
  * @author wesley
  */
-
 @Entity
 @Table(name = "venda")
+@SQLDelete(sql = "UPDATE venda SET active = false WHERE id = ?")
+@Loader(namedQuery = "findVendaById")
+@NamedQuery(name = "findVendaById", query = "SELECT v FROM Venda v WHERE v.id = ?1")
+@Where(clause = "active = true")
 public class Venda implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
 
-
     @ManyToOne(targetEntity = Pessoa.class, optional = true)
-    @JoinColumn(name = "pessoa_id",
-            referencedColumnName = "id",
-            nullable = true)
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id", nullable = true)
     private Pessoa pessoa;
 
-    //@Column(name = "cliente_id") private Long clienteId; /*pessoa*/
     @Column(name = "endereco_id") private Long enderecoId;
-    @Column(name = "desconto_id") private Long descontoId; //to remove
-    @Column(name = "status_id") private int statusId;
+    //@Column(name = "desconto_id") private Long descontoId; //to remove
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status") private Status status;
+        
     @Column(name = "frete") private Double frete;
-    @Column(name = "total") private Double total;
-    @NotEmpty(message = "Escolher um tipo de pagamento")
+    @Column(name = "total") private Double total;    
     @Column(name = "pagamento") private String pagamento;
     @Column(name = "comprovante") private String comprovante;
-    @Column(name = "prazo_entrega") private String prazoEntrega;
+    
+    @Column(name = "prazo_entrega")
+    @Temporal(javax.persistence.TemporalType.DATE) private Date prazoEntrega;
+    
     @Column(name = "codigo_rastreamento") private String codigoRastreamento;
-
-    @OneToMany(targetEntity = ProdutoVendido.class,
-            mappedBy = "venda",
-            fetch = FetchType.EAGER,
-            orphanRemoval = true)
+    
+    @OneToMany(targetEntity = ProdutoVendido.class, mappedBy = "venda", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<ProdutoVendido> produtoVendidos;
 
     @Column(name = "created_at") private Long createdAt;
@@ -60,7 +67,7 @@ public class Venda implements Serializable {
 
     public Venda() {
         this.id = 0L;
-        this.statusId = 1;
+        this.status = Status.RASCUNHO;
         this.total = 0D;
         this.frete = 0D;
         this.produtoVendidos = new HashSet();
@@ -69,18 +76,17 @@ public class Venda implements Serializable {
     public Venda(Pessoa pessoa) {
         this.id = 0L;
         this.pessoa = pessoa;
-        this.statusId = 1;
+        this.status = Status.RASCUNHO;
         this.total = 0D;
         this.frete = 0D;
         this.produtoVendidos = new HashSet();
     }
 
-    public Venda(Long id, Pessoa pessoa, Long enderecoId, Long descontoId, int statusId, Double frete, Double total, String pagamento, String comprovante, String prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {
+    public Venda(Long id, Pessoa pessoa, Long enderecoId, Status status, Double frete, Double total, String pagamento, String comprovante, Date prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.pessoa = pessoa;
         this.enderecoId = enderecoId;
-        this.descontoId = descontoId;
-        this.statusId = statusId;
+        this.status = status;
         this.frete = frete;
         this.total = total;
         this.pagamento = pagamento;
@@ -115,18 +121,11 @@ public class Venda implements Serializable {
         this.enderecoId = enderecoId;
     }
 
-    public Long getDescontoId() {
-        return descontoId;
+    public Status getStatus() {
+        return status;
     }
-    public void setDescontoId(Long descontoId) {
-        this.descontoId = descontoId;
-    }
-
-    public int getStatusId() {
-        return statusId;
-    }
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Double getFrete() {
@@ -164,10 +163,10 @@ public class Venda implements Serializable {
         this.comprovante = comprovante;
     }
 
-    public String getPrazoEntrega() {
+    public Date getPrazoEntrega() {
         return prazoEntrega;
     }
-    public void setPrazoEntrega(String prazoEntrega) {
+    public void setPrazoEntrega(Date prazoEntrega) {
         this.prazoEntrega = prazoEntrega;
     }
 
@@ -209,19 +208,20 @@ public class Venda implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.id);
-        hash = 37 * hash + Objects.hashCode(this.pessoa);
-        hash = 37 * hash + Objects.hashCode(this.enderecoId);
-        hash = 37 * hash + Objects.hashCode(this.descontoId);
-        hash = 37 * hash + this.statusId;
-        hash = 37 * hash + Objects.hashCode(this.total);
-        hash = 37 * hash + Objects.hashCode(this.pagamento);
-        hash = 37 * hash + Objects.hashCode(this.comprovante);
-        hash = 37 * hash + Objects.hashCode(this.prazoEntrega);
-        hash = 37 * hash + Objects.hashCode(this.codigoRastreamento);
-        hash = 37 * hash + Objects.hashCode(this.createdAt);
-        hash = 37 * hash + Objects.hashCode(this.updatedAt);
-        hash = 37 * hash + (this.active ? 1 : 0);
+        hash = 23 * hash + Objects.hashCode(this.id);
+        hash = 23 * hash + Objects.hashCode(this.pessoa);
+        hash = 23 * hash + Objects.hashCode(this.enderecoId);
+        hash = 23 * hash + Objects.hashCode(this.status);
+        hash = 23 * hash + Objects.hashCode(this.frete);
+        hash = 23 * hash + Objects.hashCode(this.total);
+        hash = 23 * hash + Objects.hashCode(this.pagamento);
+        hash = 23 * hash + Objects.hashCode(this.comprovante);
+        hash = 23 * hash + Objects.hashCode(this.prazoEntrega);
+        hash = 23 * hash + Objects.hashCode(this.codigoRastreamento);
+        hash = 23 * hash + Objects.hashCode(this.produtoVendidos);
+        hash = 23 * hash + Objects.hashCode(this.createdAt);
+        hash = 23 * hash + Objects.hashCode(this.updatedAt);
+        hash = 23 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -245,6 +245,7 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return "Venda{" + "id=" + id + ", pessoa=" + pessoa + ", enderecoId=" + enderecoId + ", descontoId=" + descontoId + ", statusId=" + statusId + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Venda{" + "id=" + id + ", pessoa=" + pessoa + ", enderecoId=" + enderecoId + ", status=" + status + ", frete=" + frete + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
+
 }

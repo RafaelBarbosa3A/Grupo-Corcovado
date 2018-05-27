@@ -10,40 +10,38 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 /**
  *
  * @author wesley
  */
-
-// TODO
-
 @Entity
 @Table(name = "produto_vendido")
+@SQLDelete(sql = "UPDATE produto_vendido SET active = false WHERE id = ?")
+@Loader(namedQuery = "findProdutoVendidoById")
+@NamedQuery(name = "findProdutoVendidoById", query = "SELECT pv FROM ProdutoVendido pv WHERE pv.id = ?1")
+@Where(clause = "active = true")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler",  "venda"})
 public class ProdutoVendido implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
     
-    @ManyToOne(targetEntity = Produto.class,
-            optional = false)
-    @JoinColumn(name = "produto_id", 
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(targetEntity = Produto.class, optional = false)
+    @JoinColumn(name = "produto_id", referencedColumnName = "id", nullable = false)
     private Produto produto;
-    //@Column(name = "produto_id") private Long produtoId;
     
-    @ManyToOne(targetEntity = Venda.class,
-            optional = false)
-    @JoinColumn(name = "venda_id", 
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(targetEntity = Venda.class, optional = false)
+    @JoinColumn(name = "venda_id", referencedColumnName = "id", nullable = false)
     private Venda venda;
-    // @Column(name = "venda_id") private Long vendaId;
     
     @Column(name = "quantidade") private Integer quantidade;
     @Column(name = "preco_total") private Double precoTotal;
@@ -161,5 +159,23 @@ public class ProdutoVendido implements Serializable {
     @Override
     public String toString() {
         return "ProdutoVendido{" + "id=" + id + ", produto=" + produto + ", venda=" + venda + ", quantidade=" + quantidade + ", precoTotal=" + precoTotal + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    }
+    
+    // === JPA Gambiarras ===
+
+    @PrePersist 
+    private void beforeCreate() {
+        this.createdAt = System.currentTimeMillis();
+        this.updatedAt = System.currentTimeMillis();
+    }
+
+    @PreUpdate
+    private void beforeUpdate() {
+        this.updatedAt = System.currentTimeMillis();
+    }
+    
+    @PreRemove
+    private void softDelete() {
+        this.active = false;
     }
 }
