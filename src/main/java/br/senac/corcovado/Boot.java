@@ -57,9 +57,9 @@ public class Boot {
             pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", "senha", Nivel.BASIC, null, System.currentTimeMillis(), System.currentTimeMillis(), true));
 
             // Av. Paulista, 149 - Bela Vista, São Paulo - SP, 01311-200
-            endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", false, pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
+            endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
             // Rua dos Jequitibás - Jabaquara, São Paulo - SP, 04309-011
-            endeRepo.save(new Endereco(0L, "Rua dos Jequitibás", "190", "Jabaquara", "São Paulo", "SP", "04309-011", "", false, pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
+            endeRepo.save(new Endereco(0L, "Rua dos Jequitibás", "190", "Jabaquara", "São Paulo", "SP", "04309-011", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis()));
         };
     }
 }

@@ -14,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -36,13 +34,11 @@ public class Venda implements Serializable {
             nullable = true)
     private Pessoa pessoa;
 
-    //@Column(name = "cliente_id") private Long clienteId; /*pessoa*/
     @Column(name = "endereco_id") private Long enderecoId;
     @Column(name = "desconto_id") private Long descontoId; //to remove
     @Column(name = "status_id") private int statusId;
     @Column(name = "frete") private Double frete;
     @Column(name = "total") private Double total;
-    @NotEmpty(message = "Escolher um tipo de pagamento")
     @Column(name = "pagamento") private String pagamento;
     @Column(name = "comprovante") private String comprovante;
     @Column(name = "prazo_entrega") private String prazoEntrega;

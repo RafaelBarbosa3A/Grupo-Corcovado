@@ -29,9 +29,11 @@ public class Endereco implements Serializable {
     @NotEmpty(message = "Favor digitar um endereço")
     @Size(min=1,max=255,message="Favor digitar um endereço entre 1 á 255 letras")
     @Column(name = "rua") private String rua;
-    @Column(name = "numero") private String numero;
+    
     @NotEmpty(message = "Favor digitar um número")
     @Size(min=1,max=255,message="Favor digitar um número entre 1 á 10000 letras")
+    @Column(name = "numero") private String numero;
+    
     @NotEmpty(message = "Favor digitar um bairro")
     @Size(min=1,max=255,message="Favor digitar um bairro entre 1 á 255 letras")
     @Column(name = "bairro") private String bairro;
@@ -45,8 +47,7 @@ public class Endereco implements Serializable {
     @Size(min=1,max=255,message="Favor digitar um cep entre 1 á 8 letras")
     @Column(name = "cep") private String cep;
     @Column(name = "complemento") private String complemento;
-    @NotEmpty(message = "Favor digitar uma cidade")
-    @Column(name = "principal") private boolean principal;
+    
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "pessoa_id", referencedColumnName = "id") private Pessoa pessoa;
     
     @Column(name = "created_at") private Long createdAt;
@@ -56,7 +57,7 @@ public class Endereco implements Serializable {
         this.id = 0L;
     }
 
-    public Endereco(Long id, String rua, String numero, String bairro, String cidade, String estado, String cep, String complemento, boolean principal, Pessoa pessoa, Long createdAt, Long updatedAt) {
+    public Endereco(Long id, String rua, String numero, String bairro, String cidade, String estado, String cep, String complemento, Pessoa pessoa, Long createdAt, Long updatedAt) {
         this.id = id;
         this.rua = rua;
         this.numero = numero;
@@ -65,7 +66,6 @@ public class Endereco implements Serializable {
         this.estado = estado;
         this.cep = cep;
         this.complemento = complemento;
-        this.principal = principal;
         this.pessoa = pessoa;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -134,13 +134,6 @@ public class Endereco implements Serializable {
         this.pessoa = pessoa;
     }
 
-    public boolean isPrincipal() {
-        return principal;
-    }
-    public void setPrincipal(boolean principal) {
-        this.principal = principal;
-    }
-
     public Long getCreatedAt() {
         return createdAt;
     }
@@ -165,7 +158,6 @@ public class Endereco implements Serializable {
         hash = 89 * hash + Objects.hashCode(this.estado);
         hash = 89 * hash + Objects.hashCode(this.cep);
         hash = 89 * hash + Objects.hashCode(this.complemento);
-        hash = 89 * hash + (this.principal ? 1 : 0);
         hash = 89 * hash + Objects.hashCode(this.pessoa);
         hash = 89 * hash + Objects.hashCode(this.createdAt);
         hash = 89 * hash + Objects.hashCode(this.updatedAt);
@@ -190,6 +182,6 @@ public class Endereco implements Serializable {
     }
 
     @Override public String toString() {
-        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", principal=" + principal + ", pessoa=" + pessoa + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+        return "Endereco{" + "id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", complemento=" + complemento + ", pessoa=" + pessoa + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }
