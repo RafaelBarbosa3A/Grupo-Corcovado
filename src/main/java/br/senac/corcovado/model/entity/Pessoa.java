@@ -40,7 +40,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Loader(namedQuery = "findPessoaById")
 @NamedQuery(name = "findPessoaById", query = "SELECT p FROM Pessoa p WHERE p.id = ?1")
 @Where(clause = "active = true")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "papeis", "enderecos"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "papeis"})
 public class Pessoa implements UserDetails, Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +57,7 @@ public class Pessoa implements UserDetails, Serializable {
     @Column(name = "email") private String email;
     
     @NotEmpty(message = "Favor digitar uma senha")
-    @Size(min=1,max=255,message="Favor digitar uma senha entre 1 á 15 letras")
+    //@Size(min=1,max=255,message="Favor digitar uma senha entre 1 á 15 letras")
     @Column(name = "senha") private String senha;
     
     @Enumerated(EnumType.STRING) 
@@ -173,18 +173,17 @@ public class Pessoa implements UserDetails, Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 83 * hash + Objects.hashCode(this.id);
-        hash = 83 * hash + Objects.hashCode(this.nome);
-        hash = 83 * hash + Objects.hashCode(this.documento);
-        hash = 83 * hash + Objects.hashCode(this.email);
-        hash = 83 * hash + Objects.hashCode(this.senha);
-        hash = 83 * hash + Objects.hashCode(this.nivel);
-        hash = 83 * hash + Objects.hashCode(this.enderecos);
-        hash = 83 * hash + Objects.hashCode(this.papeis);
-        hash = 83 * hash + Objects.hashCode(this.createdAt);
-        hash = 83 * hash + Objects.hashCode(this.updatedAt);
-        hash = 83 * hash + (this.active ? 1 : 0);
+        int hash = 7;
+        hash = 19 * hash + Objects.hashCode(this.id);
+        hash = 19 * hash + Objects.hashCode(this.nome);
+        hash = 19 * hash + Objects.hashCode(this.documento);
+        hash = 19 * hash + Objects.hashCode(this.email);
+        hash = 19 * hash + Objects.hashCode(this.senha);
+        hash = 19 * hash + Objects.hashCode(this.nivel);
+        hash = 19 * hash + Objects.hashCode(this.papeis);
+        hash = 19 * hash + Objects.hashCode(this.createdAt);
+        hash = 19 * hash + Objects.hashCode(this.updatedAt);
+        hash = 19 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -230,38 +229,31 @@ public class Pessoa implements UserDetails, Serializable {
     }
 
     // === Spring Security ===
-    @Override
-    public Set<Papel> getAuthorities() {
+    @Override public Set<Papel> getAuthorities() {
         return this.papeis;
     }
 
-    @Override
-    public String getPassword() {
+    @Override public String getPassword() {
         return this.senha;
     }
 
-    @Override
-    public String getUsername() {
+    @Override public String getUsername() {
         return this.email;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
+    @Override public boolean isAccountNonExpired() {
         return this.active;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
+    @Override public boolean isAccountNonLocked() {
         return this.active;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
+    @Override public boolean isCredentialsNonExpired() {
         return this.active;
     }
 
-    @Override
-    public boolean isEnabled() {
+    @Override public boolean isEnabled() {
         return this.active;
     }
 }

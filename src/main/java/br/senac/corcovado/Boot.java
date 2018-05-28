@@ -54,7 +54,7 @@ public class Boot {
             
             // Set<Papel> papeis = new HashSet<>(Arrays.asList(papelRepo.findById(1L).get()));
             
-            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", SecurityConfig.bcryptPasswordEncoder().encode("senha")  , Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
+            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", SecurityConfig.bcryptPasswordEncoder().encode("senha"), Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
             
             // Av. Paulista, 149 - Bela Vista, São Paulo - SP, 01311-200
             endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));

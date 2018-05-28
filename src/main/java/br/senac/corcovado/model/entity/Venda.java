@@ -40,7 +40,7 @@ public class Venda implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
 
-    @ManyToOne(targetEntity = Pessoa.class, optional = true)
+    @ManyToOne(targetEntity = Pessoa.class, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoa_id", referencedColumnName = "id", nullable = true)
     private Pessoa pessoa;
 
@@ -50,7 +50,7 @@ public class Venda implements Serializable {
     @Column(name = "status") private Status status;
         
     @Column(name = "frete") private Double frete;
-    @Column(name = "total") private Double total;    
+    @Column(name = "total") private Double total;
     @Column(name = "pagamento") private String pagamento;
     @Column(name = "comprovante") private String comprovante;
     
@@ -212,8 +212,6 @@ public class Venda implements Serializable {
     public int hashCode() {
         int hash = 7;
         hash = 23 * hash + Objects.hashCode(this.id);
-        hash = 23 * hash + Objects.hashCode(this.pessoa);
-        hash = 23 * hash + Objects.hashCode(this.enderecoId);
         hash = 23 * hash + Objects.hashCode(this.status);
         hash = 23 * hash + Objects.hashCode(this.frete);
         hash = 23 * hash + Objects.hashCode(this.total);
@@ -221,7 +219,6 @@ public class Venda implements Serializable {
         hash = 23 * hash + Objects.hashCode(this.comprovante);
         hash = 23 * hash + Objects.hashCode(this.prazoEntrega);
         hash = 23 * hash + Objects.hashCode(this.codigoRastreamento);
-        hash = 23 * hash + Objects.hashCode(this.produtoVendidos);
         hash = 23 * hash + Objects.hashCode(this.createdAt);
         hash = 23 * hash + Objects.hashCode(this.updatedAt);
         hash = 23 * hash + (this.active ? 1 : 0);

@@ -52,29 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return bcryptPasswordEncoder();
     }
-
-    /*
-    @Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-		auth.setUserDetailsService(pessServ);
-		auth.setPasswordEncoder(passwordEncoder());
-		return auth;
-	}
-
-    /*
-    @Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-		auth.jdbcAuthentication().usersByUsernameQuery("select email, senha, true from pessoa where email=?")
-				.authoritiesByUsernameQuery(
-						"select u.email, p.nome from pessoa pe "
-                                + "join papel_pessoa pp on pe.id = pp.pessoa_id "
-                                + "join papel pa on pa.id = pp.papel_id "
-                                + "where pe.email=?")
-				.dataSource(dataSource).passwordEncoder(passwordEncoder());
-	}
-    */
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -83,18 +60,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/console/**",
-                        "/comercio#!/produtos/**", 
-                        "/comercio#!/carrinho", 
-                        "/comercio#!/produtos", 
-                        "/comercio#!/produtos", 
-                        "/comercio#!/produtos", 
-                        "/comercio#!/produtos").permitAll()
+                        "/comercio/**",
+                        "/comercio#!/produtos/**",
+                        "/comercio#!/carrinho",
+                        "/comercio#!/finaliza",
+                        "/comercio#!/signup").permitAll()
                 //.antMatchers("/xpto/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
                     .loginPage("/comercio#!/login")
-                        .usernameParameter("username")
+                        .usernameParameter("email")
                         .passwordParameter("senha")
                         .defaultSuccessUrl("/comercio#!/produtos")
                         .failureUrl("/comercio#!/login?error=true")
@@ -108,9 +84,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         
     }
     
+    /*
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().anyRequest();
     }
-    
+    */
 }

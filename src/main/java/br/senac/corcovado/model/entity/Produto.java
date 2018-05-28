@@ -214,7 +214,6 @@ public class Produto implements Serializable {
         hash = 29 * hash + Objects.hashCode(this.imagem);
         hash = 29 * hash + this.estoque;
         hash = 29 * hash + this.reservado;
-        hash = 29 * hash + Objects.hashCode(this.categoria);
         hash = 29 * hash + Objects.hashCode(this.preco);
         hash = 29 * hash + Objects.hashCode(this.descontos);
         hash = 29 * hash + Objects.hashCode(this.createdAt);
