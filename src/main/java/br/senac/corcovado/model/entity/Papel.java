@@ -5,6 +5,7 @@
  */
 package br.senac.corcovado.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import org.springframework.security.core.GrantedAuthority;
  */
 @Entity
 @Table(name = "papel")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "cargo"})
 public class Papel implements GrantedAuthority {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

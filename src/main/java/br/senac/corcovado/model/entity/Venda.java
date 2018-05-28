@@ -1,5 +1,6 @@
 package br.senac.corcovado.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -33,6 +34,7 @@ import org.hibernate.annotations.Where;
 @Loader(namedQuery = "findVendaById")
 @NamedQuery(name = "findVendaById", query = "SELECT v FROM Venda v WHERE v.id = ?1")
 @Where(clause = "active = true")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Venda implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +45,6 @@ public class Venda implements Serializable {
     private Pessoa pessoa;
 
     @Column(name = "endereco_id") private Long enderecoId;
-    //@Column(name = "desconto_id") private Long descontoId; //to remove
     
     @Enumerated(EnumType.STRING)
     @Column(name = "status") private Status status;
@@ -71,6 +72,7 @@ public class Venda implements Serializable {
         this.total = 0D;
         this.frete = 0D;
         this.produtoVendidos = new HashSet();
+        this.active = true;
     }
 
     public Venda(Pessoa pessoa) {
@@ -80,6 +82,7 @@ public class Venda implements Serializable {
         this.total = 0D;
         this.frete = 0D;
         this.produtoVendidos = new HashSet();
+        this.active = true;
     }
 
     public Venda(Long id, Pessoa pessoa, Long enderecoId, Status status, Double frete, Double total, String pagamento, String comprovante, Date prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {

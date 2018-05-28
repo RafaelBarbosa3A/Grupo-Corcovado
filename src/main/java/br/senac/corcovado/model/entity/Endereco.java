@@ -34,7 +34,7 @@ import org.hibernate.annotations.Where;
 @NamedQuery(name = "findEnderecoById", query = "SELECT e FROM Endereco e WHERE e.id = ?1")
 @Where(clause = "active = true")
 //Gambiarraaaaaaaaa
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pessoa"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Endereco implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     

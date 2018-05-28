@@ -1,8 +1,8 @@
 package br.senac.corcovado.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -40,6 +40,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Loader(namedQuery = "findPessoaById")
 @NamedQuery(name = "findPessoaById", query = "SELECT p FROM Pessoa p WHERE p.id = ?1")
 @Where(clause = "active = true")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "papeis", "enderecos"})
 public class Pessoa implements UserDetails, Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

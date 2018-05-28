@@ -34,7 +34,9 @@ public class Desconto implements Serializable {
     @Column(name = "id") private Long id;
     
     @Column(name = "preco") private Double preco;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "produto_id", referencedColumnName = "id") private Produto produto;
+    
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "produto_id", referencedColumnName = "id") private Produto produto;
     
     @Column(name = "inicio", nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE) private Date inicio;

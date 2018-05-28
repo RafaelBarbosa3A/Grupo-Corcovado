@@ -21,6 +21,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Objects;
+import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
@@ -69,7 +71,6 @@ public class Produto implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria categoria;
 
-    // Mantem o preco selecionado (baseado no perfil do usuario).
     // NOPE! NOOO!!! STUPID FUCKING IDEA!!!!!
     // replaced
     // @OneToMany(mappedBy = "produto") private List<Preco> precos;
@@ -77,8 +78,7 @@ public class Produto implements Serializable {
 
     @Min(value = 0, message = "Favor digitar um preço não negativo")
     @Column(name = "preco") private Double preco;
-
-    @OneToMany(mappedBy = "produto") private List<Desconto> descontos;
+    @OneToMany(mappedBy = "produto") private Set<Desconto> descontos;
 
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
@@ -89,7 +89,7 @@ public class Produto implements Serializable {
         this.active = true;
     }
 
-    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, String imagem, int estoque, int reservado, List<Desconto> descontos, Categoria categoria, Double preco, Long createdAt, Long updatedAt, boolean active) {
+    public Produto(Long id, String nome, String descricao, String fabricante, String codigo, String imagem, int estoque, int reservado, Set<Desconto> descontos, Categoria categoria, Double preco, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -176,10 +176,10 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
-    public List<Desconto> getDescontos() {
+    public Set<Desconto> getDescontos() {
         return descontos;
     }
-    public void setDescontos(List<Desconto> descontos) {
+    public void setDescontos(Set<Desconto> descontos) {
         this.descontos = descontos;
     }
 
@@ -204,7 +204,45 @@ public class Produto implements Serializable {
         this.active = active;
     }
 
-    // TODO hashcode, equals and toString
+    @Override public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.nome);
+        hash = 29 * hash + Objects.hashCode(this.descricao);
+        hash = 29 * hash + Objects.hashCode(this.fabricante);
+        hash = 29 * hash + Objects.hashCode(this.codigo);
+        hash = 29 * hash + Objects.hashCode(this.imagem);
+        hash = 29 * hash + this.estoque;
+        hash = 29 * hash + this.reservado;
+        hash = 29 * hash + Objects.hashCode(this.categoria);
+        hash = 29 * hash + Objects.hashCode(this.preco);
+        hash = 29 * hash + Objects.hashCode(this.descontos);
+        hash = 29 * hash + Objects.hashCode(this.createdAt);
+        hash = 29 * hash + Objects.hashCode(this.updatedAt);
+        hash = 29 * hash + (this.active ? 1 : 0);
+        return hash;
+    }
+
+    @Override public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Produto other = (Produto) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override public String toString() {
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", imagem=" + imagem + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", preco=" + preco + ", descontos=" + descontos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+    }
 
     // === JPA Porco ===
 

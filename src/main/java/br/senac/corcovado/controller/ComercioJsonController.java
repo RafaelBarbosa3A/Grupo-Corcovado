@@ -1,6 +1,6 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.SecurityConfig;
+
 import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.controller.adapter.Pedido;
@@ -64,13 +64,11 @@ public class ComercioJsonController {
     @PostMapping(value = "/comercio/carrinho_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addCart(@RequestBody Carrinho cart) {
         Venda venda;
-        /*
         if (cart.vendaId <= 0) {
             venda = new Venda();
         } else {
-        */
             venda = vendaRepo.findById(cart.vendaId).get();
-        //}
+        }
 
         venda = vendaRepo.save(venda);
 
@@ -138,6 +136,7 @@ public class ComercioJsonController {
         return pessRepo.findById(id).get();
     }
     
+    /*
     @PostMapping(value = "/comercio/pessoa_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addPessoa(@RequestBody Pessoa pessoa) {
         pessoa.setNivel(Nivel.BASIC);
@@ -147,4 +146,5 @@ public class ComercioJsonController {
         Pessoa salvo = pessRepo.save(pessoa);
         return new ModelAndView("redirect:/comercio/pessoa_json/" + salvo.getId());
     }
+    */
 }
