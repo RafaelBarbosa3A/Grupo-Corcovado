@@ -1,6 +1,7 @@
 package br.senac.corcovado.controller;
 
 
+import br.senac.corcovado.SecurityConfig;
 import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.controller.adapter.Pedido;
@@ -113,10 +114,8 @@ public class ComercioJsonController {
         venda.setFrete(pedido.frete);
         venda.setPagamento(pedido.pagamento);
 
-        //TODO processar o pagamento (utilizar o campo pedido.cartao).
-
+        //TODO processar o pagamento (utilizar o campo pedido cartao).
         venda.setStatus(Status.ENTREGA);
-        
         venda.setComprovante(RandomStringUtils.randomAlphanumeric(20));
         venda.setCodigoRastreamento(RandomStringUtils.randomAlphanumeric(20));
 
@@ -135,8 +134,7 @@ public class ComercioJsonController {
     public Pessoa getPessoa(@PathVariable("id") long id) {        
         return pessRepo.findById(id).get();
     }
-    
-    /*
+
     @PostMapping(value = "/comercio/pessoa_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addPessoa(@RequestBody Pessoa pessoa) {
         pessoa.setNivel(Nivel.BASIC);
@@ -146,5 +144,4 @@ public class ComercioJsonController {
         Pessoa salvo = pessRepo.save(pessoa);
         return new ModelAndView("redirect:/comercio/pessoa_json/" + salvo.getId());
     }
-    */
 }

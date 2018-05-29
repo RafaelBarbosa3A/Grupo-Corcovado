@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/comercio/**",
                         "/comercio#!/produtos/**",
                         "/comercio#!/carrinho",
-                        "/comercio#!/finaliza",
+                        //"/comercio#!/finaliza",
                         "/comercio#!/signup").permitAll()
                 //.antMatchers("/xpto/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -83,11 +83,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies("JSESSIONID");
         
     }
-    
+
     /*
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().anyRequest();
     }
-    */
+    /**/
 }

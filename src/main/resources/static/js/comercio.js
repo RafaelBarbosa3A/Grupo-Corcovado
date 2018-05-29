@@ -70,25 +70,17 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
         controller: 'finaliza'
     });
 
-    /*
-    $stateProvider.state('recibo', {
-      url: '/recibo',
-      templateUrl: 'comercio/recibo',
-      controller: 'recibo'
-    })
-     */
-
     $urlRouterProvider.otherwise('/produtos');
 });
 
 corcovado.controller('product', function($rootScope, $loader, $state) {
     if (!$rootScope.carrinho) {
         $loader.loadCarrinho().then(function(cart) {
-            //if (cart.produtoVendidos.length > 0) {
+            if (cart.produtoVendidos.length > 0) {
                 $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-            /*} else {
+            } else {
                 $rootScope.carrinho = new Carrinho(0, []);
-            }*/
+            }
         });
 
         $rootScope.addToCart = function(produto, quantidade) {
@@ -129,7 +121,6 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
 });
 
 corcovado.controller('show', function ($scope, $rootScope, $stateParams) {
-    //$scope.produto = $loader.getProduto($stateParams.id);
     $scope.produto = $rootScope.produtos.find((p) => { return p.id == $stateParams.id });
 });
 
@@ -158,8 +149,6 @@ corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) 
             let pedido = new Pedido($rootScope.carrinho.vendaId, $scope.pessoa.id, $scope.frete, $scope.pagamento, $scope.cartao, "", "", $scope.enderecoId);
 
             $loader.postFinaliza(pedido).then((cart) => {
-                // $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-                // $state.go('recibo')
                 window.location.assign("/comercio/recibo/" + cart.id);
             });
 
@@ -168,15 +157,6 @@ corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) 
         $state.go("list");
     }
 });
-
-/*
-corcovado.controller('recibo', function ($scope, $rootScope, $loader) {
-  $loader.loadCarrinho($rootScope.carrinho.vendaId).then(function(cart) {
-      $scope.cart = new Carrinho(cart.id, cart.produtoVendidos.map(pv => {return new ItemCarrinho(pv.produto, pv.quantidade);} ) );
-      $scope.pedido = new Pedido(cart.id, cart.pessoa.id, cart.frete, cart.pagamento, cart.cartao, cart.comprovante, cart.codigoRastreamento, cart.enderecoId);
-  });
-});
-*/
 
 corcovado.controller('signup', function ($scope, $state, $loader) {
 

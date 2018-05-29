@@ -27,8 +27,7 @@ public class Boot {
     }
 
     @Bean
-    public CommandLineRunner populateDB(CategoriaRepository cateRepo, ProdutoRepository prodRepo, PrecoRepository precoRepo, 
-            VendaRepository vendaRepo, ProdutoVendidoRepository pvRepo,
+    public CommandLineRunner populateDB(CategoriaRepository cateRepo, ProdutoRepository prodRepo,
             PapelRepository papelRepo, PessoaRepository pessRepo, EnderecoRepository endeRepo) {
         return (String[] args) -> {
             cateRepo.save(new Categoria(0L, "Alimentos", System.currentTimeMillis(), System.currentTimeMillis(), true));
