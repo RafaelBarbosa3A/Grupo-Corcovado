@@ -123,6 +123,7 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
                         $loader.postLogin({email, senha}).then(
                             function(resolve_data) {
                                 $rootScope.authtoken = resolve_data;
+                                $('#loginModal').modal('hide');
                                 $state.go('finaliza');
                             }, function(reject_data) {
                                 $rootScope.authtoken = undefined;
@@ -134,7 +135,8 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>`;
-                            });
+                            }
+                        );
                     };
                     
                 }
@@ -308,7 +310,7 @@ corcovado.factory('$loader', function ($http, $q) {
     function postLogin(credential) {
         return $q(function (resolve, reject) {
             $http.post('/auth/login', credential).then(function (response) {
-                resolve(response.data);
+                resolve(response.headers["Authorization"]);
             }, function(response){
                 reject(response.data);
             });

@@ -16,9 +16,12 @@ import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -128,6 +131,8 @@ public class ComercioJsonController {
 
     @GetMapping(value = "/comercio/pessoa_json")
     public Pessoa getPessoa() {
+        Logger.getLogger(ComercioJsonController.class.getName()).log(Level.SEVERE, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()); 
+        
         return pessRepo.findById(1L).get();
     }
     
