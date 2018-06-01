@@ -61,14 +61,14 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Categoria' : 'Alterar Categoria'"></div>
             <form data-th-action="@{/categorias/{act}(act = ${action})}" method="post" data-th-object="${categoria}">
                 <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('id')}" data-th-errors="*{id}"></p>
                 <input type="hidden" data-th-field="*{createdAt}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('createdAt')}" data-th-errors="*{createdAt}"></p>
 
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input type="text" class="form-control" placeholder="Nome" data-th-field="*{nome}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('nome')}" data-th-errors="*{nome}"></p>
                     
                 </div>
 

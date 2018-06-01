@@ -5,23 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Loader;
@@ -66,7 +50,7 @@ public class Pessoa implements UserDetails, Serializable {
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) 
     private Set<Endereco> enderecos;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "papel_pessoas", joinColumns = {@JoinColumn(name = "pessoa_id")}, inverseJoinColumns = {@JoinColumn(name = "papel_id")})
     private Set<Papel> papeis;
     

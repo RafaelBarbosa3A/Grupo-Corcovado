@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.senac.corcovado.model.repository;
+package br.senac.corcovado.model.service;
 
+import br.senac.corcovado.model.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,7 @@ public class PessoaService implements UserDetailsService {
     
     @Override
     public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
-        return pessRepo.findByEmail(string).orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+        return pessRepo.findByEmail(string)
+                .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
     }
 }

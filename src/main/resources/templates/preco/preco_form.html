@@ -61,23 +61,23 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Preço' : 'Alterar Preço'"></div>
             <form data-th-action="@{/produtos/precos/{act}(act = ${action})}" method="post" data-th-object="${preco}">
                 <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('id')}" data-th-errors="*{id}"></p>
                 <input type="hidden" data-th-field="*{createdAt}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('createdAt')}" data-th-errors="*{createdAt}"></p>
 
                 
                 <div class="form-group">
                     <label for="produto">Produto:</label>
                     <input type="text" class="form-control" data-th-value="${preco.produto.nome}" disabled/>
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('preco.produto.nome')}" th:errors="*{preco.produto.nome}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('preco.produto.nome')}" data-th-errors="*{preco.produto.nome}"></p>
                     <input type="hidden" data-th-field="*{produto.id}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('produto.id')}" th:errors="*{produto.id}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('produto.id')}" data-th-errors="*{produto.id}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="preco">Preço:</label>
                     <input type="number" class="form-control" placeholder="Preço" data-th-field="*{preco}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('preco')}" th:errors="*{preco}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('preco')}" data-th-errors="*{preco}"></p>
                 </div>
                 
                 <div class="form-group">

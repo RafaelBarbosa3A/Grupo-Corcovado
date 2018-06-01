@@ -61,47 +61,47 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Produto' : 'Alterar Produto'"></div>
             <form data-th-action="@{/produtos/{act}(act = ${action})}" method="post" data-th-object="${produto}">
                 <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('id')}" data-th-errors="*{id}"></p>
                 <input type="hidden" data-th-field="*{createdAt}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('createdAt')}" data-th-errors="*{createdAt}"></p>
                 <!-- <input type="hidden" data-th-each="preco, precoStat : ${produto.precos}" data-th-field="*{precos[__${precoStat.index}__].id}" /> -->
 
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input type="text" class="form-control" placeholder="Nome" data-th-field="*{nome}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('nome')}" data-th-errors="*{nome}"></p>
                     <p></p>
                 </div>
 
                 <div class="form-group">
                     <label for="descricao">Descrição:</label>
                     <input type="text" class="form-control" placeholder="Descrição" data-th-field="*{descricao}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('descricao')}" data-th-errors="*{descricao}"></p>
                 </div>
 
                 <div class="form-group">
                     <label for="fabricante">Fabricante:</label>
                     <input type="text" class="form-control" placeholder="Fabricante" data-th-field="*{fabricante}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('fabricante')}" th:errors="*{fabricante}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('fabricante')}" data-th-errors="*{fabricante}"></p>
                 </div>
 
                 <div class="form-group">
                     <label for="codigo">Código:</label>
                     <input type="text" class="form-control" placeholder="Código" data-th-field="*{codigo}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('codigo')}" data-th-errors="*{codigo}"></p>
                     
                 </div>
 
                 <div class="form-group">
                     <label for="estoque">Estoque:</label>
                     <input type="number" class="form-control" placeholder="Estoque" data-th-field="*{estoque}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('estoque')}" th:errors="*{estoque}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('estoque')}" data-th-errors="*{estoque}"></p>
                 </div>
 
                 <div class="form-group">
                     <label for="reservado">Reservado:</label>
                     <input type="text" class="form-control" placeholder="Reservado" data-th-field="*{reservado}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('reservado')}" th:errors="*{reservado}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('reservado')}" data-th-errors="*{reservado}"></p>
                 </div>
 
                 <div class="form-group">

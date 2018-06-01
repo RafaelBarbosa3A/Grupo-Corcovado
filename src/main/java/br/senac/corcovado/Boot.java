@@ -18,6 +18,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class Boot {
@@ -28,7 +29,8 @@ public class Boot {
 
     @Bean
     public CommandLineRunner populateDB(CategoriaRepository cateRepo, ProdutoRepository prodRepo,
-            PapelRepository papelRepo, PessoaRepository pessRepo, EnderecoRepository endeRepo) {
+            PapelRepository papelRepo, PessoaRepository pessRepo, EnderecoRepository endeRepo,
+            PasswordEncoder passwordEncoder) {
         return (String[] args) -> {
             cateRepo.save(new Categoria(0L, "Alimentos", System.currentTimeMillis(), System.currentTimeMillis(), true));
             cateRepo.save(new Categoria(0L, "Bebidas", System.currentTimeMillis(), System.currentTimeMillis(), true));
@@ -44,8 +46,7 @@ public class Boot {
             cateRepo.save(new Categoria(0L, "Perfumaria", System.currentTimeMillis(), System.currentTimeMillis(), true));
             
             prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", "https://picsum.photos/300/200/?random", 987, 0, new HashSet<>(), cateRepo.findById(3L).get(), 35.0, System.currentTimeMillis(), System.currentTimeMillis(), true));
-            
-            
+
             // precoRepo.save(new Preco(0L, 65.99, prodRepo.findById(1L).get(), Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()));
             
             papelRepo.save(new Papel("Usuário","ROLE_USER"));
@@ -53,7 +54,7 @@ public class Boot {
             
             // Set<Papel> papeis = new HashSet<>(Arrays.asList(papelRepo.findById(1L).get()));
             
-            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", SecurityConfig.bcryptPasswordEncoder().encode("senha"), Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
+            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", passwordEncoder.encode("senha"), Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
             
             // Av. Paulista, 149 - Bela Vista, São Paulo - SP, 01311-200
             endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br" ng-app="corcovado" ng-controller="product">
+<html lang="pt-br">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Corcovado - Lista de Produtos</title>
+        <title>Corcovado - Formulário Aviso</title>
         <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" data-th-href="@{/css/main.css}" />
@@ -12,7 +12,7 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-md navbar-dark bg-corcovado">
-                <a class="navbar-brand" href="#" ui-sref="list">
+                <a class="navbar-brand" href="#">
                     <img src="/images/corcovado.svg" data-th-src="@{/images/corcovado.svg}" width="36" height="30" class="d-inline-block align-top" alt="Logo Corcovado">
                     Corcovado
                 </a>
@@ -24,7 +24,6 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departamentos </a>
                             <div class="dropdown-menu" aria-labelledby="dropdown04">
-                                <!-- TODO popular departamentos dinamicamente -->
                                 <a class="dropdown-item" href="#">Alimentos</a>
                                 <a class="dropdown-item" href="#">Bebidas</a>
                                 <a class="dropdown-item" href="#">Carnes</a>
@@ -42,7 +41,7 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" ui-sref="cart"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
+                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-user-circle"></i>&nbsp;Perfil&nbsp;&nbsp;</a>
@@ -57,37 +56,32 @@
             </nav>
         </header>
 
-        <main class="container-fluid main" ui-view></main>
+        <main class="container main">
+            <div>
+                <h1 class="h3 mt-3">Login</h1>
+                <form action="/login" method="post">
 
-        <!-- Modal -->
-        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalTitle">Login</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" class="form-control" placeholder="E-mail" id="email" name="email" />
                     </div>
-                    <div class="modal-body">
-                        <div id="alert_placeholder"></div>
-                        
-                        <div class="form-group">
-                            <label for="inputEmail">E-mail</label>
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" ng-model="email">
+
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <input type="text" class="form-control" placeholder="senha" id="senha" name="senha" />
+                    </div>
+
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-12 order-first col-md-4 order-md-last text-right">
+                            <button class="btn btn-success" type="submit">Logar</button>
                         </div>
-                        <div class="form-group">
-                            <label for="inputSenha">Senha</label>
-                            <input type="password" class="form-control" id="inputSenha" placeholder="Password" ng-model="senha">
-                        </div>
+                        <span class="col-12 order-last col-md-4 order-md-first">
+                            <a class="btn" href="#" data-th-href="@{/signup}">Cadastre-se</a>
+                        </span>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" ng-click="login(email, senha)">Entrar</button>
-                    </div>
-                </div>
+                </form>
             </div>
-        </div>
+        </main>
 
         <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">
             <div class="row justify-content-center">
@@ -154,11 +148,11 @@
                 </p>
             </div>
         </footer>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
-        <script src="/js/side_cart.js" data-th-src="@{/js/comercio.js}"></script>
+        <script src="/js/main.js" data-th-src="@{/js/main.js}"></script>
+
     </body>
 </html>

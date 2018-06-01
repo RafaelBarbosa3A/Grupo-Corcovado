@@ -56,18 +56,24 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('login', {
         url: '/login',
         templateUrl: 'comercio/login'
-    })
+    });
 
     $stateProvider.state('signup', {
         url: '/signup',
         templateUrl: 'comercio/signup',
         controller: 'signup'
-    })
+    });
 
     $stateProvider.state('finaliza', {
         url: '/finaliza',
         templateUrl: 'comercio/finaliza',
         controller: 'finaliza'
+    });
+
+    $stateProvider.state('recibo', {
+        url: '/recibo',
+        templateUrl: 'comercio/recibo2',
+        controller: 'recibo'
     });
 
     $urlRouterProvider.otherwise('/produtos');
@@ -105,10 +111,57 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
         $rootScope.saveCart = function() {
             $loader.postCarrinho($rootScope.carrinho).then((cart) => {
                 $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-                $state.go('finaliza');
+
+                if($rootScope.authtoken) {
+                    $state.go('finaliza');
+                } else {
+                    $('#loginModal').modal('show');
+                    $rootScope.login = function(email, senha) {
+                        var alertPlaceholder = document.querySelector('#alert_placeholder');
+                        alertPlaceholder.innerHTML = '';
+
+                        $loader.postLogin({email, senha}).then(
+                            function(resolve_data) {
+                                $rootScope.authtoken = resolve_data;
+                                $state.go('finaliza');
+                            }, function(reject_data) {
+                                $rootScope.authtoken = undefined;
+                                // var alertPlaceholder = document.querySelector('#alert_placeholder');
+                                alertPlaceholder.innerHTML = 
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Erro!</strong> E-mail ou senha incorretos.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                            });
+                    };
+                    
+                }
             });
         };
     }
+
+    $rootScope.login = function(email, senha) {
+        var alertPlaceholder = document.querySelector('#alert_placeholder');
+        alertPlaceholder.innerHTML = '';
+        
+        $loader.postLogin({email, senha}).then(
+            function(resolve_data) {
+                $rootScope.authtoken = resolve_data;
+                $state.go('list');
+            }, function(reject_data) {
+                $rootScope.authtoken = undefined;
+                // var alertPlaceholder = document.querySelector('#alert_placeholder');
+                alertPlaceholder.innerHTML = 
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Erro!</strong> E-mail ou senha incorretos.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+            });
+    };
 
     if (!$rootScope.produtos) {
         $rootScope.produtos = [];
@@ -118,6 +171,9 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
         });
     }
 
+    if (!$rootScope.authtoken) {
+        $rootScope.authtoken = undefined;
+    }
 });
 
 corcovado.controller('show', function ($scope, $rootScope, $stateParams) {
@@ -130,7 +186,7 @@ corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) 
         $scope.frete = null;
         $scope.enderecoId = 0;
 
-        $loader.getPessoa().then(function(pess) {
+        $loader.getPessoa($rootScope.authtoken).then(function(pess) {
             $scope.pessoa = pess;
         });
 
@@ -148,24 +204,32 @@ corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) 
 
             let pedido = new Pedido($rootScope.carrinho.vendaId, $scope.pessoa.id, $scope.frete, $scope.pagamento, $scope.cartao, "", "", $scope.enderecoId);
 
-            $loader.postFinaliza(pedido).then((cart) => {
+            $loader.postFinaliza(pedido, $rootScope.authtoken).then((cart) => {
                 window.location.assign("/comercio/recibo/" + cart.id);
             });
-
         };
+        
     } else {
         $state.go("list");
     }
 });
 
-corcovado.controller('signup', function ($scope, $state, $loader) {
+corcovado.controller('recibo', function ($scope, $rootScope) {
+    
+    $loader.loadCarrinho($rootScope.carrinho.vendaId).then(function(cart) {
+        $scope.cart = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
+        //$scope.pedido = 
+        $rootScope.carrinho = undefined;
+    });
+});
 
+corcovado.controller('signup', function ($scope, $state, $loader) {
     $scope.criaPessoa = function(pessoa) {
         $loader.postPessoa(pessoa).then(function(pess) {
             // $scope.pessoa = pess;
             $state.go('login');
         });
-    }
+    };
 });
 
 corcovado.factory('$loader', function ($http, $q) {
@@ -184,9 +248,11 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
 
-    function getPessoa() {
+    function getPessoa(token) {
         return $q(function (resolve, reject) {
-            $http.get('/comercio/pessoa_json').then(function (response) {
+            $http.get('/comercio/pessoa_json', 
+                    { headers: { Authorization: token } }
+            ).then(function (response) {
                 resolve(response.data);
             });
         });
@@ -195,7 +261,7 @@ corcovado.factory('$loader', function ($http, $q) {
     function calcFrete() {
         // gospe um número aleatório até resolver o problema de CORS
         return $q(function (resolve, reject) {
-            resolve(Math.floor((Math.random() * 51)));
+            resolve(Math.floor((Math.random() * 23)));
         });
     }
 
@@ -221,9 +287,11 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
 
-    function postFinaliza(venda) {
+    function postFinaliza(venda, token) {
         return $q(function (resolve, reject) {
-            $http.post('/comercio/venda_json/add', venda).then(function (response) {
+            $http.post('/comercio/venda_json/add', 
+                    venda, { headers: { Authorization: token } }
+            ).then(function (response) {
                 resolve(response.data);
             });
         });
@@ -237,5 +305,15 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
 
-    return { loadProdutos, getPessoa, postPessoa, calcFrete, loadCarrinho, postCarrinho, postFinaliza };
+    function postLogin(credential) {
+        return $q(function (resolve, reject) {
+            $http.post('/auth/login', credential).then(function (response) {
+                resolve(response.data);
+            }, function(response){
+                reject(response.data);
+            });
+        });
+    }
+
+    return { loadProdutos, getPessoa, postPessoa, calcFrete, loadCarrinho, postCarrinho, postFinaliza, postLogin };
 });

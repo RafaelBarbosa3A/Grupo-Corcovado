@@ -19,6 +19,7 @@ import br.senac.corcovado.model.repository.VendaRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +33,8 @@ public class ComercioJsonController {
     @Autowired private VendaRepository vendaRepo;
     @Autowired private ProdutoVendidoRepository pvRepo;
     @Autowired private PessoaRepository pessRepo;
-
     @Autowired private PapelRepository papelRepo;
+    @Autowired private PasswordEncoder passwordEncoder;
     
     @GetMapping(value = "/comercio/produto_json")
     public Iterable<Produto> listProd() {
@@ -139,7 +140,7 @@ public class ComercioJsonController {
     public ModelAndView addPessoa(@RequestBody Pessoa pessoa) {
         pessoa.setNivel(Nivel.BASIC);
         pessoa.getPapeis().add(papelRepo.findById(1L).get());
-        pessoa.setSenha(SecurityConfig.bcryptPasswordEncoder().encode(pessoa.getSenha()));
+        pessoa.setSenha(passwordEncoder.encode(pessoa.getSenha()));
                 
         Pessoa salvo = pessRepo.save(pessoa);
         return new ModelAndView("redirect:/comercio/pessoa_json/" + salvo.getId());

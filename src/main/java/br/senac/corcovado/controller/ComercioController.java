@@ -58,7 +58,8 @@ public class ComercioController {
         // Apenas permitr ver os pedidos do usuário logado.
         return new ModelAndView("/comercio/recibo").addObject("venda", vendaRepo.findById(id).get());
     }
-    
+
+    /*
     @GetMapping("/comercio/login")
     public ModelAndView login() {
         return new ModelAndView("/comercio/_login");
@@ -68,4 +69,5 @@ public class ComercioController {
     public ModelAndView signup() {
         return new ModelAndView("/comercio/_signup");
     }
+    */
 }

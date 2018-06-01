@@ -61,61 +61,61 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Venda' : 'Alterar Venda'"></div>
             <form data-th-action="@{/vendas/{act}(act = ${action})}" method="post" data-th-object="${venda}">
                 <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('id')}" data-th-errors="*{id}"></p>
 
                 
                 <div class="form-group">
                     <label for="clienteId">Cliente Id:</label>
                     <input type="number" class="form-control" placeholder="Cliente Id" data-th-field="*{clienteId}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('clienteId')}" th:errors="*{clienteId}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('clienteId')}" data-th-errors="*{clienteId}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="enderecoId">Endereço Id:</label>
                     <input type="number" class="form-control" placeholder="Endereço Id" data-th-field="*{enderecoId}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('enderecoId')}" th:errors="*{enderecoId}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('enderecoId')}" data-th-errors="*{enderecoId}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="descontoId">Desconto Id:</label>
                     <input type="number" class="form-control" placeholder="Desconto Id" data-th-field="*{descontoId}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('descontoId')}" th:errors="*{descontoId}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('descontoId')}" data-th-errors="*{descontoId}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="statusId">Status Id:</label>
                     <input type="number" class="form-control" placeholder="Status Id" data-th-field="*{statusId}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('statusId')}" th:errors="*{statusId}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('statusId')}" data-th-errors="*{statusId}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="total">Total:</label>
                     <input type="number" class="form-control" placeholder="Total" data-th-field="*{total}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('total')}" th:errors="*{total}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('total')}" data-th-errors="*{total}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="pagamento">Pagamento:</label>
                     <input type="text" class="form-control" placeholder="Pagamento" data-th-field="*{pagamento}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('pagamento')}" th:errors="*{pagamento}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pagamento')}" data-th-errors="*{pagamento}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="comprovante">Comprovante:</label>
                     <input type="text" class="form-control" placeholder="Comprovante" data-th-field="*{comprovante}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('comprovante')}" th:errors="*{comprovante}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('comprovante')}" data-th-errors="*{comprovante}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="prazoEntrega">Prazo Entrega:</label>
                     <input type="text" class="form-control" placeholder="Prazo Entrega" data-th-field="*{prazoEntrega}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('prazoEntrega')}" th:errors="*{prazoEntrega}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('prazoEntrega')}" data-th-errors="*{prazoEntrega}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="codigoRastreamento">Código Rastreamento:</label>
                     <input type="text" class="form-control" placeholder="Código Rastreamento" data-th-field="*{codigoRastreamento}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('codigoRastreamento')}" th:errors="*{codigoRastreamento}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('codigoRastreamento')}" data-th-errors="*{codigoRastreamento}"></p>
                 </div>
                 
 

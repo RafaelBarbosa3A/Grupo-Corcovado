@@ -61,27 +61,27 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Desconto' : 'Alterar Desconto'"></div>
             <form data-th-action="@{/descontos/{act}(act = ${action})}" method="post" data-th-object="${descontos}">
                 <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('id')}" data-th-errors="*{id}"></p>
 
                 
                 <div class="form-group">
                     <label for="descontos">Desconto:</label>
                     <input type="text" class="form-control" placeholder="Desconto" data-th-field="*{descontos}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('descontos')}" th:errors="*{descontos}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('descontos')}" data-th-errors="*{descontos}"></p>
                     
                 </div>
                 
                 <div class="form-group">
                     <label for="percentual">Percentual:</label>
                     <input type="number" class="form-control" placeholder="Percentual" data-th-field="*{percentual}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('percentual')}" th:errors="*{percentual}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('percentual')}" data-th-errors="*{percentual}"></p>
                     
                 </div>
                 
                 <div class="form-group">
                     <label for="codigoCupom">Código Cupom:</label>
                     <input type="text" class="form-control" placeholder="Código Cupom" data-th-field="*{codigoCupom}" />
-                    <p class="invalid-feedback" th:if="${#fields.hasErrors('codigoCupom')}" th:errors="*{codigoCupom}"></p>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('codigoCupom')}" data-th-errors="*{codigoCupom}"></p>
                 </div>
                 
 

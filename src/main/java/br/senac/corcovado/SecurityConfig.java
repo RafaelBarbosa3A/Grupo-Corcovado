@@ -1,34 +1,58 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.senac.corcovado;
 
-
+import br.senac.corcovado.controller.filter.JWTAuthenticationFilter;
+import br.senac.corcovado.controller.filter.JWTLoginFilter;
+import br.senac.corcovado.model.service.PessoaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  *
  * @author Diego
  */
-
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /*
-    @Autowired private PessoaService pessServ;
-    @Autowired private DataSource dataSource;
-    */
+
+    @Autowired private PessoaService pessoaService;
+    @Autowired private PasswordEncoder passwordEncoder;
+
+    @Bean @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(pessoaService).passwordEncoder(passwordEncoder);
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests()
+                    .antMatchers("/","/css/**", "/js/**", "/images/**", "/console/**",
+                            "/comercio/**", "/comercio#!/produtos/**", "/comercio#!/carrinho",
+                            "/comercio#!/login", "/comercio#!/signup"
+                    ).permitAll()
+                    .antMatchers(HttpMethod.POST,"/auth/login").permitAll()
+                    .anyRequest().authenticated()
+                .and()
+                    .addFilterBefore(new JWTLoginFilter("/auth/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    /* old but gold
+    @Autowired private PessoaService pessoaService;
     
     private static PasswordEncoder basicPasswordEncoder() {
         return new PasswordEncoder() {
@@ -52,42 +76,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return bcryptPasswordEncoder();
     }
-    
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(pessoaService).passwordEncoder(passwordEncoder());
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //http.authorizeRequests().anyRequest().permitAll();
-        
         http.csrf().disable()
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/console/**",
                         "/comercio/**",
                         "/comercio#!/produtos/**",
                         "/comercio#!/carrinho",
-                        //"/comercio#!/finaliza",
                         "/comercio#!/signup").permitAll()
-                //.antMatchers("/xpto/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
-                    .loginPage("/comercio#!/login")
+                    .loginPage("/login")
                         .usernameParameter("email")
                         .passwordParameter("senha")
-                        .defaultSuccessUrl("/comercio#!/produtos")
-                        .failureUrl("/comercio#!/login?error=true")
+                        .defaultSuccessUrl("/produtos")
+                        .failureUrl("/login?erro=true")
                         .permitAll()
             .and()
                 .logout()
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/comercio#!/login?logout")
+                    .logoutSuccessUrl("/login?logout=true")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID");
-        
-    }
-
-    /*
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().anyRequest();
-    }
-    /**/
+    }*/
 }

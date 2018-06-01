@@ -3,41 +3,46 @@
 
     <div class="row border-bottom mt-5 pb-2">
         <div class="col"><strong>Nome</strong></div>
-        <div class="col-2 text-center"><strong class="d-block d-md-none">Qtd</strong><strong class="d-none d-md-block">Quantidade</strong></div>
+        <div class="col-2 text-center">
+            <strong class="d-block d-md-none">Qtd</strong>
+            <strong class="d-none d-md-block">Quantidade</strong>
+        </div>
         <div class="col-4 text-right"><strong>Preço</strong></div>
     </div>
 
-    <div class="row border-bottom pt-3 pb-2 align-items-center" ng-repeat="item in carrinho.itens">
-        <div class="col">{{ item.produto.nome }}</div>
-        <div class="col-2 text-center">{{ item.quantidade }}</div>
-        <div class="col-4 text-right">{{ item.total() | currency:'R$':2 }}</div>
+    <div class="row pt-3 pb-2 align-items-center" ng-repeat="">
+        <div class="col" data-th-text="${pv.produto.nome}"></div>
+        <div class="col-2 text-center" data-th-text="${pv.quantidade}"></div>
+        <div class="col-4 text-right">
+            R$<span data-th-text="${#numbers.formatDecimal(pv.precoTotal, 1, 'POINT', 2, 'COMMA')}"></span>
+        </div>
     </div>
 
-    <div class="row mt-3 mb-3">
-        <div class="col">Subtotal</div>
-        <div class="col text-right">{{ carrinho.total() | currency:'R$':2 }}</div>
-    </div>
-
-    <div class="row border-bottom pb-2 mt-3 mb-3">
+    <div class="row border-top border-bottom py-3 my-3">
         <div class="col">Frete</div>
-        <div class="col text-right">{{ pedido.frete | currency:'R$':2 }}</div>
+        <div class="col text-right">
+            R$<span data-th-text="${#numbers.formatDecimal(venda.frete, 1, 'POINT', 2, 'COMMA')}"></span>
+        </div>
     </div>
 
     <div class="row mt-3 mb-3">
         <div class="col"><strong>Subtotal</strong></div>
-        <div class="col text-right"><strong>{{ carrinho.total() + pedido.frete | currency:'R$':2 }}</strong></div>
+        <div class="col text-right">
+            <strong>
+                R$<span data-th-text="${#numbers.formatDecimal(venda.total, 1, 'POINT', 2, 'COMMA')}"></span>
+            </strong>
+        </div>
     </div>
 
     <p>
-        Forma de Pagamento: {{ pedido.pagamento }}
+        Forma de Pagamento: <span data-th-text="${venda.pagamento}"></span>
     </p>
 
     <p>
-        Comprovante: {{ pedido.comprovante }}
+        Comprovante: <span data-th-text="${venda.comprovante}"></span>
     </p>
 
     <p>
-        Código de Rastreamento: {{ pedido.rastreamento }}
+        Código de Rastreamento: <span data-th-text="${venda.codigoRastreamento}"></span>
     </p>
 </div>
-        
