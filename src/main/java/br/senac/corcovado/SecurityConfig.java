@@ -6,7 +6,6 @@ import br.senac.corcovado.model.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+    /*
     @Autowired private PessoaService pessoaService;
     @Autowired private PasswordEncoder passwordEncoder;
 
@@ -42,56 +41,47 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/","/css/**", "/js/**", "/images/**", "/console/**",
                             "/comercio/**", "/comercio#!/produtos/**", "/comercio#!/carrinho"
-                           /*, "/comercio#!/login", "/comercio#!/signup"*/
                     ).permitAll()
                     .antMatchers(HttpMethod.POST,"/auth/login").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .addFilterBefore(new JWTLoginFilter("/auth/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                     .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
+    } */
 
-    /* old but gold
+    /* old but gold */
     @Autowired private PessoaService pessoaService;
+    @Autowired private PasswordEncoder passwordEncoder;
     
+    /*
     private static PasswordEncoder basicPasswordEncoder() {
         return new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence cs) {
+            @Override public String encode(CharSequence cs) {
                 return cs.toString();
             }
 
-            @Override
-            public boolean matches(CharSequence cs, String string) {
+            @Override public boolean matches(CharSequence cs, String string) {
                 return string.equals(cs.toString());
             }
         };
     }
-
-    public static PasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean 
-    public PasswordEncoder passwordEncoder() {
-        return bcryptPasswordEncoder();
-    }
+    */
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(pessoaService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(pessoaService).passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+            .headers().frameOptions().sameOrigin().httpStrictTransportSecurity().disable()
+            .and()
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/console/**",
-                        "/comercio/**",
-                        "/comercio#!/produtos/**",
-                        "/comercio#!/carrinho",
-                        "/comercio#!/signup").permitAll()
+                        "/comercio/**", "/cadastro/**").permitAll()
                 .anyRequest().authenticated()
+                //.antMatchers("").hasAuthority("ROLE_ADMIN")
             .and()
                 .formLogin()
                     .loginPage("/login")
@@ -103,8 +93,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .logout()
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/login?logout=true")
+                    .logoutSuccessUrl("/comercio")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID");
-    }*/
+            
+    }
+    /**/
 }

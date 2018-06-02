@@ -42,9 +42,8 @@ public class ProdutoController {
     @GetMapping("/produtos/{id}")
     public ModelAndView show(@PathVariable("id") long id) {
         Produto produto = prodRepo.findProdutoById(id).get();
-        //produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(id)));
-
-        return new ModelAndView("/produto/produto_show").addObject("produto", produto);
+        return new ModelAndView("/produto/produto_show")
+                .addObject("produto", produto);
     }
 
     @GetMapping("/produtos/new")

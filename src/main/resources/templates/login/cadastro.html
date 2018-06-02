@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Corcovado - Cadastro de Cliente</title>
+        <th:block th:replace="~{head}" />
+    </head>
+    <body>
+        <header data-th-replace="~{header}"></header>
+        
+        <main class="container main">
+            <h1 class="h3 mt-3">Cadastro de Cliente</h1>
+            
+            <form data-th-action="@{/cadastro}" method="post">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('pessoa.nome')}? 'is-invalid'" placeholder="Nome" data-th-field="${pessoa.nome}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pessoa.nome')}" data-th-errors="${pessoa.nome}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="documento">Documento:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('pessoa.documento')}? 'is-invalid'" placeholder="Documento" data-th-field="${pessoa.documento}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pessoa.documento')}" data-th-errors="${pessoa.documento}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-Mail:</label>
+                    <input type="email" class="form-control" data-th-classappend="${#fields.hasErrors('pessoa.email')}? 'is-invalid'" placeholder="E-mail" data-th-field="${pessoa.email}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pessoa.email')}" data-th-errors="${pessoa.email}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" class="form-control" data-th-classappend="${#fields.hasErrors('pessoa.senha')}? 'is-invalid'" placeholder="Senha" data-th-field="${pessoa.senha}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pessoa.senha')}" data-th-errors="${pessoa.senha}"></p>
+                </div>
+
+                
+                
+                <h2 class="h3 mt-3">Endereço</h2>
+                <div class="form-group">
+                    <label for="cep">CEP:</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('endereco.cep')}? 'is-invalid'" placeholder="CEP" data-th-field="${endereco.cep}" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="pesquisaCep">Buscar</button>
+                        </div>
+                    </div>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('endereco.cep')}" data-th-errors="${endereco.cep}"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rua">Rua:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('endereco.rua')}? 'is-invalid'" placeholder="Rua" data-th-field="${endereco.rua}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('endereco.rua')}" data-th-errors="${endereco.rua}"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="numero">Número:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('endereco.numero')}? 'is-invalid'" placeholder="Número" data-th-field="${endereco.numero}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('endereco.numero')}" data-th-errors="${endereco.numero}"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bairro">Bairro:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('endereco.bairro')}? 'is-invalid'" placeholder="Bairro" data-th-field="${endereco.bairro}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('endereco.bairro')}" data-th-errors="${endereco.bairro}"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cidade">Cidade:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('endereco.cidade')}? 'is-invalid'" placeholder="Cidade" data-th-field="${endereco.cidade}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('endereco.cidade')}" data-th-errors="${endereco.cidade}"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('endereco.estado')}? 'is-invalid'" placeholder="Estado" data-th-field="${endereco.estado}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('endereco.estado')}" data-th-errors="${endereco.estado}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="complemento">Complemento:</label>
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('endereco.complemento')}? 'is-invalid'" placeholder="Complemento" data-th-field="${endereco.complemento}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('endereco.complemento')}" data-th-errors="${endereco.complemento}"></p>
+                </div>
+
+                <div class="row justify-content-between align-items-center">
+                    <a class="btn" href="#" data-th-href="@{/login}">Voltar</a>
+                    
+                    <div class="col-12 order-first col-md-4 order-md-last text-right">
+                        <button class="btn btn-success" type="submit">Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <footer data-th-replace="~{footer}"></footer>
+        <script src="/js/cep.js" data-th-src="@{/js/cep.js}"></script>
+    </body>
+</html>

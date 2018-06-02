@@ -1,5 +1,7 @@
 {
-    "elements": {},
+    "elements": {
+        "th:block": {}
+    },
     "attributes": {
         "integrity": {},
         "ui-view": {},

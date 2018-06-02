@@ -40,24 +40,23 @@ import javax.validation.constraints.Min;
 //Gambiarraaaaaaaaa
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "precos"})
 public class Produto implements Serializable {
-    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "id") private Long id;
     
     @NotEmpty(message = "Favor digitar um nome")
-    @Size(min=1,max=255,message="Favor digitar um nome entre 1 á 255 letras")
+    @Size(min=1, max=255, message="Favor digitar um nome entre 1 á 255 letras")
     @Column(name = "nome") private String nome;
     
     @NotEmpty(message = "Favor digitar uma descrição")
-    @Size(min=1,max=255,message="Favor digitar uma descrição entre 1 á 255 letras")
-    @Column(name = "descricao") private String descricao;
+    @Size(min=1, max=4096, message="Favor digitar uma descrição entre 1 á 255 letras")
+    @Column(name = "descricao", length = 4096) private String descricao;
     
     @NotEmpty(message = "Favor digitar um nome de fabricante")
-    @Size(min=1,max=255,message="Favor digitar um nome de fabricante entre 1 á 255 letras")
+    @Size(min=1, max=255, message="Favor digitar um nome de fabricante entre 1 á 255 letras")
     @Column(name = "fabricante") private String fabricante;
     
     @NotEmpty(message = "Favor digitar um código")
-    @Size(min=1,max=255,message="Favor digitar um código entre 1 á 255 letras")
+    @Size(min=1, max=255, message="Favor digitar um código entre 1 á 255 letras")
     @Column(name = "codigo") private String codigo;
     
     @Column(name = "imagem") private String imagem;
@@ -78,6 +77,7 @@ public class Produto implements Serializable {
 
     @Min(value = 0, message = "Favor digitar um preço não negativo")
     @Column(name = "preco") private Double preco;
+    
     @OneToMany(mappedBy = "produto") private Set<Desconto> descontos;
 
     @Column(name = "created_at") private Long createdAt;
