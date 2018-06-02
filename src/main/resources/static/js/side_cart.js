@@ -18,7 +18,7 @@ function Carrinho(vendaId, itens) {
     };
 }
 
-corcovado.config(function($stateProvider, $urlRouterProvider) {
+corcovado.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider.state('list', {
         url: '/produtos',
         templateUrl: 'comercio/list'/*,
@@ -44,6 +44,8 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
     });
 
     $urlRouterProvider.otherwise('/produtos');
+    
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 });
 
 corcovado.controller('list', function($scope, $loader, $rootScope) {

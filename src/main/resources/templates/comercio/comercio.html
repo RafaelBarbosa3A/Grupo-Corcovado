@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" data-th-href="@{/css/main.css}" />
     </head>
-    <body>
+    <body ng-controller="navigation" >
         <header>
             <nav class="navbar navbar-expand-md navbar-dark bg-corcovado">
                 <a class="navbar-brand" href="#" ui-sref="list">
@@ -22,8 +22,8 @@
                 <div class="collapse navbar-collapse" id="navbarsExample04">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departamentos </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown04">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-categoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departamentos </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown-categoria">
                                 <!-- TODO popular departamentos dinamicamente -->
                                 <a class="dropdown-item" href="#">Alimentos</a>
                                 <a class="dropdown-item" href="#">Bebidas</a>
@@ -44,8 +44,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#" ui-sref="cart"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-user-circle"></i>&nbsp;Perfil&nbsp;&nbsp;</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-perfil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fas fa-user-circle"></i>&nbsp;Perfil&nbsp;&nbsp;</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown-perfil">
+                                <a ng-hide="authenticated" class="dropdown-item" href="#" ui-sref="login">Login</a>
+                                <a ng-show="authenticated" class="dropdown-item" href="#">Editar</a>
+                                <a ng-show="authenticated" class="dropdown-item" href="#" ng-click="logout()">Logout</a>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <form class="form-inline my-2 my-md-0">
@@ -59,36 +64,45 @@
 
         <main class="container-fluid main" ui-view></main>
 
-        <!-- Modal -->
-        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+        <!-- Modal - - >
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true" ng-controller="navigation">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
+                    <!--
                     <div class="modal-header">
                         <h5 class="modal-title" id="loginModalTitle">Login</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <div id="alert_placeholder"></div>
-                        
-                        <div class="form-group">
-                            <label for="inputEmail">E-mail</label>
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" ng-model="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputSenha">Senha</label>
-                            <input type="password" class="form-control" id="inputSenha" placeholder="Password" ng-model="senha">
-                        </div>
+                    - - >
+                    
+                    <div class="alert alert-danger" ng-show="error">
+                        There was a problem logging in. Please try again.
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" ng-click="login(email, senha)">Entrar</button>
-                    </div>
+                    <form role="form" ng-submit="login()">
+                        <div class="modal-body">
+                            <div id="alert_placeholder"></div>
+
+                            <div class="form-group">
+                                <label for="username">E-mail</label>
+                                <input type="email" class="form-control" placeholder="Digite seu e-mail" id="username" name="username" ng-model="credentials.username" />
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Senha</label>
+                                <input type="password" class="form-control" placeholder="Password" id="password" name="password" ng-model="credentials.password" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" >Entrar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
+        -->
+        
         <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">
             <div class="row justify-content-center">
                 <div class="col-md-4 col-lg-3 mt-3">

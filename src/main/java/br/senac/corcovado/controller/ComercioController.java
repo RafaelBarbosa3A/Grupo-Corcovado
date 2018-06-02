@@ -27,8 +27,13 @@ public class ComercioController {
     @Autowired private VendaRepository vendaRepo;
     @Autowired private PessoaRepository pessRepo;
     
-    @GetMapping("/comercio")
+    @GetMapping({"", "/", "/index", "/index.htm", "/index.html"})
     public ModelAndView main() {
+        return new ModelAndView("redirect:/comercio");
+    }
+        
+    @GetMapping("/comercio")
+    public ModelAndView base() {
         // TODO adicionar paramtros de busca
         return new ModelAndView("/comercio/comercio");
     }
@@ -59,12 +64,12 @@ public class ComercioController {
         return new ModelAndView("/comercio/recibo").addObject("venda", vendaRepo.findById(id).get());
     }
 
-    /*
     @GetMapping("/comercio/login")
     public ModelAndView login() {
         return new ModelAndView("/comercio/_login");
     }
        
+    /*
     @GetMapping("/comercio/signup")
     public ModelAndView signup() {
         return new ModelAndView("/comercio/_signup");

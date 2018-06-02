@@ -1,28 +1,74 @@
-<div class="contaier">
-    
-    <form>
-        <input type="hidden" ng-model="pessoa.id" />        
-
+<div class="container">    
+    <h1 class="h3 mt-3">Cadastro de Cliente</h1>
+            
+    <form role="form" ng-submit="cadastro()" >
         <div class="form-group">
             <label for="nome">Nome:</label>
-            <input type="text" class="form-control" id="nome" placeholder="Nome" ng-model="pessoa.nome" />
+            <input type="text" class="form-control" placeholder="Nome" id="nome" name="nome"  ng-model="pessoa.nome" />
         </div>
 
         <div class="form-group">
             <label for="documento">Documento:</label>
-            <input type="number" class="form-control" id="documento" placeholder="Documento" ng-model="pessoa.documento" />
+            <input type="text" class="form-control" placeholder="Documento" id="documento" name="documento"  ng-model="pessoa.documento"/>
         </div>
 
         <div class="form-group">
             <label for="email">E-Mail:</label>
-            <input type="email" class="form-control" id="email" placeholder="E-Mail" ng-model="pessoa.email" />
+            <input type="email" class="form-control" placeholder="E-mail" id="email" name="email"  ng-model="pessoa.email" />
         </div>
 
         <div class="form-group">
             <label for="senha">Senha:</label>
-            <input type="password" class="form-control" id="senha" placeholder="Senha" ng-model="pessoa.senha" />
+            <input type="password" class="form-control" placeholder="Senha" id="senha" name="senha"  ng-model="pessoa.senha" />
         </div>
 
-        <button type="button" class="btn btn-success" ng-click="criaPessoa(pessoa)">Salvar</button>
+        <h2 class="h3 mt-3">Endereço</h2>
+        <div class="form-group">
+            <label for="cep">CEP:</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="CEP" id="cep" name="cep"  ng-model="pessoa.enderecos[0].cep" />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="pesquisaCep">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="rua">Rua:</label>
+            <input type="text" class="form-control" placeholder="Rua" id="rua" name="rua"  ng-model="pessoa.enderecos[0].rua" />
+        </div>
+
+        <div class="form-group">
+            <label for="numero">Número:</label>
+            <input type="text" class="form-control" placeholder="Número" id="numero" name="numero"  ng-model="pessoa.enderecos[0].numero" />
+        </div>
+
+        <div class="form-group">
+            <label for="bairro">Bairro:</label>
+            <input type="text" class="form-control" placeholder="Bairro" id="bairro" name="bairro"  ng-model="pessoa.enderecos[0].bairro" />
+        </div>
+
+        <div class="form-group">
+            <label for="cidade">Cidade:</label>
+            <input type="text" class="form-control" placeholder="Cidade" id="cidade" name="cidade"  ng-model="pessoa.enderecos[0].cidade" />
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <input type="text" class="form-control" placeholder="Estado" id="estado" name="estado"  ng-model="pessoa.enderecos[0].estado" />
+        </div>
+
+        <div class="form-group">
+            <label for="complemento">Complemento:</label>
+            <input type="text" class="form-control" placeholder="Complemento" id="complemento" name="complemento"  ng-model="pessoa.enderecos[0].complemento" />
+        </div>
+
+        <div class="row justify-content-between align-items-center">
+            <a class="btn" href="#" ui-sref="list">Voltar</a>
+
+            <div class="col-12 order-first col-md-4 order-md-last text-right">
+                <button class="btn btn-success" type="submit">Salvar</button>
+            </div>
+        </div>
     </form>
 </div>

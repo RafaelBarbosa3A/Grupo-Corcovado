@@ -16,6 +16,7 @@ import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -74,10 +75,12 @@ public class ComercioJsonController {
         } else {
             venda = vendaRepo.findById(cart.vendaId).get();
         }
-
+        
+        venda.setProdutoVendidos(new HashSet<>());
         venda = vendaRepo.save(venda);
 
         for(ItemCarrinho item : cart.itens) {
+            /*
             ProdutoVendido prodVend = venda.getProdutoVendidos()
                     .stream()
                     .filter((pv) -> { return pv.getProduto().getId() == item.produtoId; })
@@ -95,7 +98,15 @@ public class ComercioJsonController {
                 prodVend.setQuantidade(item.quantidade);
                 prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
             }
-
+            */
+            Produto produto = prodRepo.findById(item.produtoId).get();
+            
+            ProdutoVendido prodVend = new ProdutoVendido();
+            prodVend.setProduto(produto);
+            prodVend.setVenda(venda);
+            prodVend.setQuantidade(item.quantidade);
+            prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
+            
             venda.getProdutoVendidos().add(prodVend);
             pvRepo.save(prodVend);
         }
@@ -131,8 +142,8 @@ public class ComercioJsonController {
 
     @GetMapping(value = "/comercio/pessoa_json")
     public Pessoa getPessoa() {
-        Logger.getLogger(ComercioJsonController.class.getName()).log(Level.SEVERE, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()); 
-        
+        Logger.getLogger(ComercioJsonController.class.getName())
+                .log(Level.SEVERE, SecurityContextHolder.getContext().getAuthentication().getName()); 
         return pessRepo.findById(1L).get();
     }
     
@@ -144,7 +155,7 @@ public class ComercioJsonController {
     @PostMapping(value = "/comercio/pessoa_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addPessoa(@RequestBody Pessoa pessoa) {
         pessoa.setNivel(Nivel.BASIC);
-        pessoa.getPapeis().add(papelRepo.findById(1L).get());
+        pessoa.getPapeis().add(papelRepo.findByCargo("ROLE_USER").get());
         pessoa.setSenha(passwordEncoder.encode(pessoa.getSenha()));
                 
         Pessoa salvo = pessRepo.save(pessoa);

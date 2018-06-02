@@ -198,7 +198,7 @@
         <div class="row">
             <div class="col-lg-6 col-xl-4 mb-3" ng-repeat="produto in produtos"> 
                 <div class="card">
-                    <img class="card-img-top" src="{{ produto.imagem }}" alt="Imagem {{ produto.nome }}">
+                    <img class="card-img-top" ng-src="{{ produto.imagem }}" ng-alt="Imagem {{ produto.nome }}">
                     <div class="card-body">
                         <p class="card-title h5">{{ produto.nome }}</p>
                         <p class="card-text">{{ produto.descricao }}</p>

@@ -4,16 +4,22 @@ import br.senac.corcovado.controller.filter.JWTAuthenticationFilter;
 import br.senac.corcovado.controller.filter.JWTLoginFilter;
 import br.senac.corcovado.model.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 /**
  *
@@ -21,8 +27,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
+@Order(SecurityProperties.BASIC_AUTH_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /*
     @Autowired private PessoaService pessoaService;
     @Autowired private PasswordEncoder passwordEncoder;
 
@@ -42,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/","/css/**", "/js/**", "/images/**", "/console/**",
                             "/comercio/**", "/comercio#!/produtos/**", "/comercio#!/carrinho"
-                           /*, "/comercio#!/login", "/comercio#!/signup"*/
+      
                     ).permitAll()
                     .antMatchers(HttpMethod.POST,"/auth/login").permitAll()
                     .anyRequest().authenticated()
@@ -50,61 +58,58 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilterBefore(new JWTLoginFilter("/auth/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                     .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+    */
 
-    /* old but gold
+    /* old but gold */
     @Autowired private PessoaService pessoaService;
+    @Autowired private PasswordEncoder passwordEncoder;
     
-    private static PasswordEncoder basicPasswordEncoder() {
-        return new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence cs) {
-                return cs.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence cs, String string) {
-                return string.equals(cs.toString());
-            }
-        };
-    }
-
-    public static PasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean 
-    public PasswordEncoder passwordEncoder() {
-        return bcryptPasswordEncoder();
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(pessoaService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        
+        return authProvider;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(pessoaService).passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(authProvider());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.httpBasic()
+            .and()
+            .csrf().csrfTokenRepository(csrfTokenRepository())
+            .and()
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/console/**",
-                        "/comercio/**",
+                        "/comercio",
+                        "/comercio/list", "/comercio/show", "/comercio/cart", //"/comercio/finaliza",
+                        "/comercio/produto_json", 
+                        "/comercio/carrinho_json/**",
+                        "/comercio/login",
+                        "/comercio/cadastro"
+                        /*,
                         "/comercio#!/produtos/**",
                         "/comercio#!/carrinho",
-                        "/comercio#!/signup").permitAll()
+                        "/comercio#!/signup"
+                        */).permitAll()
                 .anyRequest().authenticated()
-            .and()
-                .formLogin()
-                    .loginPage("/login")
-                        .usernameParameter("email")
-                        .passwordParameter("senha")
-                        .defaultSuccessUrl("/produtos")
-                        .failureUrl("/login?erro=true")
-                        .permitAll()
             .and()
                 .logout()
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/login?logout=true")
                     .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID");
-    }*/
+                    .deleteCookies("JSESSIONID").permitAll()
+            .and()
+                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+    }
+    
+    private CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
+    }
 }

@@ -4,23 +4,25 @@
             Login
         </div>
         
-        <form action="login" method="post">
-            <div class="card-body">
+        <div class="alert alert-danger" ng-show="error">
+            There was a problem logging in. Please try again.
+        </div>
+        <form role="form" ng-submit="login()">
+            <div class="modal-body">
+                <div id="alert_placeholder"></div>
+
                 <div class="form-group">
-                    <label for="inputEmail">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail" name="email">
+                    <label for="username">E-mail</label>
+                    <input type="email" class="form-control" placeholder="Digite seu e-mail" id="username" name="username" ng-model="credentials.username" />
                 </div>
                 <div class="form-group">
-                    <label for="inputPassword">Senha</label>
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Senha" name="senha">
+                    <label for="password">Senha</label>
+                    <input type="password" class="form-control" placeholder="Password" id="password" name="password" ng-model="credentials.password" />
                 </div>
             </div>
-
-            <div class="card-footer">
-                <div class="d-flex flex-row d-flex justify-content-between justify-content-lg-around">
-                    <button type="submit" class="btn btn-primary">Entrar</button>
-                    <a class="btn btn-link" href="#" ui-sref="signup">Registre-se</a>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" >Entrar</button>
             </div>
         </form>
     </div>
