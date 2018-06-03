@@ -81,30 +81,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic()
-            .and()
-            .csrf().csrfTokenRepository(csrfTokenRepository())
-            .and()
-            .authorizeRequests()
+            .and().headers().frameOptions().sameOrigin().httpStrictTransportSecurity().disable()
+            .and().csrf().csrfTokenRepository(csrfTokenRepository())
+            .and().authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/console/**",
                         "/comercio",
-                        "/comercio/list", "/comercio/show", "/comercio/cart", //"/comercio/finaliza",
+                        "/comercio/list", "/comercio/show", "/comercio/cart",
                         "/comercio/produto_json", 
                         "/comercio/carrinho_json/**",
                         "/comercio/login",
-                        "/comercio/cadastro"
-                        /*,
-                        "/comercio#!/produtos/**",
-                        "/comercio#!/carrinho",
-                        "/comercio#!/signup"
-                        */).permitAll()
+                        "/comercio/cadastro",
+                        "/comercio/pessoa_json/add").permitAll()
+                //.antMatchers("").hasRole("ADMIN")
                 .anyRequest().authenticated()
-            .and()
-                .logout()
-                    .logoutUrl("/logout")
+            .and().logout().logoutUrl("/logout")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID").permitAll()
-            .and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+            .and().addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
     
     private CsrfTokenRepository csrfTokenRepository() {

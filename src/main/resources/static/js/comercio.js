@@ -119,36 +119,6 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
                 } else {
                     $state.go('login');
                 }
-                /*
-                if($rootScope.authtoken) {
-                    $state.go('finaliza');
-                } else {
-                    /*
-                    $('#loginModal').modal('show');
-                    $rootScope.login = function(email, senha) {
-                        var alertPlaceholder = document.querySelector('#alert_placeholder');
-                        alertPlaceholder.innerHTML = '';
-
-                        $loader.postLogin({email, senha}).then(
-                            function(resolve_data) {
-                                $rootScope.authtoken = resolve_data;
-                                $('#loginModal').modal('hide');
-                                $state.go('finaliza');
-                            }, function(reject_data) {
-                                $rootScope.authtoken = undefined;
-                                // var alertPlaceholder = document.querySelector('#alert_placeholder');
-                                alertPlaceholder.innerHTML = 
-                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Erro!</strong> E-mail ou senha incorretos.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>`;
-                            }
-                        );
-                    };
-                }
-                */
             });
         };
     }
@@ -211,7 +181,7 @@ corcovado.controller('recibo', function ($scope, $rootScope, $loader) {
 */
 
 
-corcovado.controller('navigation', function($rootScope, $scope, $http, $state /*, $location*/) {
+corcovado.controller('navigation', function($rootScope, $scope, $http, $state) {
     var authenticate = function(credentials, callback) {
         var headers = credentials ? { authorization : "Basic " + btoa(credentials.username + ":" + credentials.password) } : {};
         $http.get('user', {headers : headers})
@@ -346,17 +316,5 @@ corcovado.factory('$loader', function ($http, $q) {
         });
     }
 
-    /*
-    function postLogin(credential) {
-        return $q(function (resolve, reject) {
-            $http.post('/auth/login', credential).then(function (response) {
-                resolve(response.headers["Authorization"]);
-            }, function(response){
-                reject(response.data);
-            });
-        });
-    }
-    */
-
-    return { loadProdutos, getPessoa, postPessoa, calcFrete, loadCarrinho, postCarrinho, postFinaliza /*, postLogin*/ };
+    return { loadProdutos, getPessoa, postPessoa, calcFrete, loadCarrinho, postCarrinho, postFinaliza};
 });

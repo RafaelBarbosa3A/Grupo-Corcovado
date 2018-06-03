@@ -69,10 +69,9 @@ public class ComercioController {
         return new ModelAndView("/comercio/_login");
     }
        
-    /*
-    @GetMapping("/comercio/signup")
+
+    @GetMapping("/comercio/cadastro")
     public ModelAndView signup() {
-        return new ModelAndView("/comercio/_signup");
+        return new ModelAndView("/comercio/_cadastro");
     }
-    */
 }
