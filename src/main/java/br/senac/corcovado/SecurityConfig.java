@@ -1,18 +1,13 @@
 package br.senac.corcovado;
 
-import br.senac.corcovado.controller.filter.JWTAuthenticationFilter;
-import br.senac.corcovado.controller.filter.JWTLoginFilter;
 import br.senac.corcovado.model.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  *
@@ -78,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .headers().frameOptions().sameOrigin().httpStrictTransportSecurity().disable()
             .and()
             .authorizeRequests()
+                .antMatchers("/comercio/carrinho/**", "/comercio/venda/**", "/comercio/recibo/**").authenticated()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/console/**",
                         "/comercio/**", "/cadastro/**").permitAll()
                 .anyRequest().authenticated()

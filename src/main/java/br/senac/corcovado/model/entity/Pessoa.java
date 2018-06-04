@@ -47,7 +47,7 @@ public class Pessoa implements UserDetails, Serializable {
     @Enumerated(EnumType.STRING) 
     @Column(name = "nivel") private Nivel nivel;
     
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) 
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
     private Set<Endereco> enderecos;
     
     @ManyToMany(fetch = FetchType.EAGER)
@@ -191,7 +191,7 @@ public class Pessoa implements UserDetails, Serializable {
 
     @Override
     public String toString() {
-        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", documento=" + documento + ", email=" + email + ", senha=" + senha + ", nivel=" + nivel + ", enderecos=" + enderecos + ", papeis=" + papeis + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", documento=" + documento + ", email=" + email + ", senha=" + senha + ", nivel=" + nivel + ", papeis=" + papeis + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 
     // === JPA Gambiarras ===

@@ -1,9 +1,6 @@
-
 package br.senac.corcovado;
 
-
 import br.senac.corcovado.model.entity.*;
-
 import br.senac.corcovado.model.repository.CategoriaRepository;
 import br.senac.corcovado.model.repository.EnderecoRepository;
 import br.senac.corcovado.model.repository.PapelRepository;

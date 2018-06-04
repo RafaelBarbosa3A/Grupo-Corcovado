@@ -16,6 +16,7 @@ import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -45,10 +46,12 @@ public class ComercioJsonController {
         return produtos;
     }
 
+    /*
     @GetMapping(value = "/comercio/carrinho_json/{id}")
     public Venda getCart(@PathVariable("id") long id) {
         return vendaRepo.findById(id).get();
     }
+    */
 
     @GetMapping(value = "/comercio/carrinho_json")
     public Venda openCart() {
@@ -66,6 +69,7 @@ public class ComercioJsonController {
         return venda;
     }
 
+    /*
     @PostMapping(value = "/comercio/carrinho_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addCart(@RequestBody Carrinho cart) {
         Venda venda;
@@ -75,9 +79,19 @@ public class ComercioJsonController {
             venda = vendaRepo.findById(cart.vendaId).get();
         }
 
+        venda.setProdutoVendidos(new HashSet<>());
         venda = vendaRepo.save(venda);
 
         for(ItemCarrinho item : cart.itens) {
+            Produto produto = prodRepo.findById(item.produtoId).get();
+            
+            ProdutoVendido prodVend = new ProdutoVendido();
+            prodVend.setProduto(produto);
+            prodVend.setVenda(venda);
+            prodVend.setQuantidade(item.quantidade);
+            prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
+                
+            /*
             ProdutoVendido prodVend = venda.getProdutoVendidos()
                     .stream()
                     .filter((pv) -> { return pv.getProduto().getId() == item.produtoId; })
@@ -95,6 +109,7 @@ public class ComercioJsonController {
                 prodVend.setQuantidade(item.quantidade);
                 prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
             }
+            * /
 
             venda.getProdutoVendidos().add(prodVend);
             pvRepo.save(prodVend);
@@ -150,4 +165,5 @@ public class ComercioJsonController {
         Pessoa salvo = pessRepo.save(pessoa);
         return new ModelAndView("redirect:/comercio/pessoa_json/" + salvo.getId());
     }
+    */
 }

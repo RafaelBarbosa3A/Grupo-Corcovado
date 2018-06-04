@@ -53,40 +53,13 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'comercio/cart'
     });
 
-    $stateProvider.state('login', {
-        url: '/login',
-        templateUrl: 'comercio/login'
-    });
-
-    $stateProvider.state('signup', {
-        url: '/signup',
-        templateUrl: 'comercio/signup',
-        controller: 'signup'
-    });
-
-    $stateProvider.state('finaliza', {
-        url: '/finaliza',
-        templateUrl: 'comercio/finaliza',
-        controller: 'finaliza'
-    });
-
-    $stateProvider.state('recibo', {
-        url: '/recibo',
-        templateUrl: 'comercio/recibo2',
-        controller: 'recibo'
-    });
-
     $urlRouterProvider.otherwise('/produtos');
 });
 
 corcovado.controller('product', function($rootScope, $loader, $state) {
     if (!$rootScope.carrinho) {
         $loader.loadCarrinho().then(function(cart) {
-            if (cart.produtoVendidos.length > 0) {
-                $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-            } else {
-                $rootScope.carrinho = new Carrinho(0, []);
-            }
+            $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
         });
 
         $rootScope.addToCart = function(produto, quantidade) {
@@ -108,62 +81,7 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
             $rootScope.carrinho.itens = $rootScope.carrinho.itens.filter((p) => p.produto.id !== produto.id);
         };
 
-        $rootScope.saveCart = function() {
-            $loader.postCarrinho($rootScope.carrinho).then((cart) => {
-                $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-
-                if($rootScope.authtoken) {
-                    $state.go('finaliza');
-                } else {
-                    $('#loginModal').modal('show');
-                    $rootScope.login = function(email, senha) {
-                        var alertPlaceholder = document.querySelector('#alert_placeholder');
-                        alertPlaceholder.innerHTML = '';
-
-                        $loader.postLogin({email, senha}).then(
-                            function(resolve_data) {
-                                $rootScope.authtoken = resolve_data;
-                                $('#loginModal').modal('hide');
-                                $state.go('finaliza');
-                            }, function(reject_data) {
-                                $rootScope.authtoken = undefined;
-                                // var alertPlaceholder = document.querySelector('#alert_placeholder');
-                                alertPlaceholder.innerHTML = 
-                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Erro!</strong> E-mail ou senha incorretos.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>`;
-                            }
-                        );
-                    };
-                    
-                }
-            });
-        };
     }
-
-    $rootScope.login = function(email, senha) {
-        var alertPlaceholder = document.querySelector('#alert_placeholder');
-        alertPlaceholder.innerHTML = '';
-        
-        $loader.postLogin({email, senha}).then(
-            function(resolve_data) {
-                $rootScope.authtoken = resolve_data;
-                $state.go('list');
-            }, function(reject_data) {
-                $rootScope.authtoken = undefined;
-                // var alertPlaceholder = document.querySelector('#alert_placeholder');
-                alertPlaceholder.innerHTML = 
-                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Erro!</strong> E-mail ou senha incorretos.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>`;
-            });
-    };
 
     if (!$rootScope.produtos) {
         $rootScope.produtos = [];
@@ -172,16 +90,13 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
             $rootScope.produtos = prods;
         });
     }
-
-    if (!$rootScope.authtoken) {
-        $rootScope.authtoken = undefined;
-    }
 });
 
 corcovado.controller('show', function ($scope, $rootScope, $stateParams) {
     $scope.produto = $rootScope.produtos.find((p) => { return p.id == $stateParams.id });
 });
 
+/*
 corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) {
     if ($rootScope.carrinho.itens.length >= 1) {
         $scope.pessoa = {};
@@ -214,17 +129,16 @@ corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) 
     } else {
         $state.go("list");
     }
-});
-
+});*/
+/*
 corcovado.controller('recibo', function ($scope, $rootScope) {
-    
     $loader.loadCarrinho($rootScope.carrinho.vendaId).then(function(cart) {
         $scope.cart = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
         //$scope.pedido = 
         $rootScope.carrinho = undefined;
     });
-});
-
+});*/
+/*
 corcovado.controller('signup', function ($scope, $state, $loader) {
     $scope.criaPessoa = function(pessoa) {
         $loader.postPessoa(pessoa).then(function(pess) {
@@ -232,7 +146,7 @@ corcovado.controller('signup', function ($scope, $state, $loader) {
             $state.go('login');
         });
     };
-});
+});*/
 
 corcovado.factory('$loader', function ($http, $q) {
     var produtos = [];

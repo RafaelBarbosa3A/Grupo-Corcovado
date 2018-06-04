@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping
 public class LoginController {
-    
     @Autowired PessoaRepository pessRepo;
     @Autowired EnderecoRepository endRepo;
     @Autowired PasswordEncoder passwordEncoder;

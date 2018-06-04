@@ -59,7 +59,7 @@ public class Venda implements Serializable {
     
     @Column(name = "codigo_rastreamento") private String codigoRastreamento;
     
-    @OneToMany(targetEntity = ProdutoVendido.class, mappedBy = "venda", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(targetEntity = ProdutoVendido.class, mappedBy = "venda", fetch = FetchType.EAGER)
     private Set<ProdutoVendido> produtoVendidos;
 
     @Column(name = "created_at") private Long createdAt;

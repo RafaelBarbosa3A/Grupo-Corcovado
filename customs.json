@@ -1,6 +1,10 @@
 {
     "elements": {
-        "th:block": {}
+        "th:block": {
+            "attributes": {
+                "data-th-replace": {}
+            }
+        }
     },
     "attributes": {
         "integrity": {},
