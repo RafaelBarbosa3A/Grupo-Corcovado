@@ -39,7 +39,8 @@ public class Boot {
             cateRepo.save(new Categoria(0L, "Bebês", System.currentTimeMillis(), System.currentTimeMillis(), true));
             cateRepo.save(new Categoria(0L, "Perfumaria", System.currentTimeMillis(), System.currentTimeMillis(), true));
             
-            prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", "https://picsum.photos/300/200/?random", 987, 0, new HashSet<>(), cateRepo.findById(3L).get(), 35.0, System.currentTimeMillis(), System.currentTimeMillis(), true));
+            prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", "https://picsum.photos/300/200/?random", 987, 0, new HashSet<>(), cateRepo.findById(3L).get(), 55.0, System.currentTimeMillis(), System.currentTimeMillis(), true));
+            prodRepo.save(new Produto(0L, "Acém moido", "Acém moido para hamburguer", "Presoboi", "3265763532", "https://picsum.photos/300/200/?random", 54, 0, new HashSet<>(), cateRepo.findById(3L).get(), 15.0, System.currentTimeMillis(), System.currentTimeMillis(), true));
 
             // precoRepo.save(new Preco(0L, 65.99, prodRepo.findById(1L).get(), Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()));
             

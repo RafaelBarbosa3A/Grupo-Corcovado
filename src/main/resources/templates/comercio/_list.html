@@ -198,7 +198,7 @@
         <div class="row">
             <div class="col-lg-6 col-xl-4 mb-3" ng-repeat="produto in produtos"> 
                 <div class="card">
-                    <img class="card-img-top" src="{{ produto.imagem }}" alt="Imagem {{ produto.nome }}">
+                    <img class="card-img-top" ng-src="{{produto.imagem}}" ng-alt="Imagem {{produto.nome}}">
                     <div class="card-body">
                         <p class="card-title h5">{{ produto.nome }}</p>
                         <p class="card-text">{{ produto.descricao }}</p>
@@ -209,7 +209,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">+</span>
                                 </div>
-                                <input type="number" class="form-control" ng-model="qtd" min="1" ng-min="1" max="{{ (produto.estoque - produto.reservado) }}" ng-max="{{ (produto.estoque - produto.reservado) }}">
+                                <input type="number" class="form-control" ng-model="qtd" ng-min="1" ng-max="{{ (produto.estoque - produto.reservado) }}" ng-init="qtd = 1">
                                 <div class="input-group-append">
                                     <a href="#" class="btn btn-primary" ng-click="addToCart(produto, qtd || 1)">Comprar</a>
                                 </div>

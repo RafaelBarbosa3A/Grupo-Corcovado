@@ -13,10 +13,12 @@
         <div class="row border-bottom pt-3 pb-2 align-items-center" ng-repeat="item in carrinho.itens">
             <input type="hidden" ng-value="item.produtoId" name="itens[{{$index}}].produtoId" />
             <!-- TODO change it to a visible input -->
-            <input type="hidden" ng-value="item.quantidade" name="itens[{{$index}}].quantidade" />
+            
             
             <div class="col">{{ item.produto.nome }}</div>
-            <div class="col-2 text-center">{{ item.quantidade }}</div>
+            <input type="number" class="form-control col-2 text-center" ng-model="item.quantidade" ng-value="item.quantidade" name="itens[{{$index}}].quantidade" />
+                
+            <!-- <div class="col-2 text-center">{{ item.quantidade }}</div> -->
             <div class="col-4 text-right">{{ item.total() | currency:'R$':2 }}</div>
             <a href="#!/carrinho" class="col-1 btn text-danger" ng-click="removeFromCart(item.produto)"><i class="fas fa-times"></i></a>
         </div>

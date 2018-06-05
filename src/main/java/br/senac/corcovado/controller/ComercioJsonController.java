@@ -1,14 +1,8 @@
 package br.senac.corcovado.controller;
 
 
-import br.senac.corcovado.SecurityConfig;
-import br.senac.corcovado.controller.adapter.Carrinho;
-import br.senac.corcovado.controller.adapter.ItemCarrinho;
-import br.senac.corcovado.controller.adapter.Pedido;
-import br.senac.corcovado.model.entity.Nivel;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
-import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.repository.PapelRepository;
@@ -16,20 +10,11 @@ import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
-import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 public class ComercioJsonController {
@@ -56,17 +41,23 @@ public class ComercioJsonController {
     @GetMapping(value = "/comercio/carrinho_json")
     public Venda openCart() {
         // get from the session of Spring Security
-        Pessoa pessoa = pessRepo.findById(1L).get();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        if ((principal instanceof String) && principal == "anonymousUser") {
+            return new Venda();
+        } else {
+            Pessoa pessoa = (Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        //TODO método especifico que busca apenas rascunhos.
-        Venda venda = vendaRepo.findByPessoaAndStatus(pessoa, Status.RASCUNHO).orElse(new Venda());
-        
-        if(venda.getId() <= 0) {
-            venda.setPessoa(pessoa);
-            venda = vendaRepo.save(venda);
+            //TODO método especifico que busca apenas rascunhos.
+            Venda venda = vendaRepo.findByPessoaAndStatus(pessoa, Status.RASCUNHO).orElse(new Venda());
+
+            if(venda.getId() <= 0) {
+                venda.setPessoa(pessoa);
+                //venda = vendaRepo.save(venda);
+            }
+
+            return venda;
         }
-        
-        return venda;
     }
 
     /*

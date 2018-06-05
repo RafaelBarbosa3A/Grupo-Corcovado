@@ -79,24 +79,22 @@ public class ComercioController {
     
 
     @PostMapping("/comercio/carrinho/add")
-    public ModelAndView createCarrinho(@ModelAttribute("carrinho") Carrinho cart /*,
-            @ModelAttribute("itens") ArrayList<ItemCarrinho> itens*/) {
+    public ModelAndView createCarrinho(@ModelAttribute("carrinho") Carrinho cart) {
+        Pessoa pessoa = (Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
         Venda venda;
         if (cart.vendaId <= 0) {
-            venda = new Venda();
+            venda = vendaRepo.findByPessoaAndStatus(pessoa, Status.RASCUNHO).orElse(new Venda());
         } else {
             venda = vendaRepo.findById(cart.vendaId).get();
         }
-
-        Logger.getGlobal().log(Level.SEVERE, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        Logger.getGlobal().log(Level.SEVERE, cart.toString());
-        //venda.setPessoa((Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         
-        venda.setPessoa(pessRepo.findById(1L).get());
+        venda.setPessoa(pessoa);
         
-        venda.setProdutoVendidos(new HashSet<>());
-        pvRepo.deleteAll(venda.getProdutoVendidos());
+        // Descarta carrinho velho
+        venda.getProdutoVendidos().clear();
         venda = vendaRepo.save(venda);
+        pvRepo.deleteAll(pvRepo.findByVendaId(venda.getId()));
 
         for(ItemCarrinho item : cart.itens) {
             Produto produto = prodRepo.findById(item.produtoId).get();
