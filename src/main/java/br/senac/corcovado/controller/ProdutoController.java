@@ -28,14 +28,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ProdutoController {
     @Autowired private ProdutoRepository prodRepo;
-    // @Autowired private DepartamentoRepository deptoRepo;
-    @Autowired private PrecoRepository precoRepo;
     @Autowired private CategoriaRepository cateRepo;
 
     @GetMapping("/produtos")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("/produto/produto_list");
-        mav.addObject("produtos", prodRepo.findAll());
+        mav.addObject("produtos", prodRepo.findAll())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -43,7 +42,8 @@ public class ProdutoController {
     public ModelAndView show(@PathVariable("id") long id) {
         Produto produto = prodRepo.findProdutoById(id).get();
         return new ModelAndView("/produto/produto_show")
-                .addObject("produto", produto);
+                .addObject("produto", produto)
+                .addObject("auth", Utils.getAuth());
     }
 
     @GetMapping("/produtos/new")
@@ -105,7 +105,8 @@ public class ProdutoController {
         return new ModelAndView("/produto/produto_form")
                 .addObject("action", "create")
                 .addObject("produto", new Produto())
-                .addObject("categorias", cateRepo.findAll());
+                .addObject("categorias", cateRepo.findAll())
+                .addObject("auth", Utils.getAuth());
     }
 
     private ModelAndView editForm(Produto produto) {
@@ -118,6 +119,7 @@ public class ProdutoController {
         return new ModelAndView("/produto/produto_form")
                 .addObject("action", "create")
                 .addObject("produto", produto)
-                .addObject("categorias", cateRepo.findAll());
+                .addObject("categorias", cateRepo.findAll())
+                .addObject("auth", Utils.getAuth());
     }
 }

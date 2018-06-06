@@ -1,5 +1,6 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.Utils;
 import br.senac.corcovado.model.entity.Sac;
 import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.SacRepository;
@@ -25,14 +26,16 @@ public class SACController {
     @GetMapping("/sac")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("/sac/sac_list");
-        mav.addObject("sac", repository.findAll());
+        mav.addObject("sac", repository.findAll())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
     
     @GetMapping("/sac/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
         ModelAndView mav = new ModelAndView("/sac/sac_show");
-        mav.addObject("sac", repository.findById(Long.parseLong(usId)).get());
+        mav.addObject("sac", repository.findById(Long.parseLong(usId)).get())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
     
@@ -79,7 +82,8 @@ public class SACController {
         ModelAndView modelAndView = new ModelAndView("/sac/sac_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("sac", new Sac());
-        modelAndView.addObject("pessoas", pessoaRepository.findAll());
+        modelAndView.addObject("pessoas", pessoaRepository.findAll())
+                .addObject("auth", Utils.getAuth());
         return modelAndView;
     }
     
@@ -87,7 +91,8 @@ public class SACController {
         ModelAndView modelAndView = new ModelAndView("/sac/sac_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("sac", sac);
-        modelAndView.addObject("pessoas", pessoaRepository.findAll());
+        modelAndView.addObject("pessoas", pessoaRepository.findAll())
+                .addObject("auth", Utils.getAuth());
         return modelAndView;
     }
 }

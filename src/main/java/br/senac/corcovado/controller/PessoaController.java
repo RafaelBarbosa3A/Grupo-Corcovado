@@ -25,7 +25,8 @@ public class PessoaController {
     @GetMapping("/pessoas")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("/pessoa/pessoa_list");
-        mav.addObject("pessoas", pessRepo.findAll());
+        mav.addObject("pessoas", pessRepo.findAll())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -34,7 +35,8 @@ public class PessoaController {
         Pessoa pessoa = pessRepo.findById(id).get();
         
         return new ModelAndView("/pessoa/pessoa_show")
-                .addObject("pessoa", pessoa);
+                .addObject("pessoa", pessoa)
+                .addObject("auth", Utils.getAuth());
     }
 
     @GetMapping("/pessoas/new")
@@ -53,7 +55,8 @@ public class PessoaController {
 
     @GetMapping({"/pessoas/{id}/edit", "/pessoas/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") long id) {
-        ModelAndView mav = editForm(pessRepo.findById(id).get());
+        ModelAndView mav = editForm(pessRepo.findById(id).get())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -77,7 +80,8 @@ public class PessoaController {
         ModelAndView modelAndView = new ModelAndView("/pessoa/pessoa_form");
         modelAndView.addObject("action", "create");
         modelAndView.addObject("pessoa", new Pessoa());
-        modelAndView.addObject("niveis", Nivel.values());
+        modelAndView.addObject("niveis", Nivel.values())
+                .addObject("auth", Utils.getAuth());
         return modelAndView;
     }
 
@@ -85,7 +89,8 @@ public class PessoaController {
         ModelAndView modelAndView = new ModelAndView("/pessoa/pessoa_form");
         modelAndView.addObject("action", "update");
         modelAndView.addObject("pessoa", pessoa);
-        modelAndView.addObject("niveis", Nivel.values());
+        modelAndView.addObject("niveis", Nivel.values())
+                .addObject("auth", Utils.getAuth());
         return modelAndView;
     }
 }

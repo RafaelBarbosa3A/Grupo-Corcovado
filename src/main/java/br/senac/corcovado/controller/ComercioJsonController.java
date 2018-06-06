@@ -5,14 +5,10 @@ import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
-import br.senac.corcovado.model.repository.PapelRepository;
-import br.senac.corcovado.model.repository.PessoaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
-import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ComercioJsonController {
     @Autowired private ProdutoRepository prodRepo;
     @Autowired private VendaRepository vendaRepo;
-    @Autowired private ProdutoVendidoRepository pvRepo;
-    @Autowired private PessoaRepository pessRepo;
-    @Autowired private PapelRepository papelRepo;
-    @Autowired private PasswordEncoder passwordEncoder;
     
     @GetMapping(value = "/comercio/produto_json")
     public Iterable<Produto> listProd() {
@@ -31,21 +23,11 @@ public class ComercioJsonController {
         return produtos;
     }
 
-    /*
-    @GetMapping(value = "/comercio/carrinho_json/{id}")
-    public Venda getCart(@PathVariable("id") long id) {
-        return vendaRepo.findById(id).get();
-    }
-    */
-
     @GetMapping(value = "/comercio/carrinho_json")
     public Venda openCart() {
-        // get from the session of Spring Security
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
-        if ((principal instanceof String) && principal == "anonymousUser") {
-            return new Venda();
-        } else {
+        if (principal instanceof Pessoa) {
             Pessoa pessoa = (Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             //TODO método especifico que busca apenas rascunhos.
@@ -53,14 +35,20 @@ public class ComercioJsonController {
 
             if(venda.getId() <= 0) {
                 venda.setPessoa(pessoa);
-                //venda = vendaRepo.save(venda);
             }
 
             return venda;
+        } else {
+            return new Venda();
         }
     }
 
     /*
+    @GetMapping(value = "/comercio/carrinho_json/{id}")
+    public Venda getCart(@PathVariable("id") long id) {
+        return vendaRepo.findById(id).get();
+    }
+ 
     @PostMapping(value = "/comercio/carrinho_json/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView addCart(@RequestBody Carrinho cart) {
         Venda venda;

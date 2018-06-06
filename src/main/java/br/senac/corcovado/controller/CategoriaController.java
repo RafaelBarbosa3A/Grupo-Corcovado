@@ -1,5 +1,6 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.Utils;
 import br.senac.corcovado.model.entity.Categoria;
 import br.senac.corcovado.model.repository.CategoriaRepository;
 //import br.senac.corcovado.model.repository.DepartamentoRepository;
@@ -25,14 +26,16 @@ public class CategoriaController {
     @GetMapping("/categorias")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("/categoria/categoria_list");
-        mav.addObject("categorias", repository.findAll());
+        mav.addObject("categorias", repository.findAll())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
 
     @GetMapping("/categorias/{id}")
     public ModelAndView show(@PathVariable("id") Long id) {
         ModelAndView mav = new ModelAndView("/categoria/categoria_show");
-        mav.addObject("categoria", repository.findCategoriaById(id).get());
+        mav.addObject("categoria", repository.findCategoriaById(id).get())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -55,7 +58,8 @@ public class CategoriaController {
 
     @GetMapping({ "/categorias/{id}/edit", "/categorias/edit/{id}" })
     public ModelAndView edit(@PathVariable("id") Long id) {
-        ModelAndView mav = editForm(repository.findCategoriaById(id).get());
+        ModelAndView mav = editForm(repository.findCategoriaById(id).get())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -78,18 +82,16 @@ public class CategoriaController {
     }
 
     private ModelAndView newForm() {
-        ModelAndView modelAndView = new ModelAndView("/categoria/categoria_form");
-        modelAndView.addObject("action", "create");
-        modelAndView.addObject("categoria", new Categoria());
-        //  modelAndView.addObject("departamentos", deptoRepository.findAll());
-        return modelAndView;
+        return new ModelAndView("/categoria/categoria_form")
+                .addObject("action", "create")
+                .addObject("categoria", new Categoria())
+                .addObject("auth", Utils.getAuth());
     }
-
+    
     private ModelAndView editForm(Categoria categoria) {
-        ModelAndView modelAndView = new ModelAndView("/categoria/categoria_form");
-        modelAndView.addObject("action", "update");
-        modelAndView.addObject("categoria", categoria);
-        // modelAndView.addObject("departamentos", deptoRepository.findAll());
-        return modelAndView;
+        return new ModelAndView("/categoria/categoria_form")
+                .addObject("action", "update")
+                .addObject("categoria", categoria)
+                .addObject("auth", Utils.getAuth());
     }
 }

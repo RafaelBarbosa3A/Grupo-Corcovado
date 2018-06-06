@@ -41,20 +41,16 @@ public class Boot {
             
             prodRepo.save(new Produto(0L, "Picanha", "Picanha Premium Gourmet", "Presoboi", "3265845321", "https://picsum.photos/300/200/?random", 987, 0, new HashSet<>(), cateRepo.findById(3L).get(), 55.0, System.currentTimeMillis(), System.currentTimeMillis(), true));
             prodRepo.save(new Produto(0L, "Acém moido", "Acém moido para hamburguer", "Presoboi", "3265763532", "https://picsum.photos/300/200/?random", 54, 0, new HashSet<>(), cateRepo.findById(3L).get(), 15.0, System.currentTimeMillis(), System.currentTimeMillis(), true));
-
-            // precoRepo.save(new Preco(0L, 65.99, prodRepo.findById(1L).get(), Nivel.BASIC, System.currentTimeMillis(), System.currentTimeMillis()));
             
             papelRepo.save(new Papel("Usuário","ROLE_USER"));
             papelRepo.save(new Papel("Administrador","ROLE_ADMIN"));
             
-            // Set<Papel> papeis = new HashSet<>(Arrays.asList(papelRepo.findById(1L).get()));
+            pessRepo.save(new Pessoa(0L, "Cliente", "12345678", "mail@mail.com", passwordEncoder.encode("senha"), Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
             
-            pessRepo.save(new Pessoa(0L, "Cliente", "documento", "mail@mail.com", passwordEncoder.encode("senha"), Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
-            
-            // Av. Paulista, 149 - Bela Vista, São Paulo - SP, 01311-200
             endeRepo.save(new Endereco(0L, "Av. Paulista", "149", "Bela Vista", "São Paulo", "SP", "01311-200", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
-            // Rua dos Jequitibás - Jabaquara, São Paulo - SP, 04309-011
             endeRepo.save(new Endereco(0L, "Rua dos Jequitibás", "190", "Jabaquara", "São Paulo", "SP", "04309-011", "", pessRepo.findById(1L).get(), System.currentTimeMillis(), System.currentTimeMillis(), true));
+            
+            pessRepo.save(new Pessoa(0L, "Admin", "87654321", "adm@mail.com", passwordEncoder.encode("senha"), Nivel.BASIC, new HashSet<>(), new HashSet<>(Arrays.asList(papelRepo.findById(1L).get(), papelRepo.findById(2L).get())), System.currentTimeMillis(), System.currentTimeMillis(), true));
         };
     }
 }

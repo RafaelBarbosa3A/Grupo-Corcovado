@@ -5,11 +5,14 @@
  */
 package br.senac.corcovado;
 
+import br.senac.corcovado.controller.adapter.Auth;
+import br.senac.corcovado.model.entity.Pessoa;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -35,6 +38,15 @@ public class Utils {
             set.add(iterator.next());
         }
         return set;
+    }
+    
+    public static Auth getAuth() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof Pessoa) {
+            return new Auth((Pessoa) principal);
+        } else {
+            return new Auth();
+        }
     }
     
 }

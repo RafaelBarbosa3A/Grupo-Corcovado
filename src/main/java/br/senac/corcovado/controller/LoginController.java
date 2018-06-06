@@ -1,5 +1,6 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.Utils;
 import br.senac.corcovado.model.entity.Endereco;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.repository.EnderecoRepository;
@@ -26,7 +27,9 @@ public class LoginController {
     
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(value = "erro", defaultValue = "false") boolean erro) {
-        return new ModelAndView("login/login").addObject("erro", erro);
+        return new ModelAndView("login/login")
+                .addObject("erro", erro)
+                .addObject("auth", Utils.getAuth());
     }
     
     @GetMapping("/cadastro") 
@@ -36,7 +39,8 @@ public class LoginController {
         
         return new ModelAndView("login/cadastro")
                 .addObject("pessoa", new Pessoa())
-                .addObject("endereco", new Endereco());
+                .addObject("endereco", new Endereco())
+                .addObject("auth", Utils.getAuth());
     }
     
     @PostMapping("/cadastro")

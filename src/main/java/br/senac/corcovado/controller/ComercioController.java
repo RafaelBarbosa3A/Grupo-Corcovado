@@ -6,26 +6,24 @@
 package br.senac.corcovado.controller;
 
 
+import br.senac.corcovado.Utils;
+import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.controller.adapter.Pedido;
+import br.senac.corcovado.model.entity.Papel;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.repository.PessoaRepository;
-import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +32,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -48,10 +45,18 @@ public class ComercioController {
     @Autowired private PessoaRepository pessRepo;
     @Autowired private ProdutoVendidoRepository pvRepo;
     
+    @GetMapping("")
+    public ModelAndView index() {
+        return new ModelAndView("redirect:/comercio");
+    }
+    
+    
     @GetMapping("/comercio")
     public ModelAndView main() {
         // TODO adicionar paramtros de busca
-        return new ModelAndView("/comercio/comercio");
+        
+        return new ModelAndView("/comercio/comercio")
+                .addObject("auth", Utils.getAuth());
     }
     
     @GetMapping("/comercio/list")
@@ -71,11 +76,12 @@ public class ComercioController {
         return new ModelAndView("/comercio/_cart").addObject("carrinho", cart);
     }
     
+    /*
     @GetMapping("/comercio/finaliza")
     public ModelAndView finaliza() {
         return new ModelAndView("/comercio/_finaliza");
     }
-    
+    */
     
 
     @PostMapping("/comercio/carrinho/add")
@@ -125,7 +131,8 @@ public class ComercioController {
         
         return new ModelAndView("/comercio/finaliza")
                 .addObject("pedido", pedido)
-                .addObject("venda", venda);
+                .addObject("venda", venda)
+                .addObject("auth", Utils.getAuth());
     }
     
     @PostMapping("/comercio/venda/add")
@@ -153,7 +160,15 @@ public class ComercioController {
     @GetMapping("/comercio/recibo/{id}")
     public ModelAndView recibo(@PathVariable("id") long id) {
         // Apenas permitr ver os pedidos do usuário logado.
-        return new ModelAndView("/comercio/recibo")
-                .addObject("venda", vendaRepo.findById(id).get());
+        
+        Object principal = (Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Venda venda = vendaRepo.findById(id).get();
+        if (principal instanceof Pessoa && venda.getPessoa().getId().equals(((Pessoa) principal).getId())) {
+            return new ModelAndView("/comercio/recibo")
+                    .addObject("venda", venda)
+                    .addObject("auth", Utils.getAuth());
+        } else {
+            return new ModelAndView("redirect:/error");
+        }
     }
 }

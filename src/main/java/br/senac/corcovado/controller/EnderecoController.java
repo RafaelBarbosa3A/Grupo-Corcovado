@@ -1,5 +1,6 @@
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.Utils;
 import br.senac.corcovado.model.entity.Endereco;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.repository.EnderecoRepository;
@@ -25,13 +26,15 @@ public class EnderecoController {
     public ModelAndView list(@PathVariable("pessoaId") long pessoaId) {
         return new ModelAndView("/endereco/endereco_list")
                 .addObject("pessoa", pesRepo.findById(pessoaId).get())
-                .addObject("enderecos", endRepo.findAllByPessoaId(pessoaId));
+                .addObject("enderecos", endRepo.findAllByPessoaId(pessoaId))
+                .addObject("auth", Utils.getAuth());
     }
     
     @GetMapping("/pessoas/enderecos/{id}")
     public ModelAndView show(@PathVariable("id") long id) {
         ModelAndView mav = new ModelAndView("/endereco/endereco_show")
-                .addObject("endereco", endRepo.findById(id).get());
+                .addObject("endereco", endRepo.findById(id).get())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
     
@@ -52,7 +55,8 @@ public class EnderecoController {
     
     @GetMapping({"/pessoas/enderecos/{id}/edit", "/pessoas/enderecos/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") long id) {
-        ModelAndView mav = editForm(endRepo.findById(id).get());
+        ModelAndView mav = editForm(endRepo.findById(id).get())
+                .addObject("auth", Utils.getAuth());
         return mav;
     }
     
@@ -80,14 +84,16 @@ public class EnderecoController {
         
         ModelAndView modelAndView = new ModelAndView("/endereco/endereco_form");
         modelAndView.addObject("action", "create");
-        modelAndView.addObject("endereco", endereco);
+        modelAndView.addObject("endereco", endereco)
+                .addObject("auth", Utils.getAuth());
         return modelAndView;
     }
     
     private ModelAndView editForm(Endereco endereco) {
         ModelAndView modelAndView = new ModelAndView("/endereco/endereco_form");
         modelAndView.addObject("action", "update");
-        modelAndView.addObject("endereco", endereco);
+        modelAndView.addObject("endereco", endereco)
+                .addObject("auth", Utils.getAuth());
         return modelAndView;
     }
 }

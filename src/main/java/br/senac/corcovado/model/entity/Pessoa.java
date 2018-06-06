@@ -60,6 +60,7 @@ public class Pessoa implements UserDetails, Serializable {
 
     public Pessoa() {
         this.id = 0L;
+        this.nivel = Nivel.BASIC;
         this.papeis = new HashSet<>();
         this.active = true;
     }

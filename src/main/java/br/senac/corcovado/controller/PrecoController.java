@@ -36,6 +36,7 @@ public class PrecoController {
         
         return new ModelAndView("/preco/preco_list")
                 .addObject("produto", produto)
+                .addObject("auth", Utils.getAuth())
                 //.addObject("precos", produto.getPrecos())
                 //.addObject("novoPreco", Nivel.values().length > produto.getPrecos().size())
         ;
@@ -44,7 +45,8 @@ public class PrecoController {
     @GetMapping("/produtos/precos/{id}")
     public ModelAndView show(@PathVariable("id") long id) {
         return new ModelAndView("/preco/preco_show")
-                .addObject("preco", precoRepo.findById(id).get());
+                .addObject("preco", precoRepo.findById(id).get())
+                .addObject("auth", Utils.getAuth());
     }
     
     @GetMapping("/produtos/{produtoId}/precos/new")
@@ -69,7 +71,8 @@ public class PrecoController {
         return new ModelAndView("/preco/preco_form")
                 .addObject("action", "create")
                 .addObject("preco", preco)
-                .addObject("niveis", niveis);
+                .addObject("niveis", niveis)
+                .addObject("auth", Utils.getAuth());
     }
 
     @GetMapping({"/produtos/precos/{id}/edit", "/produtos/precos/edit/{id}"})
@@ -78,7 +81,8 @@ public class PrecoController {
         
         return new ModelAndView("/preco/preco_form")
                 .addObject("preco", preco)
-                .addObject("action", "update");
+                .addObject("action", "update")
+                .addObject("auth", Utils.getAuth());
     }
 
     @PostMapping(path = {"/produtos/precos/create", "/produtos/precos/update"})

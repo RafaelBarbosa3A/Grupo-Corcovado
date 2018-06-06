@@ -5,6 +5,7 @@
  */
 package br.senac.corcovado.controller;
 
+import br.senac.corcovado.Utils;
 import br.senac.corcovado.model.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,9 @@ public class NotaController {
     
     @GetMapping("/notas/{id}")
     public ModelAndView nota(@PathVariable long id) {
-        return new ModelAndView("/nota/nota").addObject("venda", vendaRepo.findById(id).get());
+        return new ModelAndView("/nota/nota")
+                .addObject("venda", vendaRepo.findById(id).get())
+                .addObject("auth", Utils.getAuth());
     }
     
 }

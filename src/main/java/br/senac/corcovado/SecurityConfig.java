@@ -76,8 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/comercio/carrinho/**", "/comercio/venda/**", "/comercio/recibo/**").authenticated()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/console/**",
                         "/comercio/**", "/cadastro/**").permitAll()
-                .anyRequest().authenticated()
-                //.antMatchers("").hasAuthority("ROLE_ADMIN")
+                .anyRequest().hasRole("ADMIN")
             .and()
                 .formLogin()
                     .loginPage("/login")
