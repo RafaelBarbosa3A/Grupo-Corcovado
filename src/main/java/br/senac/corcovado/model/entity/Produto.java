@@ -86,6 +86,7 @@ public class Produto implements Serializable {
     
     public Produto() {
         this.id = 0L;
+        this.imagem = "https://picsum.photos/300/200/?random";
         this.active = true;
     }
 
