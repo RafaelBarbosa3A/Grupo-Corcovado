@@ -38,15 +38,5 @@ public class Utils {
             set.add(iterator.next());
         }
         return set;
-    }
-    
-    public static Auth getAuth() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof Pessoa) {
-            return new Auth((Pessoa) principal);
-        } else {
-            return new Auth();
-        }
-    }
-    
+    }    
 }

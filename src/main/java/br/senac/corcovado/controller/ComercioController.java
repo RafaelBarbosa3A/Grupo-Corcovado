@@ -6,24 +6,22 @@
 package br.senac.corcovado.controller;
 
 
-import br.senac.corcovado.Utils;
 import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.controller.adapter.Pedido;
-import br.senac.corcovado.model.entity.Papel;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
-import br.senac.corcovado.model.repository.PessoaRepository;
+import br.senac.corcovado.model.repository.CategoriaRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
+import br.senac.corcovado.model.service.AuthService;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ComercioController {
     @Autowired private ProdutoRepository prodRepo;
     @Autowired private VendaRepository vendaRepo;
-    @Autowired private PessoaRepository pessRepo;
+    @Autowired private CategoriaRepository cateRepo;
     @Autowired private ProdutoVendidoRepository pvRepo;
     
     @GetMapping("")
@@ -55,13 +53,13 @@ public class ComercioController {
     public ModelAndView main() {
         // TODO adicionar paramtros de busca
         
-        return new ModelAndView("/comercio/comercio")
-                .addObject("auth", Utils.getAuth());
+        return new ModelAndView("/comercio/comercio");
+                //.addObject("auth", Utils.getAuth());
     }
     
     @GetMapping("/comercio/list")
     public ModelAndView list() {
-        return new ModelAndView("/comercio/_list");
+        return new ModelAndView("/comercio/_list").addObject("categorias", cateRepo.findAll());
     }
     
     @GetMapping("/comercio/show")
@@ -131,8 +129,8 @@ public class ComercioController {
         
         return new ModelAndView("/comercio/finaliza")
                 .addObject("pedido", pedido)
-                .addObject("venda", venda)
-                .addObject("auth", Utils.getAuth());
+                .addObject("venda", venda);
+                //.addObject("auth", Utils.getAuth());
     }
     
     @PostMapping("/comercio/venda/add")
@@ -165,10 +163,17 @@ public class ComercioController {
         Venda venda = vendaRepo.findById(id).get();
         if (principal instanceof Pessoa && venda.getPessoa().getId().equals(((Pessoa) principal).getId())) {
             return new ModelAndView("/comercio/recibo")
-                    .addObject("venda", venda)
-                    .addObject("auth", Utils.getAuth());
+                    .addObject("venda", venda);
+                    //.addObject("auth", Utils.getAuth());
         } else {
             return new ModelAndView("redirect:/error");
         }
+    }
+    
+            
+    @Autowired private AuthService authServ;
+    @ModelAttribute("auth")
+    public Auth getAuth() {
+        return authServ.getCurrentUser();
     }
 }

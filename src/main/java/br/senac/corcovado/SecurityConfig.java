@@ -1,5 +1,7 @@
 package br.senac.corcovado;
 
+import br.senac.corcovado.controller.adapter.Auth;
+import br.senac.corcovado.model.service.AuthService;
 import br.senac.corcovado.model.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
  *

@@ -30,7 +30,6 @@ public class Auth {
         this.authorities = pessoa.getAuthorities().stream().map(Papel::getAuthority).collect(Collectors.toList());
         this.authenticated = true;
     }
-    
 
     public long getId() {
         return id;

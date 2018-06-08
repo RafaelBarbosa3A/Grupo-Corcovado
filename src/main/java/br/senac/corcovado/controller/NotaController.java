@@ -6,10 +6,13 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.Utils;
+import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.model.repository.VendaRepository;
+import br.senac.corcovado.model.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,14 +22,19 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class NotaController {
-    @Autowired 
-    private VendaRepository vendaRepo;
+    @Autowired private VendaRepository vendaRepo;
     
     @GetMapping("/notas/{id}")
     public ModelAndView nota(@PathVariable long id) {
         return new ModelAndView("/nota/nota")
-                .addObject("venda", vendaRepo.findById(id).get())
-                .addObject("auth", Utils.getAuth());
+                .addObject("venda", vendaRepo.findById(id).get());
+                //.addObject("auth", Utils.getAuth());
     }
     
+    
+    @Autowired private AuthService authServ;
+    @ModelAttribute("auth")
+    public Auth getAuth() {
+        return authServ.getCurrentUser();
+    }
 }

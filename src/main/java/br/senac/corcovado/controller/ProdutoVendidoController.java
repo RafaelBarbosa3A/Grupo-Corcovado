@@ -1,6 +1,7 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.Utils;
+import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
+import br.senac.corcovado.model.service.AuthService;
 
 /**
  *
@@ -30,16 +32,16 @@ public class ProdutoVendidoController {
     @GetMapping("/produtos_vendidos")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("/produto_vendido/produto_vendido_list");
-        mav.addObject("produtos_vendidos", repository.findAll())
-                .addObject("auth", Utils.getAuth());
+        mav.addObject("produtos_vendidos", repository.findAll());
+                //.addObject("auth", Utils.getAuth());
         return mav;
     }
     
     @GetMapping("/produtos_vendidos/{id}")
     public ModelAndView show(@PathVariable("id") String usId) {
         ModelAndView mav = new ModelAndView("/produto_vendido/produto_vendido_show");
-        mav.addObject("produto_vendido", repository.findById(Long.parseLong(usId)).get())
-                .addObject("auth", Utils.getAuth());
+        mav.addObject("produto_vendido", repository.findById(Long.parseLong(usId)).get());
+                //.addObject("auth", Utils.getAuth());
         return mav;
     }
     
@@ -60,8 +62,8 @@ public class ProdutoVendidoController {
     
     @GetMapping({"/produtos_vendidos/{id}/edit", "/produtos_vendidos/edit/{id}"})
     public ModelAndView edit(@PathVariable("id") String usId) {
-        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get())
-                .addObject("auth", Utils.getAuth());
+        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
+                //.addObject("auth", Utils.getAuth());
         return mav;
     }
     
@@ -86,8 +88,8 @@ public class ProdutoVendidoController {
         modelAndView.addObject("action", "create");
         modelAndView.addObject("produtos_vendidos", new ProdutoVendido());
         modelAndView.addObject("produtos", produtoRepository.findAll());
-        modelAndView.addObject("vendas", vendaRepository.findAll())
-                .addObject("auth", Utils.getAuth());
+        modelAndView.addObject("vendas", vendaRepository.findAll());
+                //.addObject("auth", Utils.getAuth());
         return modelAndView;
     }
     
@@ -96,8 +98,15 @@ public class ProdutoVendidoController {
         modelAndView.addObject("action", "update");
         modelAndView.addObject("produtos_vendidos", produto_vendido);
         modelAndView.addObject("produtos", produtoRepository.findAll());
-        modelAndView.addObject("vendas", vendaRepository.findAll())
-                .addObject("auth", Utils.getAuth());
+        modelAndView.addObject("vendas", vendaRepository.findAll());
+                //.addObject("auth", Utils.getAuth());
         return modelAndView;
+    }
+    
+        
+    @Autowired private AuthService authServ;
+    @ModelAttribute("auth")
+    public Auth getAuth() {
+        return authServ.getCurrentUser();
     }
 }

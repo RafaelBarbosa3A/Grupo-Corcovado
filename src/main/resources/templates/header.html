@@ -9,10 +9,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarsExample04">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-link dropdown-toggle" data-th-if="${auth.authenticated && #lists.contains(auth.authorities, 'ROLE_ADMIN')}" >
+                <li class="nav-item dropdown" data-th-if="${auth.authenticated && #lists.contains(auth.authorities, 'ROLE_ADMIN')}" >
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_gestao" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-cog"></i>
-                        Gerenciamento
+                        <i class="fas fa-cog"></i> Gerenciamento
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_gestao">
                         <a class="dropdown-item" href="#" data-th-href="@{/produtos}">Produtos</a>
@@ -23,16 +22,19 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" data-th-href="@{/comercio#!/cart}"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
+                    <a class="nav-link" href="#" data-th-href="@{/comercio#!/cart}">
+                        <i class="fas fa-shopping-cart"></i> Carrinho
+                    </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown_perfil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user-circle"></i>
-                        &nbsp;Perfil&nbsp;&nbsp;
+                        <i class="fas fa-user-circle"></i> Perfil
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown_perfil">
                         <a class="dropdown-item" href="#" data-th-href="@{/login}" data-th-if="${!auth.authenticated}">Login</a>
-                        <a class="dropdown-item" href="#" data-th-href="@{/logout}" data-th-if="${auth.authenticated}"> Logout</a>
+                        <!-- TODO <a class="dropdown-item" href="#" data-th-href="@{/logout}" data-th-if="${auth.authenticated}">Editar Perfil</a>-->
+                        <!-- TODO <a class="dropdown-item" href="#" data-th-href="@{/logout}" data-th-if="${auth.authenticated}">Minhas Compras</a>-->
+                        <a class="dropdown-item" href="#" data-th-href="@{/logout}" data-th-if="${auth.authenticated}">Logout</a>
                     </div>
                 </li>
             </ul>

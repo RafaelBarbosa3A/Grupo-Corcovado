@@ -1,12 +1,14 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.Utils;
+import br.senac.corcovado.controller.adapter.Auth;
 //import br.senac.corcovado.model.entity.Departamento;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.repository.CategoriaRepository;
 //import br.senac.corcovado.model.repository.DepartamentoRepository;
 import br.senac.corcovado.model.repository.PrecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
+import br.senac.corcovado.model.service.AuthService;
 import javax.validation.Valid;
 //import java.util.Iterator;
 //import java.util.List;
@@ -33,8 +35,8 @@ public class ProdutoController {
     @GetMapping("/produtos")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("/produto/produto_list");
-        mav.addObject("produtos", prodRepo.findAll())
-                .addObject("auth", Utils.getAuth());
+        mav.addObject("produtos", prodRepo.findAll());
+                //.addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -42,8 +44,8 @@ public class ProdutoController {
     public ModelAndView show(@PathVariable("id") long id) {
         Produto produto = prodRepo.findProdutoById(id).get();
         return new ModelAndView("/produto/produto_show")
-                .addObject("produto", produto)
-                .addObject("auth", Utils.getAuth());
+                .addObject("produto", produto);
+                //.addObject("auth", Utils.getAuth());
     }
 
     @GetMapping("/produtos/new")
@@ -78,7 +80,6 @@ public class ProdutoController {
 
     @PostMapping(path = "/produtos/update")
     public ModelAndView update(@ModelAttribute Produto produto) {
-        //produto.setPrecos(Utils.asList(precoRepo.findAllByProdutoId(produto.getId())));
         Produto salvo;
 
         //TODO implementar validador via @Valid
@@ -96,30 +97,25 @@ public class ProdutoController {
     }
 
     private ModelAndView newForm() {
-        /*
-        Iterable<Departamento> deptos = deptoRepo.findAll();
-        for(Departamento depto : deptos) {
-            depto.setCategorias(Utils.asList(cateRepo.findAllByDepartamentoId(depto.getId())));
-        }
-        */
         return new ModelAndView("/produto/produto_form")
                 .addObject("action", "create")
                 .addObject("produto", new Produto())
-                .addObject("categorias", cateRepo.findAll())
-                .addObject("auth", Utils.getAuth());
+                .addObject("categorias", cateRepo.findAll());
+                //.addObject("auth", Utils.getAuth());
     }
 
     private ModelAndView editForm(Produto produto) {
-        /*
-        Iterable<Departamento> deptos = deptoRepo.findAll();
-        for (Departamento depto : deptos) {
-            depto.setCategorias(Utils.asList(cateRepo.findAllByDepartamentoId(depto.getId())));
-        }
-        */
         return new ModelAndView("/produto/produto_form")
                 .addObject("action", "create")
                 .addObject("produto", produto)
-                .addObject("categorias", cateRepo.findAll())
-                .addObject("auth", Utils.getAuth());
+                .addObject("categorias", cateRepo.findAll());
+                //.addObject("auth", Utils.getAuth());
+    }
+    
+            
+    @Autowired private AuthService authServ;
+    @ModelAttribute("auth")
+    public Auth getAuth() {
+        return authServ.getCurrentUser();
     }
 }

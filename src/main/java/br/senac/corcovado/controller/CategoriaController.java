@@ -1,8 +1,10 @@
 package br.senac.corcovado.controller;
 
 import br.senac.corcovado.Utils;
+import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.model.entity.Categoria;
 import br.senac.corcovado.model.repository.CategoriaRepository;
+import br.senac.corcovado.model.service.AuthService;
 //import br.senac.corcovado.model.repository.DepartamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,16 +28,16 @@ public class CategoriaController {
     @GetMapping("/categorias")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("/categoria/categoria_list");
-        mav.addObject("categorias", repository.findAll())
-                .addObject("auth", Utils.getAuth());
+        mav.addObject("categorias", repository.findAll());
+                //.addObject("auth", Utils.getAuth());
         return mav;
     }
 
     @GetMapping("/categorias/{id}")
     public ModelAndView show(@PathVariable("id") Long id) {
         ModelAndView mav = new ModelAndView("/categoria/categoria_show");
-        mav.addObject("categoria", repository.findCategoriaById(id).get())
-                .addObject("auth", Utils.getAuth());
+        mav.addObject("categoria", repository.findCategoriaById(id).get());
+                //.addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -58,8 +60,8 @@ public class CategoriaController {
 
     @GetMapping({ "/categorias/{id}/edit", "/categorias/edit/{id}" })
     public ModelAndView edit(@PathVariable("id") Long id) {
-        ModelAndView mav = editForm(repository.findCategoriaById(id).get())
-                .addObject("auth", Utils.getAuth());
+        ModelAndView mav = editForm(repository.findCategoriaById(id).get());
+                //.addObject("auth", Utils.getAuth());
         return mav;
     }
 
@@ -84,14 +86,21 @@ public class CategoriaController {
     private ModelAndView newForm() {
         return new ModelAndView("/categoria/categoria_form")
                 .addObject("action", "create")
-                .addObject("categoria", new Categoria())
-                .addObject("auth", Utils.getAuth());
+                .addObject("categoria", new Categoria());
+                //.addObject("auth", Utils.getAuth());
     }
     
     private ModelAndView editForm(Categoria categoria) {
         return new ModelAndView("/categoria/categoria_form")
                 .addObject("action", "update")
-                .addObject("categoria", categoria)
-                .addObject("auth", Utils.getAuth());
+                .addObject("categoria", categoria);
+                //.addObject("auth", Utils.getAuth());
+    }
+    
+        
+    @Autowired private AuthService authServ;
+    @ModelAttribute("auth")
+    public Auth getAuth() {
+        return authServ.getCurrentUser();
     }
 }
