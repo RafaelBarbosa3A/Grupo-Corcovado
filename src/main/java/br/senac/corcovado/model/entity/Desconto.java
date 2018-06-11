@@ -7,6 +7,7 @@ package br.senac.corcovado.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -21,6 +22,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -39,10 +41,12 @@ public class Desconto implements Serializable {
     @JoinColumn(name = "produto_id", referencedColumnName = "id") private Produto produto;
     
     @Column(name = "inicio", nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE) private Date inicio;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd") private Date inicio;
     
     @Column(name = "fim", nullable = true)
-    @Temporal(javax.persistence.TemporalType.DATE) private Date fim;
+    @Temporal(javax.persistence.TemporalType.DATE) 
+    @DateTimeFormat(pattern = "yyyy-MM-dd") private Date fim;
     
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
@@ -114,7 +118,6 @@ public class Desconto implements Serializable {
         int hash = 7;
         hash = 47 * hash + Objects.hashCode(this.id);
         hash = 47 * hash + Objects.hashCode(this.preco);
-        hash = 47 * hash + Objects.hashCode(this.produto);
         hash = 47 * hash + Objects.hashCode(this.inicio);
         hash = 47 * hash + Objects.hashCode(this.fim);
         hash = 47 * hash + Objects.hashCode(this.createdAt);
@@ -142,7 +145,7 @@ public class Desconto implements Serializable {
 
     @Override
     public String toString() {
-        return "Desconto{" + "id=" + id + ", preco=" + preco + ", produto=" + produto + ", inicio=" + inicio + ", fim=" + fim + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+        return "Desconto{" + "id=" + id + ", preco=" + preco + ", inicio=" + inicio + ", fim=" + fim + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
         
     // === JPA Gambiarras ===

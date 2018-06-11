@@ -1,18 +1,15 @@
 package br.senac.corcovado.controller;
 
 
-import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
-import br.senac.corcovado.model.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

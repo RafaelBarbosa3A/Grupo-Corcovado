@@ -26,7 +26,7 @@
             </p>
             
             <p class="mt-3 mb-2">
-                <strong>Documento:</strong><br>
+                <strong>CPF:</strong><br>
                 <span data-th-text="${pessoa.documento}"></span>
             </p>
             
@@ -44,15 +44,32 @@
                 </ul>
             </div>
             
+
             <div class="mt-3 mb-2">
                 <strong>Endereços:</strong><br>
                 <ul class="list-unstyled">
-                    <li data-th-each="endereco : ${pessoa.enderecos}">
-                        <span data-th-text="${endereco.rua}"></span> - <span data-th-text="${endereco.numero}"></span>
+                    <li class="row align-items-center py-1" data-th-each="endereco, stat : ${pessoa.enderecos}" data-th-classappend="${stat.odd}? 'bg-light'" >
+                        <div class="col-12 col-lg" data-th-text="${endereco.enderecoCurto}"></div>
+                        <div class="col-12 col-md-2 text-right">
+                            <a class="btn btn-outline-primary" href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos/{id}(pessoaId = ${pessoa.id}, id = ${endereco.id})}">
+                                <i class="far fa-eye"></i>
+                            </a>
+                            <a class="btn btn-outline-info" href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos/{id}/edit(pessoaId = ${pessoa.id}, id = ${endereco.id})}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <form class="d-inline-block" method="post" action="#" data-th-action="@{/pessoas/{pessoaId}/enderecos/{id}/destroy(pessoaId = ${pessoa.id}, id = ${endereco.id})}">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
                     </li>
                 </ul>
-                <a href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos(pessoaId = ${pessoa.id})}" class="btn btn-primary">Endereços</a>
+                <a href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos/new(pessoaId = ${pessoa.id})}" class="btn btn-outline-primary mt-2">
+                    <i class="fas fa-plus"></i> Endereços
+                </a>
             </div>
+
             
             <a class="btn" href="#" data-th-href="@{/pessoas}">Voltar</a>
         </main>

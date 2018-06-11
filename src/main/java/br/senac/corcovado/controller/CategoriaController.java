@@ -1,6 +1,5 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.Utils;
 import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.model.entity.Categoria;
 import br.senac.corcovado.model.repository.CategoriaRepository;

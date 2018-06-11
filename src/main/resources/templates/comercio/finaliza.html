@@ -24,7 +24,6 @@
                             <select class="form-control form-control-lg" data-th-field="*{enderecoId}" ng-model="ender" ng-change="calcFrete(ender)">
                                 <option data-th-each="endereco : ${venda.pessoa.enderecos}" data-th-value="${endereco.id}" data-th-text="|${endereco.rua}, ${endereco.numero}|">Rua</option>
                             </select>
-
                         </div>
 
                         <div class="h4">
@@ -37,10 +36,7 @@
                         <div class="form-group">
                             <label for="pagamento">Selecione a forma de pagamento</label>
                             <select class="form-control form-control-lg" ng-model="pagamento" data-th-field="*{pagamento}">
-                                <option value="Pagar na entrega">Pagar na entrega</option>
-                                <option value="Cartão de crédito">Cartão de crédito</option>
-                                <option value="Cartão de débito">Cartão de débito</option>
-                                <option value="Boleto">Boleto</option>
+                                <option data-th-each="pagamento : ${pagamentos}" data-th-value="${pagamento}" data-th-text="${pagamento.nome}">Pagamento</option>
                             </select>
                         </div>
 
@@ -80,6 +76,7 @@
         </main>
         <footer data-th-replace="~{footer}"></footer>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.0/angular.min.js" integrity="sha256-wdtborJwJIq757II/dxJpmirvByOLcX8T5FdtTaMR+A=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.7.1/angular-locale_pt-br.min.js" integrity="sha256-XQi93DQhkQXjNO3+maSyu0INwuOLB0luKbVTTyPKYQA=" crossorigin="anonymous"></script>
         <script src="/js/finaliza.js" data-th-src="@{/js/finaliza.js}"></script>
     </body>
 </html>

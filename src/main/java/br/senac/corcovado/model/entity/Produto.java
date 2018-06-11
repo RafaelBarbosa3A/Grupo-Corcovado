@@ -1,7 +1,6 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,6 +22,8 @@ import org.hibernate.annotations.Where;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
@@ -38,7 +39,7 @@ import javax.validation.constraints.Min;
 @NamedQuery(name = "findProdutoById", query = "SELECT p FROM Produto p WHERE p.id = ?1")
 @Where(clause = "active = true")
 //Gambiarraaaaaaaaa
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "precos"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "descontos"})
 public class Produto implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "id") private Long id;
@@ -69,16 +70,14 @@ public class Produto implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria categoria;
-
-    // NOPE! NOOO!!! STUPID FUCKING IDEA!!!!!
-    // replaced
-    // @OneToMany(mappedBy = "produto") private List<Preco> precos;
-    // @Transient private Double preco;
-
+    
     @Min(value = 0, message = "Favor digitar um preço não negativo")
     @Column(name = "preco") private Double preco;
     
     @OneToMany(mappedBy = "produto") private Set<Desconto> descontos;
+    
+    @Transient
+    private Double promocao;
 
     @Column(name = "created_at") private Long createdAt;
     @Column(name = "updated_at") private Long updatedAt;
@@ -177,6 +176,14 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
+    public Double getPromocao() {
+        return promocao;
+    }
+
+    public void setPromocao(Double promocao) {
+        this.promocao = promocao;
+    }
+    
     public Set<Desconto> getDescontos() {
         return descontos;
     }
@@ -216,7 +223,6 @@ public class Produto implements Serializable {
         hash = 29 * hash + this.estoque;
         hash = 29 * hash + this.reservado;
         hash = 29 * hash + Objects.hashCode(this.preco);
-        hash = 29 * hash + Objects.hashCode(this.descontos);
         hash = 29 * hash + Objects.hashCode(this.createdAt);
         hash = 29 * hash + Objects.hashCode(this.updatedAt);
         hash = 29 * hash + (this.active ? 1 : 0);
@@ -241,7 +247,7 @@ public class Produto implements Serializable {
     }
 
     @Override public String toString() {
-        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", imagem=" + imagem + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", preco=" + preco + ", descontos=" + descontos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", fabricante=" + fabricante + ", codigo=" + codigo + ", imagem=" + imagem + ", estoque=" + estoque + ", reservado=" + reservado + ", categoria=" + categoria + ", preco=" + preco + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 
     // === JPA Porco ===
@@ -260,5 +266,18 @@ public class Produto implements Serializable {
     @PreRemove
     private void softDelete() {
         this.active = false;
+    }
+    
+    @PostLoad
+    private void loadPromocao() {
+        if (!this.descontos.isEmpty()) {
+            this.descontos.forEach((d) -> {
+                if(d.getInicio().getTime() <= System.currentTimeMillis() && System.currentTimeMillis() <= d.getFim().getTime()) {
+                    if(this.promocao == null || this.promocao >= d.getPreco()) {
+                        promocao = d.getPreco();
+                    }
+                }
+            });
+        }
     }
 }

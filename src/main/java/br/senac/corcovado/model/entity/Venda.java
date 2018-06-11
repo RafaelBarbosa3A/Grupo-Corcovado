@@ -23,6 +23,7 @@ import javax.persistence.Temporal;
 import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -44,18 +45,25 @@ public class Venda implements Serializable {
     @JoinColumn(name = "pessoa_id", referencedColumnName = "id", nullable = true)
     private Pessoa pessoa;
 
-    @Column(name = "endereco_id") private Long enderecoId;
+    //@Column(name = "endereco_id") private Long enderecoId;
+    @ManyToOne(targetEntity = Endereco.class, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = true)
+    private Endereco endereco;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "status") private Status status;
         
     @Column(name = "frete") private Double frete;
     @Column(name = "total") private Double total;
-    @Column(name = "pagamento") private String pagamento;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pagamento") private Pagamento pagamento;
+    
     @Column(name = "comprovante") private String comprovante;
     
     @Column(name = "prazo_entrega")
-    @Temporal(javax.persistence.TemporalType.DATE) private Date prazoEntrega;
+    @Temporal(javax.persistence.TemporalType.DATE) 
+    @DateTimeFormat(pattern = "yyyy-MM-dd") private Date prazoEntrega;
     
     @Column(name = "codigo_rastreamento") private String codigoRastreamento;
     
@@ -85,10 +93,10 @@ public class Venda implements Serializable {
         this.active = true;
     }
 
-    public Venda(Long id, Pessoa pessoa, Long enderecoId, Status status, Double frete, Double total, String pagamento, String comprovante, Date prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {
+    public Venda(Long id, Pessoa pessoa, Endereco endereco, Status status, Double frete, Double total, Pagamento pagamento, String comprovante, Date prazoEntrega, String codigoRastreamento, Set<ProdutoVendido> produtoVendidos, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.pessoa = pessoa;
-        this.enderecoId = enderecoId;
+        this.endereco = endereco;
         this.status = status;
         this.frete = frete;
         this.total = total;
@@ -117,11 +125,11 @@ public class Venda implements Serializable {
         this.pessoa = pessoa;
     }
 
-    public Long getEnderecoId() {
-        return enderecoId;
+    public Endereco getEndereco() {
+        return endereco;
     }
-    public void setEnderecoId(Long enderecoId) {
-        this.enderecoId = enderecoId;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public Status getStatus() {
@@ -152,10 +160,10 @@ public class Venda implements Serializable {
         this.total = total;
     }
 
-    public String getPagamento() {
+    public Pagamento getPagamento() {
         return pagamento;
     }
-    public void setPagamento(String pagamento) {
+    public void setPagamento(Pagamento pagamento) {
         this.pagamento = pagamento;
     }
 
@@ -245,7 +253,7 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return "Venda{" + "id=" + id + ", pessoa=" + pessoa + ", enderecoId=" + enderecoId + ", status=" + status + ", frete=" + frete + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Venda{" + "id=" + id + ", pessoa=" + pessoa + ", status=" + status + ", frete=" + frete + ", total=" + total + ", pagamento=" + pagamento + ", comprovante=" + comprovante + ", prazoEntrega=" + prazoEntrega + ", codigoRastreamento=" + codigoRastreamento + ", produtoVendidos=" + produtoVendidos + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 
 }

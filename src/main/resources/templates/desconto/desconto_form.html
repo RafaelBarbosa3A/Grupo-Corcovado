@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Corcovado - Formulário Desconto</title>
+        <th:block data-th-replace="~{head}" />
+    </head>
+    <body>
+        <header data-th-replace="~{header}"></header>
+        <main class="container main">
+            <h1 class="h3 mt-3">Formulário de Desconto</h1>
+            <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Desconto' : 'Alterar Desconto'"></div>
+            
+            <form data-th-action="@{/produtos/{pid}/descontos/{act}(pid = ${produto.id}, act = ${action})}" method="post" data-th-object="${desconto}">
+                <input type="hidden" data-th-field="*{id}" />
+                <input type="hidden" data-th-field="*{createdAt}" />
+                <input type="hidden" data-th-field="*{produto}" />
+
+                <div class="form-group">
+                    <label for="fabricante">Produto:</label>
+                    <input type="text" class="form-control" data-th-value="${produto.nome}" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <label for="preco">Preço:</label>
+                    <input type="text" class="form-control" data-th-errorclass="is-invalid" placeholder="Preço" data-th-field="*{preco}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('preco')}" data-th-errors="*{preco}"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inicio">Data de início</label>
+                    <input type="date" class="form-control" data-th-errorclass="is-invalid" placeholder="Início" data-th-field="*{inicio}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('inicio')}" data-th-errors="*{inicio}"></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fim">Data de fim:</label>
+                    <input type="date" class="form-control" data-th-errorclass="is-invalid" placeholder="Fim" data-th-field="*{fim}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('fim')}" data-th-errors="*{fim}"></p>
+                </div>
+                
+                <div class="row justify-content-between align-items-center">
+                    <a class="btn" href="#" data-th-href="@{/produtos/{pid}(pid = ${produto.id})}">Voltar</a>
+                    
+                    <div class="col-12 order-first col-md-4 order-md-last text-right">
+                        <button class="btn btn-success" type="submit">Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <footer data-th-replace="~{footer}"></footer>
+    </body>
+</html>

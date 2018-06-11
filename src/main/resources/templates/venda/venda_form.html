@@ -14,61 +14,61 @@
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Venda' : 'Alterar Venda'"></div>
             <form data-th-action="@{/vendas/{act}(act = ${action})}" method="post" data-th-object="${venda}">
                 <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('id')}" data-th-errors="*{id}"></p>
+                
+                <div class="form-group">
+                    <label for="pessoa">Pessoa:</label>
+                    <input type="text" class="form-control" id="pessoa" data-th-value="*{pessoa.nome}" disabled/>
+                </div>
+                
+                <div class="form-group">
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" class="form-control" id="endereco" data-th-value="*{endereco.enderecoCurto}" disabled/>
+                </div>
 
-                
-                <div class="form-group">
-                    <label for="clienteId">Cliente Id:</label>
-                    <input type="number" class="form-control" placeholder="Cliente Id" data-th-field="*{clienteId}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('clienteId')}" data-th-errors="*{clienteId}"></p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="enderecoId">Endereço Id:</label>
-                    <input type="number" class="form-control" placeholder="Endereço Id" data-th-field="*{enderecoId}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('enderecoId')}" data-th-errors="*{enderecoId}"></p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="descontoId">Desconto Id:</label>
-                    <input type="number" class="form-control" placeholder="Desconto Id" data-th-field="*{descontoId}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('descontoId')}" data-th-errors="*{descontoId}"></p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="statusId">Status Id:</label>
-                    <input type="number" class="form-control" placeholder="Status Id" data-th-field="*{statusId}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('statusId')}" data-th-errors="*{statusId}"></p>
-                </div>
-                
                 <div class="form-group">
                     <label for="total">Total:</label>
-                    <input type="number" class="form-control" placeholder="Total" data-th-field="*{total}" />
+                    <input type="number" class="form-control" placeholder="Total" data-th-field="*{total}" data-th-errorclass="is-invalid" disabled/>
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('total')}" data-th-errors="*{total}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="frete">Frete:</label>
+                    <input type="number" class="form-control" placeholder="Frete" data-th-field="*{frete}" data-th-errorclass="is-invalid" disabled/>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('frete')}" data-th-errors="*{frete}"></p>
+                </div>                                
+
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select class="form-control" data-th-errorclass="is-invalid" data-th-field="*{status}">
+                        <option data-th-each="status : ${statuses}" data-th-value="${status}" data-th-text="${status.nome}">Status</option>
+                    </select>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('status')}" data-th-errors="*{status}"></p>
                 </div>
                 
                 <div class="form-group">
-                    <label for="pagamento">Pagamento:</label>
-                    <input type="text" class="form-control" placeholder="Pagamento" data-th-field="*{pagamento}" />
+                    <label for="pagamento">Forma de Pagamento:</label>
+                    <select class="form-control" data-th-errorclass="is-invalid" data-th-field="*{pagamento}">
+                        <option data-th-each="pagamento : ${pagamentos}" data-th-value="${pagamento}" data-th-text="${pagamento.nome}">pagamento</option>
+                    </select>
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pagamento')}" data-th-errors="*{pagamento}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="comprovante">Comprovante:</label>
-                    <input type="text" class="form-control" placeholder="Comprovante" data-th-field="*{comprovante}" />
+                    <input type="text" class="form-control" placeholder="Comprovante" data-th-field="*{comprovante}" data-th-errorclass="is-invalid"/>
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('comprovante')}" data-th-errors="*{comprovante}"></p>
                 </div>
                 
                 <div class="form-group">
-                    <label for="prazoEntrega">Prazo Entrega:</label>
-                    <input type="text" class="form-control" placeholder="Prazo Entrega" data-th-field="*{prazoEntrega}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('prazoEntrega')}" data-th-errors="*{prazoEntrega}"></p>
+                    <label for="codigoRastreamento">Código de Rastreamento:</label>
+                    <input type="text" class="form-control" placeholder="Código de Rastreamento" data-th-field="*{codigoRastreamento}" data-th-errorclass="is-invalid"/>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('codigoRastreamento')}" data-th-errors="*{codigoRastreamento}"></p>
                 </div>
                 
                 <div class="form-group">
-                    <label for="codigoRastreamento">Código Rastreamento:</label>
-                    <input type="text" class="form-control" placeholder="Código Rastreamento" data-th-field="*{codigoRastreamento}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('codigoRastreamento')}" data-th-errors="*{codigoRastreamento}"></p>
+                    <label for="prazoEntrega">Prazo de Entrega:</label>
+                    <input type="date" class="form-control" placeholder="Prazo de Entrega" data-th-field="*{prazoEntrega}" data-th-errorclass="is-invalid"/>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('prazoEntrega')}" data-th-errors="*{prazoEntrega}"></p>
                 </div>
                 
 

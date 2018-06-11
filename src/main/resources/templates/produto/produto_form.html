@@ -19,20 +19,25 @@
 
                 <div class="form-group">
                     <label for="nome">Nome:</label>
-                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('nome')}? 'is-invalid'" placeholder="Nome" data-th-field="*{nome}" />
+                    <input type="text" class="form-control" data-th-errorclass="is-invalid" placeholder="Nome" data-th-field="*{nome}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('nome')}" data-th-errors="*{nome}"></p>
-                    <p></p>
                 </div>
 
                 <div class="form-group">
                     <label for="descricao">Descrição:</label>
-                    <textarea class="form-control" data-th-classappend="${#fields.hasErrors('descricao')}? 'is-invalid'" placeholder="Descrição" data-th-field="*{descricao}"></textarea>
+                    <textarea class="form-control textarea-markdown" data-th-errorclass="is-invalid" placeholder="Descrição" data-th-field="*{descricao}"></textarea>
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('descricao')}" data-th-errors="*{descricao}"></p>
                 </div>
                 
                 <div class="form-group">
+                    <button class="btn btn-success button-markdown" type="button">
+                        <i class="far fa-eye"></i> Preview
+                    </button>
+                </div>
+                
+                <div class="form-group">
                     <label for="categoria">Categoria:</label>
-                    <select class="form-control" data-th-classappend="${#fields.hasErrors('categoria.id')}? 'is-invalid'" data-th-field="*{categoria.id}">
+                    <select class="form-control" data-th-errorclass="is-invalid" data-th-field="*{categoria.id}">
                         <option data-th-value="NULL" data-th-text=" -- "></option>
                         <option data-th-each="categoria : ${categorias}" data-th-value="${categoria.id}" data-th-text="${categoria.nome}"></option>
                     </select>
@@ -41,32 +46,31 @@
 
                 <div class="form-group">
                     <label for="fabricante">Fabricante:</label>
-                    <input type="text" class="form-control"  data-th-classappend="${#fields.hasErrors('fabricante')}? 'is-invalid'" placeholder="Fabricante" data-th-field="*{fabricante}" />
+                    <input type="text" class="form-control" data-th-errorclass="is-invalid" placeholder="Fabricante" data-th-field="*{fabricante}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('fabricante')}" data-th-errors="*{fabricante}"></p>
                 </div>
 
                 <div class="form-group">
                     <label for="codigo">Código:</label>
-                    <input type="text" class="form-control"  data-th-classappend="${#fields.hasErrors('nome')}? 'is-invalid'" placeholder="Código" data-th-field="*{codigo}" />
+                    <input type="text" class="form-control" data-th-errorclass="is-invalid" placeholder="Código" data-th-field="*{codigo}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('codigo')}" data-th-errors="*{codigo}"></p>
-                    
                 </div>
 
                 <div class="form-group">
                     <label for="estoque">Estoque:</label>
-                    <input type="number" class="form-control"  data-th-classappend="${#fields.hasErrors('estoque')}? 'is-invalid'" placeholder="Estoque" data-th-field="*{estoque}" />
+                    <input type="number" class="form-control" data-th-errorclass="is-invalid" placeholder="Estoque" data-th-field="*{estoque}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('estoque')}" data-th-errors="*{estoque}"></p>
                 </div>
 
                 <div class="form-group">
                     <label for="reservado">Reservado:</label>
-                    <input type="number" class="form-control"  data-th-classappend="${#fields.hasErrors('reservado')}? 'is-invalid'" placeholder="Reservado" data-th-field="*{reservado}" />
+                    <input type="number" class="form-control" data-th-errorclass="is-invalid" placeholder="Reservado" data-th-field="*{reservado}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('reservado')}" data-th-errors="*{reservado}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="preco">Preço:</label>
-                    <input type="text" class="form-control"  data-th-classappend="${#fields.hasErrors('preco')}? 'is-invalid'" placeholder="Preço" data-th-field="*{preco}" />
+                    <input type="text" class="form-control" data-th-errorclass="is-invalid" placeholder="Preço" data-th-field="*{preco}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('preco')}" data-th-errors="*{preco}"></p>
                 </div>
 
@@ -82,6 +86,30 @@
                 </div>
             </form>
         </main>
+
+        <!-- Modal -->
+        <div class="modal fade" id="descricaoModal" tabindex="-1" role="dialog" aria-labelledby="produtoDescricaoPreview" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="produtoDescricaoPreview">Descrição</h5>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="preview-markdown"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <footer data-th-replace="~{footer}"></footer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js" integrity="sha256-xPwMubQT+EaVMOh04FjyG49sNwJmmGYpnhWNh4osD5w=" crossorigin="anonymous"></script>
+        <script src="js/markdown-form.js" data-th-src="@{/js/markdown-form.js}"></script>
     </body>
 </html>

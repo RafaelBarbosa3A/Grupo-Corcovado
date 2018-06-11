@@ -18,6 +18,6 @@ md.renderer.rules.blockquote_open = (tokens, idx) => {
   return '<blockquote class="blockquote mb-2">'
 }
 
-let to_render = document.querySelector(".to_render-md")
+let to_render = document.querySelector(".to_render-markdown")
 to_render.classList.add("d-none")
-document.querySelector("#rendered-md").innerHTML = md.render(to_render.textContent)
+document.querySelector("#rendered-markdown").innerHTML = md.render(to_render.textContent)

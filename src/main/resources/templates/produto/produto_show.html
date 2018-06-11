@@ -58,17 +58,34 @@
             
             <p class="mt-3 mb-2">
                 <strong>Preço:</strong><br>
-                <span data-th-text="${produto.preco}"></span>
+                <span data-th-text="${#numbers.formatCurrency(produto.preco)}"></span>
             </p>
             
             <div class="mt-3 mb-2">
                 <strong>Descontos:</strong><br>
-                <ul>
-                    <li data-th-each="desconto : ${produto.descontos}">
-                        R$<span data-th-text="${desconto.preco}"></span>  <span data-th-text="${desconto.inicio}"></span> - <span data-th-text="${desconto.fim}"></span> 
-                    </li>
-                </ul>
-                <a href="#" data-th-href="@{/produtos/{produtoId}/descontos(produtoId = ${produto.id})}" class="btn btn-outline-primary"><i class="fas fa-plus"></i> Descontos</a>
+                    <div class=" d-none d-lg-block ">
+                        <div class="row align-items-center py-2 bg-secondary text-white">
+                            <div class="col-lg"><strong>Preço</strong></div>
+                            <div class="col-lg"><strong>Data de Início</strong></div>
+                            <div class="col-lg"><strong>Data de Fim</strong></div>
+                            <div class="col-lg-2 text-right"><strong>Ações</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center py-1" data-th-each="desconto, stat : ${produto.descontos}" data-th-classappend="${stat.odd}? 'bg-light'" >
+                        <div class="col-12 col-lg"><strong class="d-lg-none">Preço: </strong><span data-th-text="${#numbers.formatCurrency(desconto.preco)}"></span></div> 
+                        <div class="col-12 col-md-5 col-lg"><strong class="d-lg-none">Data de Início: </strong><span data-th-text="${#dates.format(desconto.inicio, 'dd/MM/yyyy')}"></span></div>
+                        <div class="col-12 col-md-5 col-lg"><strong class="d-lg-none">Data de Fim: </strong><span data-th-text="${#dates.format(desconto.fim, 'dd/MM/yyyy')}"></span></div>
+                        <div class="col-12 col-md-2 text-right">
+                            <a class="btn btn-outline-info" href="#" data-th-href="@{/produtos/{produtoId}/descontos/{id}/edit(produtoId = ${produto.id}, id = ${desconto.id})}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <form class="d-inline-block" method="post" action="#" data-th-action="@{/produtos/{produtoId}/descontos/{id}/destroy(produtoId = ${produto.id}, id = ${desconto.id})}">
+                                <button type="submit" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                <a href="#" data-th-href="@{/produtos/{produtoId}/descontos/new(produtoId = ${produto.id})}" class="btn btn-outline-primary mt-2"><i class="fas fa-plus"></i> Descontos</a>
             </div>
             
             

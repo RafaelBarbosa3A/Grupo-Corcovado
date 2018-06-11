@@ -1,19 +1,4 @@
 var corcovado = angular.module('finaliza', []);
-/*
-class Pedido {
-    constructor (vendaId, pessoaId, frete, pagamento, cartao, comprovante, rastreamento, enderecoId) {
-        this.vendaId = vendaId;
-        this.pessoaId = pessoaId;
-        this.frete = frete;
-        this.pagamento = pagamento;
-        this.cartao = cartao;
-        this.comprovante = comprovante;
-        this.rastreamento = rastreamento;
-        this.enderecoId = enderecoId;
-    }
-}
-*/
-
 
 corcovado.controller('finaliza', function ($scope) {
     $scope.total = Number(document.getElementById("venda_total").value)

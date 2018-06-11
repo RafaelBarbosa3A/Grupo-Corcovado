@@ -18,7 +18,9 @@ md.renderer.rules.blockquote_open = (tokens, idx) => {
   return '<blockquote class="blockquote mb-2">'
 }
 
-document.querySelector(".button-md").addEventListener("click", ev => {
-  ev.preventDefault()
-  document.querySelector("#preview-md").innerHTML = md.render(document.querySelector(".textarea-md").value);
+document.querySelector(".button-markdown").addEventListener("click", ev => {
+  ev.preventDefault();
+  document.querySelector("#preview-markdown").innerHTML = md.render(document.querySelector(".textarea-markdown").value);
+  $('#descricaoModal').modal('toggle');
+  //document.querySelector("#descricaoModal").modal('toggle');
 })

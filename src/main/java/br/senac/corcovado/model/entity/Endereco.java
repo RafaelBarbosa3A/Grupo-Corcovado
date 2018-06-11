@@ -148,6 +148,17 @@ public class Endereco implements Serializable {
     public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
+    
+    public String getEnderecoCurto() {
+        return this.rua + ", " + this.numero;
+    }
+    public String getEnderecoCompleto() {
+        if (this.complemento != null && !this.complemento.isEmpty()) {
+            return this.rua + ", " + this.numero + " - " + this.bairro + ", CEP " + this.cep + " - " +  this.cidade + "/" + this.estado + " (" + this.complemento + ")";
+        } else {
+            return this.rua + ", " + this.numero + " - " + this.bairro + ", CEP " + this.cep + " - " +  this.cidade + "/" + this.estado;
+        }
+    }
 
     public Pessoa getPessoa() {
         return pessoa;

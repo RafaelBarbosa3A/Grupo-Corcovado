@@ -1,16 +1,16 @@
 <div class="container">
     <h1 class="h2">Detalhes</h1>
     <div class="row">
-        <div class="col-12 col-md-4">
-            <img class="img-fluid" src="{{ produto.imagem }}" alt="{{ produto.nome }}" />
+        <div class="col-12 col-md-6">
+            <img class="img-fluid" style="width: 100%; height: auto; display: block;"  ng-src="{{ produto.imagem }}" ng-alt="Imagem {{ produto.nome }}" />
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-6">
             <dl>
                 <dt>Nome do produto</dt>
                 <dd>{{ produto.nome }}</dd>
                 
                 <dt>Descrição</dt>
-                <dd>{{ produto.descricao }}</dd>
+                <div id="prod_descricao" class="mb-2"></div>
                 
                 <dt>Fabricante</dt>
                 <dd>{{ produto.fabricante }}</dd>
@@ -22,9 +22,13 @@
                 <dd>{{ produto.categoria.nome }}</dd>
                 
                 <dt>Preço</dt>
-                <dd>{{ produto.precos[0].preco | currency }}</dd>
+                <dd ng-hide="produto.promocao">{{ produto.preco | currency:'R$':2 }}</dd>
+                <dd ng-show="produto.promocao" class="mb-0"><small><del>{{ produto.preco | currency:'R$':2 }}</del></small> </dd>
+                <dd ng-show="produto.promocao">{{ produto.promocao | currency:'R$':2 }} </dd>
             </dl>
         </div>
     </div>
+    
+    <script src="/js/markdown-show.js" data-th-src="@{/js/markdown-show.js}"></script>
 </div>
 

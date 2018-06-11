@@ -23,8 +23,14 @@
                 <div class="pb-2 mx-3" data-th-each="pessoa : ${pessoas}">
                     <div class="row no-gutters border-top border-gray pt-3 pb-1 mb-0">
                         <div class="col-12 col-md-10">
-                            <div data-th-text="${pessoa.nome}"></div>
-                            <span class="text-muted" data-th-text="${pessoa.documento}"></span>
+                            <div>
+                                <strong>Nome: </strong>
+                                <span data-th-text="${pessoa.nome}"></span>
+                            </div>
+                            <div  class="text-muted">
+                                <strong>CPF: </strong>
+                                <span data-th-text="${pessoa.documento}"></span>
+                            </div>
                         </div>
                         <div class="col-12 col-md-2 text-right">
                           <a class="btn" href="#" data-th-href="@{/pessoas/{id}(id=${pessoa.id})}">Detalhes</a>

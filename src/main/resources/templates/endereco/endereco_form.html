@@ -5,127 +5,74 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Corcovado - Formulário Endereço</title>
-        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" data-th-href="@{/css/main.css}" />
+        <th:block data-th-replace="~{head}" />
     </head>
     <body>
-        <header>
-            <nav class="navbar navbar-expand-md navbar-dark bg-corcovado">
-                <a class="navbar-brand" href="#">
-                    <img src="/images/corcovado.svg" data-th-src="@{/images/corcovado.svg}" width="36" height="30" class="d-inline-block align-top" alt="Logo Corcovado">
-                    Corcovado
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarsExample04">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Departamentos </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown04">
-                                <a class="dropdown-item" href="#">Alimentos</a>
-                                <a class="dropdown-item" href="#">Bebidas</a>
-                                <a class="dropdown-item" href="#">Carnes</a>
-                                <a class="dropdown-item" href="#">Congelados</a>
-                                <a class="dropdown-item" href="#">Doces</a>
-                                <a class="dropdown-item" href="#">Feira</a>
-                                <a class="dropdown-item" href="#">Matinais</a>
-                                <a class="dropdown-item" href="#">Snacks</a>
-                                <a class="dropdown-item" href="#">Pet Shop</a>
-                                <a class="dropdown-item" href="#">Limpeza</a>
-                                <a class="dropdown-item" href="#">Bebês</a>
-                                <a class="dropdown-item" href="#">Perfumaria</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i>&nbsp;Carrinho&nbsp;</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-user-circle"></i>&nbsp;Perfil&nbsp;&nbsp;</a>
-                        </li>
-                        <li class="nav-item">
-                            <form class="form-inline my-2 my-md-0">
-                                <input class="form-control" type="text" placeholder="Pesquisar">
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-
+        <header data-th-replace="~{header}"></header>
         <main class="container main">
             <h1 class="h3 mt-3">Formulário de Endereço</h1>
             <div class="lead mb-2" data-th-text="${action} == 'create'? 'Criar novo Endereço' : 'Alterar Endereço'"></div>
-            <form data-th-action="@{/pessoas/enderecos/{act}(act = ${action})}" method="post" data-th-object="${endereco}">
+            <form data-th-action="@{/pessoas/{pid}/enderecos/{act}(pid = ${pessoa.id},act = ${action})}" method="post" data-th-object="${endereco}">
                 <input type="hidden" data-th-field="*{id}" />
-                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('id')}" data-th-errors="*{id}"></p>
                 <input type="hidden" data-th-field="*{createdAt}" />
-                <p class="invalid-feedback" data-th-if="${#fields.hasErrors('createdAt')}" data-th-errors="*{createdAt}"></p>
                 
                 <div class="form-group">
                     <label>Pessoa:</label>
-                    <input class="form-control" data-th-value="${endereco.pessoa.nome}" disabled/>
+                    <input class="form-control" data-th-value="${pessoa.nome}" disabled/>
                     <input type="hidden" data-th-field="*{pessoa.id}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pessoa.id')}" data-th-errors="*{pessoa.id}"></p>
                 </div>
                 
                 <div class="form-group">
+                    <label for="cep">CEP:</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" data-th-errorclass="is-invalid" placeholder="CEP" data-th-field="*{cep}" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="pesquisaCep">Buscar</button>
+                        </div>
+                    </div>
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('cep')}" data-th-errors="*{cep}"></p>
+                </div>
+
+                <div class="form-group">
                     <label for="rua">Rua:</label>
-                    <input type="text" class="form-control" placeholder="Rua" data-th-field="*{rua}" />
+                    <input type="text" class="form-control" placeholder="Rua" data-th-errorclass="is-invalid" data-th-field="*{rua}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('rua')}" data-th-errors="*{rua}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="numero">Número:</label>
-                    <input type="number" class="form-control" placeholder="Número" data-th-field="*{numero}" />
+                    <input type="text" class="form-control" placeholder="Número" data-th-errorclass="is-invalid" data-th-field="*{numero}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('numero')}" data-th-errors="*{numero}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="bairro">Bairro:</label>
-                    <input type="text" class="form-control" placeholder="Bairro" data-th-field="*{bairro}" />
+                    <input type="text" class="form-control" placeholder="Bairro" data-th-errorclass="is-invalid" data-th-field="*{bairro}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('bairro')}" data-th-errors="*{bairro}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="cidade">Cidade:</label>
-                    <input type="text" class="form-control" placeholder="Cidade" data-th-field="*{cidade}" />
+                    <input type="text" class="form-control" placeholder="Cidade" data-th-errorclass="is-invalid" data-th-field="*{cidade}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('cidade')}" data-th-errors="*{cidade}"></p>
                 </div>
                 
                 <div class="form-group">
                     <label for="estado">Estado:</label>
-                    <input type="text" class="form-control" placeholder="Estado" data-th-field="*{estado}" />
+                    <input type="text" class="form-control" placeholder="Estado" data-th-errorclass="is-invalid" data-th-field="*{estado}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('estado')}" data-th-errors="*{estado}"></p>
                 </div>
                 
                 <div class="form-group">
-                    <label for="cep">CEP:</label>
-                    <input type="number" class="form-control" placeholder="CEP" data-th-field="*{cep}" />
-                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('cep')}" data-th-errors="*{cep}"></p>
-                </div>
-                
-                <div class="form-group">
                     <label for="complemento">Complemento:</label>
-                    <input type="text" class="form-control" placeholder="Complemento" data-th-field="*{complemento}" />
+                    <input type="text" class="form-control" placeholder="Complemento" data-th-errorclass="is-invalid" data-th-field="*{complemento}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('complemento')}" data-th-errors="*{complemento}"></p>
-                </div>
-                
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" data-th-field="*{principal}" />
-                        <p class="invalid-feedback" data-th-if="${#fields.hasErrors('principal')}" data-th-errors="*{principal}"></p>
-                        <label class="form-check-label" for="principal">Principal</label>
-                    </div>
                 </div>
 
                 <div class="row justify-content-between align-items-center">
                     <span class="col-12 order-last col-md-4 order-md-first" data-th-switch="${endereco.id}">
-                        <a class="btn" data-th-case="0" href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos(pessoaId = ${endereco.pessoa.id})}">Voltar</a>
-                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/pessoas/enderecos/{id}(id = ${endereco.id})}">Voltar</a>
+                        <a class="btn" data-th-case="0" href="#" data-th-href="@{/pessoas/{pessoaId}(pessoaId = ${endereco.pessoa.id})}">Voltar</a>
+                        <a class="btn" data-th-case="*" href="#" data-th-href="@{/pessoas/{pessoaId}/enderecos/{id}(pessoaId = ${endereco.pessoa.id}, id = ${endereco.id})}">Voltar</a>
                     </span>
                     <div class="col-12 order-first col-md-4 order-md-last text-right">
                         <button class="btn btn-success" type="submit">Salvar</button>
@@ -133,77 +80,7 @@
                 </div>
             </form>
         </main>
-
-        <footer class="container-fluid footer bg-footer border-top mt-3 py-2 px-5">
-            <div class="row justify-content-center">
-                <div class="col-md-4 col-lg-3 mt-3">
-                    <p class="h6">Institucional</p>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Institucional</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Quem Somos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Formas de Pagamento</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Imprensa</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col-md-4 col-lg-3 mt-3">
-                    <p class="h6">Ajuda</p>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Perguntas Frequentes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Política de Troca e Devolução</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Política de Privacidade</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Fale Conosco</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col-md-4 col-lg-3 mt-3">
-                    <p class="h6">Cadastro</p>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Meus Pedidos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Alterar Cadastro</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Cancelar, trocar ou devolver</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Trabalhe conosco</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-3">
-                <p>
-                    Grupo Corcovado - Grupo Corcovado Comércio Eletrônico S.A. - CNPJ: 12.345.678/0001-90 - Av. Brigadeiro Luís Antônio, 3000, CEP: 01402-901 -  São Paulo/SP
-                </p>
-                <p>
-                    Copyright &COPY; 1995-2018. Grupo Corcovado. Todos os direitos reservados.
-                </p>
-            </div>
-        </footer>
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="/js/main.js" data-th-src="@{/js/main.js}"></script>
-
+        <footer data-th-replace="~{footer}"></footer>
+        <script src="/js/cep.js" data-th-src="@{/js/cep.js}"></script>
     </body>
 </html>

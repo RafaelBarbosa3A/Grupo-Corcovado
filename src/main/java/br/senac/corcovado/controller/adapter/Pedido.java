@@ -5,6 +5,8 @@
  */
 package br.senac.corcovado.controller.adapter;
 
+import br.senac.corcovado.model.entity.Pagamento;
+
 /**
  *
  * @author Diego
@@ -14,7 +16,7 @@ public class Pedido {
     private long pessoaId;
     private long enderecoId;
     private double frete;
-    private String pagamento;
+    private Pagamento pagamento;
     private String cartao;
     private String comprovante;
     private String rastreamento;
@@ -54,11 +56,11 @@ public class Pedido {
         this.frete = frete;
     }
 
-    public String getPagamento() {
+    public Pagamento getPagamento() {
         return pagamento;
     }
 
-    public void setPagamento(String pagamento) {
+    public void setPagamento(Pagamento pagamento) {
         this.pagamento = pagamento;
     }
 

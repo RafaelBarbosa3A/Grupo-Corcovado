@@ -102,6 +102,14 @@ public class ProdutoVendido implements Serializable {
     public void setPrecoTotal(Double precoTotal) {
         this.precoTotal = precoTotal;
     }
+    
+    public void calculaPrecoTotal() {
+        if (this.produto.getPromocao() != null && this.produto.getPromocao() >= 0) {
+            this.precoTotal = this.produto.getPromocao() * this.quantidade;
+        } else {
+            this.precoTotal = this.produto.getPreco() * this.quantidade;
+        }
+    }
 
     public Long getCreatedAt() {
         return createdAt;
@@ -128,8 +136,6 @@ public class ProdutoVendido implements Serializable {
     public int hashCode() {
         int hash = 7;
         hash = 73 * hash + Objects.hashCode(this.id);
-        hash = 73 * hash + Objects.hashCode(this.produto);
-        hash = 73 * hash + Objects.hashCode(this.venda);
         hash = 73 * hash + Objects.hashCode(this.quantidade);
         hash = 73 * hash + Objects.hashCode(this.precoTotal);
         hash = 73 * hash + Objects.hashCode(this.createdAt);

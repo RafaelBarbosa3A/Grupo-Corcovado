@@ -8,7 +8,11 @@ class ItemCarrinho {
     }
 
     total() {
-        return this.produto.preco * this.quantidade;
+        if (this.produto.promocao) {
+            return this.produto.promocao * this.quantidade;
+        } else {
+            return this.produto.preco * this.quantidade;
+        }
     };
 }
 
@@ -74,13 +78,11 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
             } else {
                 alert("Quantidade inadequada!");
             }
-
         };
 
         $rootScope.removeFromCart = function(produto) {
             $rootScope.carrinho.itens = $rootScope.carrinho.itens.filter((p) => p.produto.id !== produto.id);
         };
-
     }
 
     if (!$rootScope.produtos) {
@@ -93,60 +95,25 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
 });
 
 corcovado.controller('show', function ($scope, $rootScope, $stateParams) {
-    $scope.produto = $rootScope.produtos.find((p) => { return p.id == $stateParams.id });
-});
-
-/*
-corcovado.controller('finaliza', function ($scope, $rootScope, $state, $loader) {
-    if ($rootScope.carrinho.itens.length >= 1) {
-        $scope.pessoa = {};
-        $scope.frete = null;
-        $scope.enderecoId = 0;
-
-        $loader.getPessoa($rootScope.authtoken).then(function(pess) {
-            $scope.pessoa = pess;
-        });
-
-        $scope.calcFrete = function(endereco) {
-            $scope.enderecoId = endereco;
-            $loader.calcFrete(endereco).then(function(dist) {
-                $scope.frete = dist * 3.0;
-            });
-        };
-
-        $scope.finalizarCompra = function() {
-            if (!$scope.frete) {
-                $scope.calcFrete($scope.pessoa.enderecos[0]);
-            }
-
-            let pedido = new Pedido($rootScope.carrinho.vendaId, $scope.pessoa.id, $scope.frete, $scope.pagamento, $scope.cartao, "", "", $scope.enderecoId);
-
-            $loader.postFinaliza(pedido, $rootScope.authtoken).then((cart) => {
-                window.location.assign("/comercio/recibo/" + cart.id);
-            });
-        };
-        
-    } else {
-        $state.go("list");
-    }
-});*/
-/*
-corcovado.controller('recibo', function ($scope, $rootScope) {
-    $loader.loadCarrinho($rootScope.carrinho.vendaId).then(function(cart) {
-        $scope.cart = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
-        //$scope.pedido = 
-        $rootScope.carrinho = undefined;
+    const md = window.markdownit("default", {
+        html: true,
+        breaks: true,
+        linkify: true,
+        typographer: true
     });
-});*/
-/*
-corcovado.controller('signup', function ($scope, $state, $loader) {
-    $scope.criaPessoa = function(pessoa) {
-        $loader.postPessoa(pessoa).then(function(pess) {
-            // $scope.pessoa = pess;
-            $state.go('login');
-        });
+    
+    md.renderer.rules.table_open = (tokens, idx) => {
+        return '<table class="table table-bordered table-striped">'
     };
-});*/
+    
+    md.renderer.rules.blockquote_open = (tokens, idx) => {
+        return '<blockquote class="blockquote mb-2">'
+    };
+
+    $scope.produto = $rootScope.produtos.find((p) => { return p.id == $stateParams.id });
+    //$scope.descricao_md = md.render($scope.produto.descricao)
+    document.querySelector("#prod_descricao").innerHTML = md.render($scope.produto.descricao)
+});
 
 corcovado.factory('$loader', function ($http, $q) {
     var produtos = [];

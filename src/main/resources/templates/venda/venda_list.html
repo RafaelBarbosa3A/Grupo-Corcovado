@@ -18,8 +18,9 @@
                 <div class="pb-2 mx-3" data-th-each="venda : ${vendas}">
                     <div class="row no-gutters border-top border-gray pt-3 pb-1 mb-0">
                         <div class="col-12 col-md-10">
-                            <div data-th-text="${venda.clienteId}"></div>
-                            <span class="text-muted" data-th-text="${venda.enderecoId}"></span>
+                            <div data-th-text="${venda.pessoa.nome}"></div>
+                            <div class="text-muted" data-th-text="${venda.endereco.enderecoCompleto}"></div>
+                            <div class="text-muted" data-th-text="${#numbers.formatCurrency(venda.total)}"></div>
                         </div>
                         <div class="col-12 col-md-2 text-right">
                           <a class="btn" href="#" data-th-href="@{/vendas/{id}(id=${venda.id})}">Detalhes</a>

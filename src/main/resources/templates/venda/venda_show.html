@@ -13,41 +13,43 @@
             <div class="row align-items-center justify-content-between">
                 <h1 class="h2 mt-4 col-12 col-md-9" >Venda</h1>
                 <div class="col-12 col-md-3 text-right">
-                    <form class="d-inline-block" action="#" data-th-action="@{/vendas/{id}/destroy(id = ${venda.id})}" method="post">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
                     <a href="#" data-th-href="@{/vendas/{id}/edit(id = ${venda.id})}" class="btn btn-secondary">Edit</a>
                 </div>
             </div>
             
             <p class="mt-3 mb-2">
-                <strong>Cliente Id:</strong><br>
-                <span data-th-text="${venda.clienteId}"></span>
+                <strong>Pessoa:</strong><br>
+                <span data-th-text="${venda.pessoa.nome}"></span>
             </p>
             
             <p class="mt-3 mb-2">
-                <strong>Endereço Id:</strong><br>
-                <span data-th-text="${venda.enderecoId}"></span>
+                <strong>Endereço:</strong><br>
+                <span data-th-text="${venda.endereco.enderecoCompleto}"></span>
             </p>
             
             <p class="mt-3 mb-2">
-                <strong>Desconto Id:</strong><br>
-                <span data-th-text="${venda.descontoId}"></span>
+                <strong>Status:</strong><br>
+                <span data-th-text="${venda.status.nome}"></span>
             </p>
             
             <p class="mt-3 mb-2">
-                <strong>Status Id:</strong><br>
-                <span data-th-text="${venda.statusId}"></span>
+                <strong>Subtotal:</strong><br>
+                <span data-th-text="${#numbers.formatCurrency(venda.total)}"></span>
             </p>
-            
+
+            <p class="mt-3 mb-2">
+                <strong>Frete:</strong><br>
+                <span data-th-text="${#numbers.formatCurrency(venda.frete)}"></span>
+            </p>
+
             <p class="mt-3 mb-2">
                 <strong>Total:</strong><br>
-                <span data-th-text="${venda.total}"></span>
+                <span data-th-text="${#numbers.formatCurrency(venda.frete + venda.total)}"></span>
             </p>
-            
+
             <p class="mt-3 mb-2">
                 <strong>Pagamento:</strong><br>
-                <span data-th-text="${venda.pagamento}"></span>
+                <span data-th-text="${venda.pagamento.nome}"></span>
             </p>
             
             <p class="mt-3 mb-2">
@@ -57,7 +59,7 @@
             
             <p class="mt-3 mb-2">
                 <strong>Prazo Entrega:</strong><br>
-                <span data-th-text="${venda.prazoEntrega}"></span>
+                <span data-th-text="${#dates.format(venda.prazoEntrega, 'dd/MM/yyyy')}"></span>
             </p>
             
             <p class="mt-3 mb-2">

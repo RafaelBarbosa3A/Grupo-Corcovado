@@ -1,6 +1,5 @@
 package br.senac.corcovado.controller;
 
-import br.senac.corcovado.Utils;
 import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.model.entity.Endereco;
 import br.senac.corcovado.model.entity.Pessoa;
@@ -66,7 +65,7 @@ public class LoginController {
             pessoa = pessRepo.save(pessoa);
 
             endereco.setPessoa(pessoa);
-            endereco = endRepo.save(endereco);
+            endRepo.save(endereco);
 
             redirect.addFlashAttribute("mensagem", "Usuário cadastrado! Você pode pode se logar agora.");
             return new ModelAndView("redirect:/login");

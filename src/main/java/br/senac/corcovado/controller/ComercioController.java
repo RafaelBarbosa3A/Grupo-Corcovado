@@ -10,12 +10,14 @@ import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.controller.adapter.Pedido;
+import br.senac.corcovado.model.entity.Pagamento;
 import br.senac.corcovado.model.entity.Pessoa;
 import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
 import br.senac.corcovado.model.repository.CategoriaRepository;
+import br.senac.corcovado.model.repository.EnderecoRepository;
 import br.senac.corcovado.model.repository.ProdutoRepository;
 import br.senac.corcovado.model.repository.ProdutoVendidoRepository;
 import br.senac.corcovado.model.repository.VendaRepository;
@@ -42,6 +44,7 @@ public class ComercioController {
     @Autowired private VendaRepository vendaRepo;
     @Autowired private CategoriaRepository cateRepo;
     @Autowired private ProdutoVendidoRepository pvRepo;
+    @Autowired private EnderecoRepository endRepo;
     
     @GetMapping("")
     public ModelAndView index() {
@@ -51,15 +54,14 @@ public class ComercioController {
     
     @GetMapping("/comercio")
     public ModelAndView main() {
-        // TODO adicionar paramtros de busca
-        
+        // TODO adicionar parametros de busca
         return new ModelAndView("/comercio/comercio");
-                //.addObject("auth", Utils.getAuth());
     }
     
     @GetMapping("/comercio/list")
     public ModelAndView list() {
-        return new ModelAndView("/comercio/_list").addObject("categorias", cateRepo.findAll());
+        return new ModelAndView("/comercio/_list")
+                .addObject("categorias", cateRepo.findAll());
     }
     
     @GetMapping("/comercio/show")
@@ -72,15 +74,7 @@ public class ComercioController {
         Carrinho cart = new Carrinho();
         cart.vendaId = 1L;
         return new ModelAndView("/comercio/_cart").addObject("carrinho", cart);
-    }
-    
-    /*
-    @GetMapping("/comercio/finaliza")
-    public ModelAndView finaliza() {
-        return new ModelAndView("/comercio/_finaliza");
-    }
-    */
-    
+    }    
 
     @PostMapping("/comercio/carrinho/add")
     public ModelAndView createCarrinho(@ModelAttribute("carrinho") Carrinho cart) {
@@ -107,10 +101,13 @@ public class ComercioController {
             prodVend.setProduto(produto);
             prodVend.setVenda(venda);
             prodVend.setQuantidade(item.quantidade);
-            prodVend.setPrecoTotal(item.quantidade * produto.getPreco());
+            prodVend.calculaPrecoTotal();
 
             venda.getProdutoVendidos().add(prodVend);
             pvRepo.save(prodVend);
+            
+            produto.setReservado(produto.getReservado() + item.quantidade);
+            prodRepo.save(produto);
         }
         venda.calculaTotal();
         Venda salvo = vendaRepo.save(venda);
@@ -127,17 +124,23 @@ public class ComercioController {
         pedido.setVendaId(venda.getId());
         pedido.setPessoaId(venda.getPessoa().getId());
         
+        for(ProdutoVendido pv : venda.getProdutoVendidos()) {
+            Produto produto = pv.getProduto();
+            produto.setEstoque(produto.getEstoque() - pv.getQuantidade());
+            prodRepo.save(produto);
+        }
+        
         return new ModelAndView("/comercio/finaliza")
                 .addObject("pedido", pedido)
-                .addObject("venda", venda);
-                //.addObject("auth", Utils.getAuth());
+                .addObject("venda", venda)
+                .addObject("pagamentos", Pagamento.values());
     }
     
     @PostMapping("/comercio/venda/add")
     public ModelAndView createVenda(@ModelAttribute Pedido pedido) {
         Venda venda = vendaRepo.findById(pedido.getVendaId()).get();
         
-        venda.setEnderecoId(pedido.getEnderecoId());
+        venda.setEndereco(endRepo.findById(pedido.getEnderecoId()).get());
         venda.setFrete(pedido.getFrete());
         venda.setPagamento(pedido.getPagamento());
         
@@ -164,7 +167,6 @@ public class ComercioController {
         if (principal instanceof Pessoa && venda.getPessoa().getId().equals(((Pessoa) principal).getId())) {
             return new ModelAndView("/comercio/recibo")
                     .addObject("venda", venda);
-                    //.addObject("auth", Utils.getAuth());
         } else {
             return new ModelAndView("redirect:/error");
         }

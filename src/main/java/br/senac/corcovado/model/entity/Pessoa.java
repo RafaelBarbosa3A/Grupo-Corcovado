@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -31,9 +32,10 @@ public class Pessoa implements UserDetails, Serializable {
     @Column(name = "id") private Long id;
     
     @NotEmpty(message = "Favor digitar um nome")
-    @Size(min=1,max=255,message="Favor digitar um nome entre 1 á 255 letras")
+    @Size(min=1, max=255,message="Favor digitar um nome entre 1 á 255 letras")
     @Column(name = "nome") private String nome;
     
+    @CPF
     @NotEmpty(message = "Favor digitar o número do documento")
     @Column(name = "documento") private String documento;
     
@@ -41,12 +43,9 @@ public class Pessoa implements UserDetails, Serializable {
     @Column(name = "email") private String email;
     
     @NotEmpty(message = "Favor digitar uma senha")
-    //@Size(min=1,max=255,message="Favor digitar uma senha entre 1 á 15 letras")
+    @Size(min=1, max=255, message="Favor digitar uma senha entre 1 á 255 letras")
     @Column(name = "senha") private String senha;
-    
-    @Enumerated(EnumType.STRING) 
-    @Column(name = "nivel") private Nivel nivel;
-    
+
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
     private Set<Endereco> enderecos;
     
@@ -60,18 +59,16 @@ public class Pessoa implements UserDetails, Serializable {
 
     public Pessoa() {
         this.id = 0L;
-        this.nivel = Nivel.BASIC;
         this.papeis = new HashSet<>();
         this.active = true;
     }
 
-    public Pessoa(Long id, String nome, String documento, String email, String senha, Nivel nivel, Set<Endereco> enderecos, Set<Papel> papeis, Long createdAt, Long updatedAt, boolean active) {
+    public Pessoa(Long id, String nome, String documento, String email, String senha, Set<Endereco> enderecos, Set<Papel> papeis, Long createdAt, Long updatedAt, boolean active) {
         this.id = id;
         this.nome = nome;
         this.documento = documento;
         this.email = email;
         this.senha = senha;
-        this.nivel = nivel;
         this.enderecos = enderecos;
         this.papeis = papeis;
         this.createdAt = createdAt;
@@ -112,13 +109,6 @@ public class Pessoa implements UserDetails, Serializable {
     }
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public Nivel getNivel() {
-        return nivel;
-    }
-    public void setNivel(Nivel nivel) {
-        this.nivel = nivel;
     }
 
     public Set<Papel> getPapeis() {
@@ -164,8 +154,6 @@ public class Pessoa implements UserDetails, Serializable {
         hash = 19 * hash + Objects.hashCode(this.documento);
         hash = 19 * hash + Objects.hashCode(this.email);
         hash = 19 * hash + Objects.hashCode(this.senha);
-        hash = 19 * hash + Objects.hashCode(this.nivel);
-        hash = 19 * hash + Objects.hashCode(this.papeis);
         hash = 19 * hash + Objects.hashCode(this.createdAt);
         hash = 19 * hash + Objects.hashCode(this.updatedAt);
         hash = 19 * hash + (this.active ? 1 : 0);
@@ -192,7 +180,7 @@ public class Pessoa implements UserDetails, Serializable {
 
     @Override
     public String toString() {
-        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", documento=" + documento + ", email=" + email + ", senha=" + senha + ", nivel=" + nivel + ", papeis=" + papeis + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", documento=" + documento + ", email=" + email + ", senha=" + senha + ", papeis=" + papeis + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 
     // === JPA Gambiarras ===
