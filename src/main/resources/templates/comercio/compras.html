@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Corcovado - Histórico de Compras</title>
+        <th:block data-th-replace="~{head}" />
+    </head>
+    <body>
+        <header data-th-replace="~{header}"></header>
+        <main class="container main">
+            <h1 class="h2 mt-4">Histórico de Compras</h1>
+            
+            <ul class="list-unstyled">
+                <li class="row py-2 pr-3 align-items-center" data-th-each="venda, stat : ${vendas}"  data-th-classappend="${stat.odd}? 'bg-light'" >
+                    <div class="col-12 col-md">
+                        <div>
+                            <strong>Data de compra</strong> <span data-th-text="${venda.createdAtFormat}"></span>
+                        </div>
+                        <div>
+                            <strong>Total</strong> <span data-th-text="${#numbers.formatCurrency(venda.total + venda.frete)}"></span>
+                        </div>
+                        <div>
+                            <strong>Endereço</strong> <span data-th-text="${venda.endereco.enderecoCurto}"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-1 text-right">
+                        <a class="btn btn-outline-primary" href="#" data-th-href="@{/comercio/recibo/{id}(id = ${venda.id})}">
+                            <i class="far fa-eye"></i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </main>
+        <footer data-th-replace="~{footer}"></footer>
+        <!--
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.0/angular.min.js" integrity="sha256-wdtborJwJIq757II/dxJpmirvByOLcX8T5FdtTaMR+A=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.7.1/angular-locale_pt-br.min.js" integrity="sha256-XQi93DQhkQXjNO3+maSyu0INwuOLB0luKbVTTyPKYQA=" crossorigin="anonymous"></script>
+        -->
+    </body>
+</html>

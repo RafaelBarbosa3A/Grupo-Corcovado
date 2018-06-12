@@ -17,4 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface VendaRepository extends CrudRepository<Venda, Long>{
     Optional<Venda> findByPessoaAndStatus(Pessoa pessoa, Status status);
+    
+    Iterable<Venda> findAllByPessoaId(Long pessoaId);
 }

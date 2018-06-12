@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions().sameOrigin().httpStrictTransportSecurity().disable()
             .and()
                 .authorizeRequests()
-                    .antMatchers("/comercio/carrinho/**", "/comercio/venda/**", "/comercio/recibo/**").authenticated()
+                    .antMatchers("/comercio/carrinho/**", "/comercio/venda/**", "/comercio/recibo/**", "/comercio/compras/**").authenticated()
                     .antMatchers("/", "/css/**", "/js/**", "/images/**", "/console/**", "/comercio/**", "/cadastro/**").permitAll()
                     .anyRequest().hasRole("ADMIN")
             .and()

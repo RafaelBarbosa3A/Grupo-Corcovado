@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Corcovado - Altera Perfil</title>
+        <th:block data-th-replace="~{head}" />
+    </head>
+    <body>
+        <header data-th-replace="~{header}"></header>
+        <main class="container main">
+            <h1 class="h3 mt-3">Altera Perfil</h1>
+            <form data-th-action="@{/comercio/perfil/update}" method="post" data-th-object="${pessoa}">
+                <input type="hidden" data-th-field="*{id}" />
+                <input type="hidden" data-th-field="*{createdAt}" />
+                <input type="hidden" data-th-field="*{email}" />
+                <input type="hidden" id="senha" name="senha" data-th-value="batata" />
+
+                <div class="form-group">
+                    <label for="email">E-Mail:</label>
+                    <input type="email" class="form-control" data-th-value="*{email}" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" class="form-control" placeholder="Nome" data-th-errorclass="is-invalid" data-th-field="*{nome}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('nome')}" data-th-errors="*{nome}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="documento">CPF:</label>
+                    <input type="text" class="form-control" placeholder="Documento" data-th-errorclass="is-invalid" data-th-field="*{documento}" />
+                    <p class="invalid-feedback" data-th-if="${#fields.hasErrors('documento')}" data-th-errors="*{documento}"></p>
+                </div>
+
+                <div class="row justify-content-between align-items-center">
+                    <a class="btn" href="#" data-th-href="@{/pessoas}">Voltar</a>
+                    
+                    <div class="col-12 order-first col-md-4 order-md-last text-right">
+                        <button class="btn btn-success" type="submit">Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+        <footer data-th-replace="~{footer}"></footer>
+    </body>
+</html>

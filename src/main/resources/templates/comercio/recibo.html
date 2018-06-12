@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Corcovado - Lista de Produtos</title>
+        <title>Corcovado - Recibo de Compra</title>
         <th:block data-th-replace="~{head}" />
     </head>
     <body>
@@ -26,22 +26,29 @@
                     <div class="col" data-th-text="${pv.produto.nome}"></div>
                     <div class="col-2 text-center" data-th-text="${pv.quantidade}"></div>
                     <div class="col-4 text-right">
-                        R$<span data-th-text="${#numbers.formatCurrency(pv.precoTotal)}"></span>
+                        <span data-th-text="${#numbers.formatCurrency(pv.precoTotal)}"></span>
                     </div>
                 </div>
 
+                <div class="row border-top pt-3 mt-3">
+                    <div class="col">Subtotal</div>
+                    <div class="col text-right">
+                        <span data-th-text="${#numbers.formatCurrency(venda.total)}"></span>
+                    </div>
+                </div>
+                
                 <div class="row border-top border-bottom py-3 my-3">
                     <div class="col">Frete</div>
                     <div class="col text-right">
-                        R$<span data-th-text="${#numbers.formatCurrency(venda.frete)}"></span>
+                        <span data-th-text="${#numbers.formatCurrency(venda.frete)}"></span>
                     </div>
                 </div>
 
                 <div class="row mt-3 mb-3">
-                    <div class="col"><strong>Subtotal</strong></div>
+                    <div class="col"><strong>Total</strong></div>
                     <div class="col text-right">
                         <strong>
-                            R$<span data-th-text="${#numbers.formatCurrency(venda.total)}"></span>
+                            <span data-th-text="${#numbers.formatCurrency(venda.total + venda.frete)}"></span>
                         </strong>
                     </div>
                 </div>

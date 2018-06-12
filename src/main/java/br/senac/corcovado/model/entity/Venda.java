@@ -2,6 +2,7 @@ package br.senac.corcovado.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -35,7 +36,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Loader(namedQuery = "findVendaById")
 @NamedQuery(name = "findVendaById", query = "SELECT v FROM Venda v WHERE v.id = ?1")
 @Where(clause = "active = true")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "createdAtFormat"})
 public class Venda implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -200,6 +201,12 @@ public class Venda implements Serializable {
     }
     public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
+    }
+    
+    public String getCreatedAtFormat() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date created = new Date(createdAt);
+        return sdf.format(created);
     }
 
     public Long getUpdatedAt() {

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class Auth {
     private long id;
     private String username;
+    private String name;
     private List<String> authorities;
     private boolean authenticated;
 
@@ -27,6 +28,7 @@ public class Auth {
     public Auth(Pessoa pessoa) {
         this.id = pessoa.getId();
         this.username = pessoa.getEmail();
+        this.name = pessoa.getNome();
         this.authorities = pessoa.getAuthorities().stream().map(Papel::getAuthority).collect(Collectors.toList());
         this.authenticated = true;
     }
@@ -45,6 +47,14 @@ public class Auth {
         this.username = username;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public List<String> getAuthorities() {
         return authorities;
     }
@@ -61,6 +71,6 @@ public class Auth {
 
     @Override
     public String toString() {
-        return "Auth{" + "id=" + id + ", username=" + username + ", authorities=" + authorities + ", authenticated=" + authenticated + '}';
+        return "Auth{" + "id=" + id + ", username=" + username + ", name=" + name + ", authorities=" + authorities + ", authenticated=" + authenticated + '}';
     }
 }
