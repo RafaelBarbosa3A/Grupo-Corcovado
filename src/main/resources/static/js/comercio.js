@@ -45,6 +45,11 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
         url: '/produtos',
         templateUrl: 'comercio/list'
     });
+    
+    $stateProvider.state('home', {
+        url: '/home',
+        templateUrl: 'comercio/home'
+    });
 
     $stateProvider.state('show', {
         url: '/produtos/:id',

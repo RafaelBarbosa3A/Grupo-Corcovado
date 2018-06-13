@@ -59,7 +59,7 @@ public class ComercioController {
     @Autowired private PessoaRepository pessRepo;
     @Autowired private PapelRepository papelRepo;
     
-    @GetMapping("")
+    @GetMapping({"", "index", "home"})
     public ModelAndView index() {
         return new ModelAndView("redirect:/comercio");
     }
@@ -75,6 +75,11 @@ public class ComercioController {
     public ModelAndView list() {
         return new ModelAndView("/comercio/_list")
                 .addObject("categorias", cateRepo.findAll());
+    }
+    
+    @GetMapping("/comercio/home")
+    public ModelAndView home() {
+        return new ModelAndView("/comercio/_home");
     }
     
     @GetMapping("/comercio/show")
