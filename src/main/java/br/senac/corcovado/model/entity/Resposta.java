@@ -23,10 +23,14 @@ public class Resposta implements Serializable {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id") private Long id;
+    
     @Column(name = "sac_id") private Long sacId;
+    
     @NotEmpty(message = "Favor digitar uma mensagem")
     @Column(name = "mensagem") private String mensagem;
+    
     @Column(name = "cliente_id") private Long clienteId;
+    
     @Column(name = "created_at") private GregorianCalendar createdAt;
     @Column(name = "updated_at") private GregorianCalendar updatedAt;
     @Column(name = "active") private boolean active;

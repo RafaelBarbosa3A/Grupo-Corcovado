@@ -22,7 +22,7 @@
 
                 <div class="form-group">
                     <label for="documento">CPF:</label>
-                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('pessoa.documento')}? 'is-invalid'" placeholder="Documento" data-th-field="${pessoa.documento}" />
+                    <input type="text" class="form-control" data-th-classappend="${#fields.hasErrors('pessoa.documento')}? 'is-invalid'" placeholder="CPF" data-th-field="${pessoa.documento}" />
                     <p class="invalid-feedback" data-th-if="${#fields.hasErrors('pessoa.documento')}" data-th-errors="${pessoa.documento}"></p>
                 </div>
 
