@@ -65,7 +65,16 @@ corcovado.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/produtos');
 });
 
-corcovado.controller('product', function($rootScope, $loader, $state) {
+corcovado.controller('product', function($scope, $rootScope, $loader, $state) {
+    $scope.filtro  = {
+        DESC : false,
+        G1 : false,
+        G2 : false, 
+        G3 : false, 
+        G4 : false, 
+        G5 : false
+    };
+
     if (!$rootScope.carrinho) {
         $loader.loadCarrinho().then(function(cart) {
             $rootScope.carrinho = new Carrinho(cart.id, cart.produtoVendidos.map(pv => { return new ItemCarrinho(pv.produto, pv.quantidade); } ));
@@ -96,6 +105,31 @@ corcovado.controller('product', function($rootScope, $loader, $state) {
         $loader.loadProdutos().then(function(prods) {
             $rootScope.produtos = prods;
         });
+    }
+
+    let filtroPreco = function(p) {
+        if ($scope.filtro.DESC || $scope.filtro.G1 || $scope.filtro.G2 || $scope.filtro.G3 || $scope.filtro.G4 || $scope.filtro.G5) {
+            $scope.fils = [];
+            if (p.desconto && $scope.filtro.DESC) { 
+                return true;
+            }
+            if (p.preco <= 25 && $scope.filtro.G1) { 
+                return true;
+            }
+            if (25 < p.preco &&  p.preco <= 50 && $scope.filtro.G2) { 
+                return true;
+            }
+            if (50 < p.preco &&  p.preco <= 75 && $scope.filtro.G3) { 
+                return true;
+            }
+            if (75 < p.preco &&  p.preco <= 100 && $scope.filtro.G4) { 
+                return 
+            }
+            if (100 < p.preco && $scope.filtro.G5) { 
+                return true;
+            }
+            return false; 
+        } else return true;
     }
 });
 

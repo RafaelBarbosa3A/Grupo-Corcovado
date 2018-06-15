@@ -29,82 +29,81 @@
             <div class="form-group">
                 <input class="form-control" type="text" placeholder="Pesquisar" ng-model="busca">
             </div>
-                        
+            <!--          
             <p class="h5">Categorias</p>
             <div class="form-check" data-th-each="cat :${categorias}">
-                <input class="form-check-input" type="checkbox" data-th-for="|categorias${#ids.seq('categorias')}|">
+                <input class="form-check-input" type="checkbox" data-th-for="|categorias${#ids.seq('categorias')}|" th:attr="ng-model=|categorias.${#strings.escapeXml(cat.nome)}|">
                 <label class="form-check-label" data-th-for="|categorias${#ids.prev('categorias')}|" data-th-text="${cat.nome}">
                     Alimentos
                 </label>
             </div>
             <hr />
-
+            
             <p class="h5">Preço</p>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkPreco1">
-                 <label class="form-check-label" for="checkPreco1">
+                <input class="form-check-input" type="checkbox" ng-model="DESC" id="checkPreco1">
+                <label class="form-check-label" for="checkPreco1">
                     Desconto
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkPreco2">
-                 <label class="form-check-label" for="checkPreco2">
+                <input class="form-check-input" type="checkbox" ng-model="G1" id="checkPreco2">
+                <label class="form-check-label" for="checkPreco2">
                     R$0 - R$25
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkPreco3">
-                 <label class="form-check-label" for="checkPreco3">
+                <input class="form-check-input" type="checkbox" ng-model="G2" id="checkPreco3">
+                <label class="form-check-label" for="checkPreco3">
                     R$26 - R$50
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkPreco4">
-                 <label class="form-check-label" for="checkPreco4">
+                <input class="form-check-input" type="checkbox" ng-model="G3" id="checkPreco4">
+                <label class="form-check-label" for="checkPreco4">
                     R$51 - R$75
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkPreco5">
-                 <label class="form-check-label" for="checkPreco5">
+                <input class="form-check-input" type="checkbox" ng-model="G4" id="checkPreco5">
+                <label class="form-check-label" for="checkPreco5">
                     R$76 - R$100
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkPreco6">
-                 <label class="form-check-label" for="checkPreco6">
+                <input class="form-check-input" type="checkbox" ng-model="G5" id="checkPreco6">
+                <label class="form-check-label" for="checkPreco6">
                     R$100+
                 </label>
             </div>
             <hr />
-
-            <p class="h5">Ordenação</p>
+            -->
+            
+            <p class="h5" ng-init="order='nome'">Ordenação</p>
             <div class="form-check">
-                <input class="form-check-input" type="radio" value="" id="radioOrdem1">
+                <input class="form-check-input" type="radio" ng-model="order" value="nome">
                  <label class="form-check-label" for="radioOrdem1">
-                    Crescente (A→Z)
+                    Nome
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" value="" id="radioOrdem2">
+                <input class="form-check-input" type="radio" ng-model="order" value="categoria">
                  <label class="form-check-label" for="radioOrdem2">
-                    Decrescente (Z→A)
+                    Categoria
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" value="" id="radioOrdem3">
+                <input class="form-check-input" type="radio" ng-model="order" value="preco">
                  <label class="form-check-label" for="radioOrdem3">
                     Menor preço
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" value="" id="radioOrdem4">
+                <input class="form-check-input" type="radio" ng-model="order" value="-preco">
                 <label class="form-check-label" for="radioOrdem4">
                     Maior preço
                 </label>
             </div>
-
-            <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
         </form>
     </div>
 
@@ -113,7 +112,7 @@
         <h1 class="h4 mb-3">Produtos</h1>
 
         <div class="row">
-            <div class="col-lg-6 col-xl-4 mb-3" ng-repeat="produto in (produtos | filter: busca  )"> 
+            <div class="col-lg-6 col-xl-4 mb-3" ng-repeat="produto in (produtos | orderBy: order | filter: busca )"> 
                 <div class="card">
                     <img class="card-img-top" ng-src="{{produto.imagem}}" ng-alt="Imagem {{produto.nome}}">
                     <div class="card-body">
