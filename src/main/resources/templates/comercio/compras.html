@@ -22,7 +22,7 @@
                             <strong>Total</strong> <span data-th-text="${#numbers.formatCurrency(venda.total + venda.frete)}"></span>
                         </div>
                         <div>
-                            <strong>Endereço</strong> <span data-th-text="${venda.endereco.enderecoCurto}"></span>
+                            <strong>Endereço</strong> <span data-th-text="${venda.endereco != null}? ${venda.endereco.enderecoCurto} : 'Não definido.'"></span>
                         </div>
                     </div>
                     <div class="col-12 col-md-1 text-right">

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Corcovado - Detalhes Categoria</title>
+        <th:block data-th-replace="~{head}" />        
+    </head>
+    <body>
+        <header data-th-replace="~{header}"></header>
+        <main class="container main">
+            <h1 class="h2 mt-2" >Atendimento</h1>
+            
+            <div class="mt-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <p><strong data-th-text="${sac.pessoa.nome}"></strong></p>
+                    
+                    <form data-th-action="@{/atendimentos/update}" method="post" data-th-object="${sac}">
+                        <input type="hidden" data-th-field="*{id}" />
+                        
+                        <div class="input-group">
+                            <select class="custom-select" data-th-field="*{statusMensagem}">
+                                <option data-th-each="status : ${stati}" data-th-value="${status}" data-th-text="${status.name}">Status</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="submit">Salvar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <p data-th-text="${sac.mensagem}"></p>
+            </div>
+            <hr />
+
+            <div class="mt-3 mb-2" data-th-each="resposta : ${sac.respostas}">
+                <p><strong data-th-text="${resposta.pessoa.nome}"></strong></p>
+                <div data-th-text="${resposta.mensagem}"></div>
+            </div>
+            
+            <div class="pt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <form data-th-action="@{/atendimentos/{id}/respostas/create(id = ${newResposta.sac.id})}" method="post" data-th-object="${newResposta}">
+                            <input type="hidden" data-th-field="*{id}" />
+                            <input type="hidden" data-th-field="*{pessoa.id}" />
+                            <input type="hidden" data-th-field="*{sac.id}" />
+                            
+                            
+                            <div class="form-group">
+                                <label for="mensagem">Resposta</label>
+                                <textarea class="form-control" rows="5" placeholder="Mensagem" data-th-field="*{mensagem}"></textarea>
+                            </div>
+
+                            <button class="btn btn-primary" type="submit" >Publicar resposta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <a class="btn" href="#" data-th-href="@{/atendimentos}">Voltar</a>
+        </main>
+        <footer data-th-replace="~{footer}"></footer>
+    </body>
+</html>

@@ -1,13 +1,15 @@
 package br.senac.corcovado.model.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -20,30 +22,33 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "resposta")
 public class Resposta implements Serializable {
-    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") private Long id;
+    @Column(name = "id") private long id;
     
-    @Column(name = "sac_id") private Long sacId;
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "sac_id", referencedColumnName = "id") private Sac sac;
     
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id") private Pessoa pessoa;
+    
+    @Size(max = 1024)
     @NotEmpty(message = "Favor digitar uma mensagem")
-    @Column(name = "mensagem") private String mensagem;
+    @Column(name = "mensagem", length=1024) private String mensagem;
     
-    @Column(name = "cliente_id") private Long clienteId;
-    
-    @Column(name = "created_at") private GregorianCalendar createdAt;
-    @Column(name = "updated_at") private GregorianCalendar updatedAt;
+    @Column(name = "created_at") private long createdAt;
+    @Column(name = "updated_at") private long updatedAt;
     @Column(name = "active") private boolean active;
 
     public Resposta() {
         this.id = 0L;
+        this.active = true;
     }
 
-    public Resposta(Long id, Long sacId, String mensagem, Long clienteId, GregorianCalendar createdAt, GregorianCalendar updatedAt, boolean active) {
+    public Resposta(Long id, Sac sac, Pessoa pessoa, String mensagem, long createdAt, long updatedAt, boolean active) {
         this.id = id;
-        this.sacId = sacId;
+        this.sac = sac;
+        this.pessoa = pessoa;
         this.mensagem = mensagem;
-        this.clienteId = clienteId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
@@ -52,79 +57,60 @@ public class Resposta implements Serializable {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getSacId() {
-        return sacId;
+    public Sac getSac() {
+        return sac;
+    }
+    public void setSac(Sac sac) {
+        this.sac = sac;
     }
 
-    public void setSacId(Long sacId) {
-        this.sacId = sacId;
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public String getMensagem() {
         return mensagem;
     }
-
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
 
-    public Long getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
-
-    public GregorianCalendar getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(GregorianCalendar createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public GregorianCalendar getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
-
-    public void setUpdatedAt(GregorianCalendar updatedAt) {
+    public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
-    }
-    
-    public void setCreatedAt(long timeInMillis) {
-        this.createdAt = new GregorianCalendar();
-        this.createdAt.setTimeInMillis(timeInMillis);
-    }
-    
-    public void setUpdatedAt(long timeInMillis) {
-        this.updatedAt = new GregorianCalendar();
-        this.updatedAt.setTimeInMillis(timeInMillis);
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.id);
-        hash = 29 * hash + Objects.hashCode(this.sacId);
-        hash = 29 * hash + Objects.hashCode(this.mensagem);
-        hash = 29 * hash + Objects.hashCode(this.clienteId);
-        hash = 29 * hash + Objects.hashCode(this.createdAt);
-        hash = 29 * hash + Objects.hashCode(this.updatedAt);
-        hash = 29 * hash + (this.active ? 1 : 0);
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.mensagem);
+        hash = 83 * hash + (int) (this.createdAt ^ (this.createdAt >>> 32));
+        hash = 83 * hash + (int) (this.updatedAt ^ (this.updatedAt >>> 32));
+        hash = 83 * hash + (this.active ? 1 : 0);
         return hash;
     }
 
@@ -140,25 +126,7 @@ public class Resposta implements Serializable {
             return false;
         }
         final Resposta other = (Resposta) obj;
-        if (this.active != other.active) {
-            return false;
-        }
-        if (!Objects.equals(this.mensagem, other.mensagem)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.sacId, other.sacId)) {
-            return false;
-        }
-        if (!Objects.equals(this.clienteId, other.clienteId)) {
-            return false;
-        }
-        if (!Objects.equals(this.createdAt, other.createdAt)) {
-            return false;
-        }
-        if (!Objects.equals(this.updatedAt, other.updatedAt)) {
             return false;
         }
         return true;
@@ -166,6 +134,6 @@ public class Resposta implements Serializable {
 
     @Override
     public String toString() {
-        return "Resposta{" + "id=" + id + ", sacId=" + sacId + ", mensagem=" + mensagem + ", clienteId=" + clienteId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
+        return "Resposta{" + "id=" + id + ", mensagem=" + mensagem + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + '}';
     }
 }

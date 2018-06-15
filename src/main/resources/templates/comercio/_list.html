@@ -128,7 +128,7 @@
                             </div>
                         </div>
                         <a href="#" class="btn btn-info" ui-sref="show({ id:{{ produto.id }} })">Detalhes</a>
-                        <form class="comprarForm mt-2" method="post" data-th-action="@{/comercio/addToCart}">
+                        <form class="comprarForm mt-2" ng-if="produto.estoque > 0">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">+</span>
@@ -138,6 +138,10 @@
                                     <a href="#" class="btn btn-primary" ng-click="addToCart(produto, qtd || 1)">Comprar</a>
                                 </div>
                             </div>
+                        </form>
+                        <form method="post" action="/comercio/avisos/create" ng-if="produto.estoque <= 0">
+                            <input type="hidden" name="pid" ng-value="produto.id" >
+                            <button class="btn btn-secondary">Avise-me quando disponível</button>
                         </form>
                     </div>
                 </div>

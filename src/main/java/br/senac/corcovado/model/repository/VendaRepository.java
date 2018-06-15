@@ -19,4 +19,8 @@ public interface VendaRepository extends CrudRepository<Venda, Long>{
     Optional<Venda> findByPessoaAndStatus(Pessoa pessoa, Status status);
     
     Iterable<Venda> findAllByPessoaId(Long pessoaId);
+    
+    
+    Iterable<Venda> findAllByStatusNot(Status status);
+    Iterable<Venda> findAllByPessoaIdAndStatusNot(Long pessoaId, Status status);
 }

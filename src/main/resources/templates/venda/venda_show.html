@@ -13,6 +13,9 @@
             <div class="row align-items-center justify-content-between">
                 <h1 class="h2 mt-4 col-12 col-md-9" >Venda</h1>
                 <div class="col-12 col-md-3 text-right">
+                    <form class="d-inline-block" action="#" data-th-action="@{/vendas/{id}/end(id = ${venda.id})}" method="post">
+                        <button type="submit" class="btn btn-danger" data-th-if="${!ended}">Encerrar Venda</button>
+                    </form>
                     <a href="#" data-th-href="@{/vendas/{id}/edit(id = ${venda.id})}" class="btn btn-secondary">Edit</a>
                 </div>
             </div>

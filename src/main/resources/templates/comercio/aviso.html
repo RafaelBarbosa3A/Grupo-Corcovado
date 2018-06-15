@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Corcovado - Lista de Avisos</title>
+        <th:block data-th-replace="~{head}" />
+    </head>
+    <body>
+        <header data-th-replace="~{header}"></header>
+
+        <main class="container main">
+            <div class="rounded box-shadow px-3 py-3 mt-4 mb-3">
+                <h1 class="h4 mx-3 pt-1 pb-2 mb-0">Lista de Avisos</h1>
+
+                <div class="pb-2 mx-3" data-th-each="aviso : ${avisos}">
+                    <div class="row no-gutters border-top border-gray pt-3 pb-1 mb-0">
+                        <div class="col-12 col-md-10">
+                            <div data-th-text="${aviso.produto.nome}"></div>
+                        </div>
+                        <div class="col-12 col-md-2 text-right">
+                            <form method="post" data-th-action="@{comercio/avisos/destroy}">
+                                <input type="hidden" name="aid" data-th-value="${aviso.id}" >
+                                <button class="btn btn-outline-danger"> <i class="fas fa-pencil-alt"></i> </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer data-th-replace="~{footer}"></footer>
+    </body>
+</html>

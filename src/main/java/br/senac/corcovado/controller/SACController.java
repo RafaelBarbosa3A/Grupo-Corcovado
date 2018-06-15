@@ -2,17 +2,25 @@ package br.senac.corcovado.controller;
 
 import br.senac.corcovado.Utils;
 import br.senac.corcovado.controller.adapter.Auth;
+import br.senac.corcovado.model.entity.Pessoa;
+import br.senac.corcovado.model.entity.Resposta;
 import br.senac.corcovado.model.entity.Sac;
+import br.senac.corcovado.model.entity.StatusMensagem;
 import br.senac.corcovado.model.repository.PessoaRepository;
+import br.senac.corcovado.model.repository.RespostaRepository;
 import br.senac.corcovado.model.repository.SacRepository;
 import br.senac.corcovado.model.service.AuthService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -21,71 +29,79 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class SACController {
     
-    @Autowired 
-    private SacRepository repository;
-    private PessoaRepository pessoaRepository;
+    @Autowired private SacRepository sacRepo;
+    @Autowired private RespostaRepository respRepo;
+    @Autowired private PessoaRepository pessRepo;
 
     @GetMapping("/atendimentos")
     public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("/sac/sac_list");
-        mav.addObject("sac", repository.findAll());
-                //.addObject("auth", Utils.getAuth());
-        return mav;
-    }
-    
-    @GetMapping("/atendimentos/{id}")
-    public ModelAndView show(@PathVariable("id") String usId) {
-        ModelAndView mav = new ModelAndView("/sac/sac_show");
-        mav.addObject("sac", repository.findById(Long.parseLong(usId)).get());
-                //.addObject("auth", Utils.getAuth());
-        return mav;
-    }
-    
-    @GetMapping("/atendimentos/new")
-    public ModelAndView new_() {
-        ModelAndView mav = form();
-        return mav;
+        Sac sac = new Sac();
+        sac.setPessoa((Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        
+        if (authServ.getCurrentUser().getAuthorities().contains("ROLE_ADMIN")) {
+            return new ModelAndView("/sac/sac_list")
+                    .addObject("sacs", sacRepo.findAllByStatusMensagemNotOrderByStatusMensagemDesc(StatusMensagem.ENCERRADO))
+                    .addObject("sac", sac); 
+        } else {
+            return new ModelAndView("/sac/sac_list")
+                        .addObject("sacs", sacRepo.findAllByPessoaIdAndStatusMensagemNotOrderByStatusMensagemDesc(sac.getPessoa().getId(), StatusMensagem.ENCERRADO))
+                        .addObject("sac", sac); 
+        }
     }
     
     @PostMapping(path = "/atendimentos/create")
-    public ModelAndView create(@ModelAttribute Sac sac) {
-        Sac salvo;
-        salvo = repository.save(sac);
+    public ModelAndView create(@Valid @ModelAttribute Sac sac, 
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+        //sac.setPessoa((Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         
-
-        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("/sac/sac_list")
+                .addObject("sacs", sacRepo.findAll());
+        }
+        Sac salvo = sacRepo.save(sac);
+        
+        ModelAndView redirect = new ModelAndView("redirect:/atendimentos/" + salvo.getId());
         return redirect;
     }
     
-    /*
-    @GetMapping({"/atendimentos/{id}/edit", "/atendimentos/edit/{id}"})
-    public ModelAndView edit(@PathVariable("id") String usId) {
-        ModelAndView mav = editForm(repository.findById(Long.parseLong(usId)).get());
-        return mav;
+    
+    @GetMapping("/atendimentos/{id}")
+    public ModelAndView show(@PathVariable("id") long id) {
+        Resposta resposta = new Resposta();
+        resposta.setPessoa((Pessoa) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        resposta.setSac(sacRepo.findById(id).get());
+        
+        return new ModelAndView("/sac/sac_show")
+                .addObject("sac", sacRepo.findById(id).get())
+                .addObject("stati", StatusMensagem.values())
+                .addObject("newResposta", resposta);
+    }
+    
+    @PostMapping(path = "/atendimentos/{id}/respostas/create")
+    public ModelAndView createResposta(@PathVariable("id") long id, 
+            @Valid @ModelAttribute Resposta resposta, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("/sac/sac_show")
+                    .addObject("stati", StatusMensagem.values())
+                    .addObject("sac", sacRepo.findById(id).get());
+        }
+        Resposta salvo = respRepo.save(resposta);
+        ModelAndView redirect = new ModelAndView("redirect:/atendimentos/" + id);
+        return redirect;
     }
     
     @PostMapping(path = "/atendimentos/update")
     public ModelAndView update(@ModelAttribute Sac sac) {
-        Sac salvo;
-        salvo = repository.save(sac);
+        Sac oldSac = sacRepo.findById(sac.getId()).get();
+        oldSac.setStatusMensagem(sac.getStatusMensagem());
+        sacRepo.save(oldSac);
         
-        ModelAndView redirect = new ModelAndView("redirect:" + salvo.getId());
-        return redirect;
-    }
-    
-    @PostMapping(path = {"/atendimentos/{id}/destroy", "/atendimentos/destroy/{id}"})
-    public ModelAndView destroy(@PathVariable("id") String usId) {
-        repository.deleteById(Long.parseLong(usId));
         ModelAndView redirect = new ModelAndView("redirect:/atendimentos");
         return redirect;
     }
-    */
     
-    private ModelAndView form() {
-        ModelAndView modelAndView = new ModelAndView("/sac/sac_form");
-        return modelAndView;
-    }
-                    
     @Autowired private AuthService authServ;
     @ModelAttribute("auth")
     public Auth getAuth() {

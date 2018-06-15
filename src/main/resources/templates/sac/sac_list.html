@@ -11,33 +11,36 @@
         <header data-th-replace="~{header}"></header>
         <main class="container main">
             <div class="rounded box-shadow px-3 py-3 mt-4 mb-3">
-                <div class="row no-gutters justify-content-between mx-3 pt-1 pb-2 mb-0">
-                    <h1 class="h4 col-12 col-md-10">Lista de Atendimentos</h1>
-                    <div class="col-12 col-md-2 text-right">
-                      <a href="#" data-th-href="@{/atendimentos/new}" class="btn btn-outline-info" >Novo</a>
-                    </div>
-                </div>
-
                 <div class="pb-2 mx-3">
                     <div class="card">
                         <div class="card-body">
-                            <form>
-                                <input type="text" placeholder="Contato">
-                                <textarea rows="10"></textarea>
-                                <button class="btn btn-outline-info" type="submit" >Criar nova solicitação</button>
+                            <h2 class="h5">Solicitação de atendimento (reclamações/dúvidas)</h2>
+                            <form data-th-action="@{/atendimentos/create}" method="post" data-th-object="${sac}">
+                                <input type="hidden" data-th-field="*{id}" />
+                                <input type="hidden" data-th-field="*{pessoa.id}" />
+                            
+                                <div class="form-group">
+                                    <label for="mensagem">Mensagem</label>
+                                    <textarea class="form-control" rows="5" placeholder="Mensagem" data-th-field="*{mensagem}"></textarea>
+                                </div>
+                                
+                                <button class="btn btn-primary" type="submit">Criar nova solicitação</button>
                             </form>
                         </div>
                     </div>
                 </div>
                 
+                <h1 class="h4 mx-3 pt-1 pb-2 mb-0">Lista de Atendimentos</h1>
+                
                 <div class="pb-2 mx-3" data-th-each="atendimento : ${sacs}">
-                    <div class="row no-gutters border-top border-gray pt-3 pb-1 mb-0">
+                    <div class="row no-gutters border-bottom border-gray pt-3 pb-1 mb-0">
                         <div class="col-12 col-md-10">
-                            <p data-th-text="${atendimento.mensagem}"></p>
+                            <p data-th-text="${#strings.abbreviate(atendimento.mensagem, 80)}"></p>
+                            <p><span class="badge badge-secondary" data-th-text="${atendimento.statusMensagem.name}"></span> - <small data-th-text="|${#sets.size(atendimento.respostas)} mensagens|"></small></p>
                         </div>
                         
                         <div class="col-12 col-md-2 text-right">
-                          <a class="btn" href="#" data-th-href="@{/atendimentos/{id}(id=${categoria.id})}">Detalhes</a>
+                          <a class="btn" href="#" data-th-href="@{/atendimentos/{id}(id=${atendimento.id})}">Detalhes</a>
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,7 @@ import br.senac.corcovado.controller.adapter.Auth;
 import br.senac.corcovado.controller.adapter.Carrinho;
 import br.senac.corcovado.controller.adapter.ItemCarrinho;
 import br.senac.corcovado.controller.adapter.Pedido;
+import br.senac.corcovado.model.entity.Aviso;
 import br.senac.corcovado.model.entity.Endereco;
 import br.senac.corcovado.model.entity.Pagamento;
 import br.senac.corcovado.model.entity.Pessoa;
@@ -17,6 +18,7 @@ import br.senac.corcovado.model.entity.Produto;
 import br.senac.corcovado.model.entity.ProdutoVendido;
 import br.senac.corcovado.model.entity.Status;
 import br.senac.corcovado.model.entity.Venda;
+import br.senac.corcovado.model.repository.AvisoRepository;
 import br.senac.corcovado.model.repository.CategoriaRepository;
 import br.senac.corcovado.model.repository.EnderecoRepository;
 import br.senac.corcovado.model.repository.PapelRepository;
@@ -27,7 +29,6 @@ import br.senac.corcovado.model.repository.VendaRepository;
 import br.senac.corcovado.model.service.AuthService;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.validation.Valid;
@@ -42,6 +43,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -51,6 +53,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class ComercioController {
+    @Autowired private AvisoRepository aviRepo;
     @Autowired private ProdutoRepository prodRepo;
     @Autowired private VendaRepository vendaRepo;
     @Autowired private CategoriaRepository cateRepo;
@@ -192,7 +195,7 @@ public class ComercioController {
         Pessoa pessoa = getCurrentUser();
 
         return new ModelAndView("/comercio/compras")
-                .addObject("vendas", vendaRepo.findAllByPessoaId(pessoa.getId()));
+                .addObject("vendas", vendaRepo.findAllByPessoaIdAndStatusNot(pessoa.getId(), Status.RASCUNHO));
     }
     
     
@@ -289,6 +292,24 @@ public class ComercioController {
     private ModelAndView enderecoForm(String action) {
         return new ModelAndView("/comercio/endereco_form")
             .addObject("action", action);
+    }
+    
+    @GetMapping(path = "/comercio/avisos")
+    public ModelAndView avisos() {
+        return new ModelAndView("comercio/aviso")
+                .addObject("avisos", aviRepo.findAllByPessoa(getCurrentUser()));
+    }
+    
+    @PostMapping(path = "/comercio/avisos/create")
+    public ModelAndView createAviso(@RequestParam("pid") long productId) {
+        aviRepo.save(new Aviso(prodRepo.findById(productId).get(), getCurrentUser()));
+        return new ModelAndView("redirect:/comercio");
+    }
+    
+    @PostMapping(path = "/comercio/avisos/destroy")
+    public ModelAndView destroyAviso(@RequestParam("aid") long avisoId) {
+        aviRepo.deleteById(avisoId);
+        return new ModelAndView("redirect:/comercio");
     }
     
     @Autowired private AuthService authServ;
